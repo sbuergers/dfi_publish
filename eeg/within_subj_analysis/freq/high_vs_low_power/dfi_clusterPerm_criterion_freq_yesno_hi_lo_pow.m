@@ -42,7 +42,6 @@
 % Last modified Feb. 2021
 
 
-%% *** SETUP ***
 clc
 close all
 clear all
