@@ -16,7 +16,24 @@
 %   dfi_beta_binom_weibull_analysis_2ifc.m
 %   dfi_beta_binom_weibull_analysis_sep_fits_ynpool.m
 %
+% ===========================================================================
+%
+%     dfi (double flash illusion) codebase accompanying the manuscript ...
+%     Copyright (C) 2021  Steffen Buergers
 % 
+%     This program is free software: you can redistribute it and/or modify
+%     it under the terms of the GNU General Public License as published by
+%     the Free Software Foundation, either version 3 of the License, or
+%     (at your option) any later version.
+% 
+%     This program is distributed in the hope that it will be useful,
+%     but WITHOUT ANY WARRANTY; without even the implied warranty of
+%     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+%     GNU General Public License for more details.
+% 
+%     You should have received a copy of the GNU General Public License
+%     along with this program.  If not, see <https://www.gnu.org/licenses/>.
+%
 % ---
 % Steffen Buergers, sbuergers@gmail.com,
 % Last modified Feb. 2021
@@ -34,13 +51,13 @@ close all
 addpath(genpath('dfi'))
 
 % set up general figure directory
-figdir = 'D:\dfi_experiment_figures\PFs\beta_binom_weibull';
+figdir = fullfile('dfi_experiment_figures', 'PFs', 'beta_binom_weibull');
 
 % set up folder name of type of analysis
 folder = 'yn_pooled';
 
 % Manually set data folder and file name
-fn = 'D:\dfi_experiment_data\data\experiment\d701to727_yn';
+fn = fullfile('dfi_experiment_data', 'data', 'experiment', 'd701to727_yn');
 load(fn)
 
 S2_conditions = [3,6,8,9];
