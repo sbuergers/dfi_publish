@@ -1,4 +1,5 @@
 % TODO add scritp description and rename (looks at iAP not iAF)
+% dfi_bb_TBW_consistency_over_tasks_and_conditions.m
 
 
 %% *** SETUP ***
