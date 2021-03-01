@@ -36,7 +36,7 @@
 % add project directory to path
 addpath(genpath('dfi'))
 
-figdir = 'D:\dfi_experiment_figures\PFs\beta_binom_weibull';
+figdir = fullfile('dfi_experiment_figures', 'PFs', 'beta_binom_weibull');
 
 
 %% Load data
