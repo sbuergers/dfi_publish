@@ -23,6 +23,24 @@
 % slightly different statistics. For the manuscript we use frequency, not
 % wavelength!
 % 
+% ===========================================================================
+%
+%     dfi (double flash illusion) codebase accompanying the manuscript ...
+%     Copyright (C) 2021  Steffen Buergers
+% 
+%     This program is free software: you can redistribute it and/or modify
+%     it under the terms of the GNU General Public License as published by
+%     the Free Software Foundation, either version 3 of the License, or
+%     (at your option) any later version.
+% 
+%     This program is distributed in the hope that it will be useful,
+%     but WITHOUT ANY WARRANTY; without even the implied warranty of
+%     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+%     GNU General Public License for more details.
+% 
+%     You should have received a copy of the GNU General Public License
+%     along with this program.  If not, see <https://www.gnu.org/licenses/>.
+%
 % ---
 % Steffen Buergers, sbuergers@gmail.com,
 % Last modified Feb. 2021
@@ -55,7 +73,7 @@ data_dir = fullfile('dfi_experiment_data', 'eeg_data', 'experiment');
 fig_dir  = fullfile('dfi_experiment_figures');
 
 % beta binom data dir
-figdir = 'D:\dfi_experiment_figures\PFs\beta_binom_weibull';
+figdir = fullfile('dfi_experiment_figures', 'PFs', 'beta_binom_weibull');
 
 % add fieldtrip folder to search path
 try
@@ -74,9 +92,9 @@ N = length(subjvect);
 %load(fullfile(fig_dir, 'iAF_fits_corcoran', 'eyes_open_pkinfo.mat'));
 
 % Load iAF peak fits (using the toolbox written by Corcoran, 2017)
-load(fullfile('D:\dfi_experiment_figures', 'iAF_fits_corcoran_zeropadded', 'eyes_open_pkinfo.mat'));
+load(fullfile('dfi_experiment_figures', 'iAF_fits_corcoran_zeropadded', 'eyes_open_pkinfo.mat'));
 yn_pSpec = pSpec; clear pSpec
-load(fullfile('D:\dfi_experiment_figures', 'iAF_fits_corcoran_zeropadded', 'yn_threshold', 'eyes_open_pkinfo.mat'));
+load(fullfile('dfi_experiment_figures', 'iAF_fits_corcoran_zeropadded', 'yn_threshold', 'eyes_open_pkinfo.mat'));
 ynt_pSpec = pSpec; clear pSpec
 
 for isubj = 1:20
