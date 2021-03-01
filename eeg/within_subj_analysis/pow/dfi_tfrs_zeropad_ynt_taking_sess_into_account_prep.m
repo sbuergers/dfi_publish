@@ -16,6 +16,24 @@
 %
 % Compute power over time in pre-stimulus period.
 % 
+% ===========================================================================
+%
+%     dfi (double flash illusion) codebase accompanying the manuscript ...
+%     Copyright (C) 2021  Steffen Buergers
+% 
+%     This program is free software: you can redistribute it and/or modify
+%     it under the terms of the GNU General Public License as published by
+%     the Free Software Foundation, either version 3 of the License, or
+%     (at your option) any later version.
+% 
+%     This program is distributed in the hope that it will be useful,
+%     but WITHOUT ANY WARRANTY; without even the implied warranty of
+%     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+%     GNU General Public License for more details.
+% 
+%     You should have received a copy of the GNU General Public License
+%     along with this program.  If not, see <https://www.gnu.org/licenses/>.
+%
 % ---
 % Steffen Buergers, sbuergers@gmail.com,
 % Last modified Feb. 2021
@@ -26,7 +44,6 @@ clc
 close all
 clear all
 
-cd('D:\');
 
 % Name of directory to save things to
 an_fold = 'tfr_zeropad';
@@ -67,8 +84,6 @@ Fs = 256;
 w  = [6 14];
 
 for isubj = 1:N 
-    
-    cd('D:\');
     
     subj_dir = fullfile(data_dir, subjvect{isubj}, task);
     
@@ -284,9 +299,9 @@ for isubj = 1:N
         [~, tfr_sub] = dfi_eeg_analysis(s, eeg_zero);
        
         % Save data
-        cd('D:\');
         mkdir(fullfile(subj_dir, an_fold, sess_fold));
-        save(fullfile(subj_dir, an_fold, sess_fold, 'tfr_all_conds_all.mat'), 'tfr_sub', 's', 'beh_stim', '-v7.3'); 
+        save(fullfile(subj_dir, an_fold, sess_fold, 'tfr_all_conds_all.mat'), ...
+            'tfr_sub', 's', 'beh_stim', '-v7.3'); 
         
     end % session combinations
     
