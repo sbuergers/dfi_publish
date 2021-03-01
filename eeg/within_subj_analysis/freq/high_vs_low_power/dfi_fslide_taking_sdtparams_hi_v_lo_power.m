@@ -20,6 +20,24 @@
 % The same analysis as fi_fslide_sdtparams.m, 
 % but separately for high and low alpha power quantiles (median split). 
 % 
+% ===========================================================================
+%
+%     dfi (double flash illusion) codebase accompanying the manuscript ...
+%     Copyright (C) 2021  Steffen Buergers
+% 
+%     This program is free software: you can redistribute it and/or modify
+%     it under the terms of the GNU General Public License as published by
+%     the Free Software Foundation, either version 3 of the License, or
+%     (at your option) any later version.
+% 
+%     This program is distributed in the hope that it will be useful,
+%     but WITHOUT ANY WARRANTY; without even the implied warranty of
+%     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+%     GNU General Public License for more details.
+% 
+%     You should have received a copy of the GNU General Public License
+%     along with this program.  If not, see <https://www.gnu.org/licenses/>.
+%
 % ---
 % Steffen Buergers, sbuergers@gmail.com,
 % Last modified Feb. 2021
@@ -90,13 +108,11 @@ channels_of_interest = {'O2', 'PO4', 'PO8'};
 
 
 % Load power data
-load('D:\dfi_experiment_data\eeg_data\experiment\tfr_table_alpha_only.mat', ...
-	'tfr_mat', 'btable');
+load(fullfile(data_dir, 'tfr_table_alpha_only.mat'), 'tfr_mat', 'btable');
 btable_pow = btable; clear btable
 
 % Load frequency sliding data
-load('D:\dfi_experiment_data\eeg_data\experiment\fslide_table.mat', ...
-	'fslide_mat', 'btable');
+load(fullfile(data_dir, 'fslide_table.mat'), 'fslide_mat', 'btable');
 
 % Make sure trials in tfr and fslide data match
 assert(sum(btable_pow.trlid ~= btable.trlid) == 0)
@@ -115,7 +131,8 @@ choi = {'O2', 'PO4', 'PO8'};
 
 % Fit to average frequency in pre-stim window
 % Get time axis
-load(fullfile('D:\dfi_experiment_data\eeg_data\experiment\701\yn_threshold\inst_freq_ynt\session_8', 'fslide_data_trls_all'));
+load(fullfile(data_dir, '701', 'yn_threshold', ...
+              'inst_freq_ynt', 'session_8', 'fslide_data_trls_all'));
 toi = eeg_fslide.fslide_toi;
 tid = toi > -0.602 & toi < -0.102;
 btable.avgfslide = squeeze(nanmean(mean(fslide_mat(chid,tid,:),2),1));
@@ -146,7 +163,8 @@ tfr_mat(trls_to_delete,:,:,:) = [];
 
 
 % Get time and freq axes for power data
-load(fullfile(data_dir, '701', 'yn_threshold', 'tfr_zeropad', 'session_8', 'tfr_all_conds_all'));
+load(fullfile(data_dir, '701', 'yn_threshold', 'tfr_zeropad', ...
+              'session_8', 'tfr_all_conds_all'));
 toi = tfr_sub.time;
 foi = tfr_sub.freq; clear tfr_sub
 
@@ -367,9 +385,8 @@ end
 
 
 % Save d-prime and criterion measures
-mkdir(fullfile('D:\dfi_experiment_data\eeg_data\experiment\sdt\freq_slide', pow_cond))
-save(fullfile('D:\dfi_experiment_data\eeg_data\experiment\sdt\freq_slide', ...
-    pow_cond, 'sd_params_d_c_tcollapse.mat'), ...
+mkdir(fullfile(data_dir, 'sdt', 'freq_slide', pow_cond))
+save(fullfile(data_dir, 'sdt', 'freq_slide', pow_cond, 'sd_params_d_c_tcollapse.mat'), ...
     'dp_mat', 'dp_within_SE', 'c_mat', 'c_within_SE');
 
 
@@ -560,9 +577,8 @@ end
 
 % Save d-prime and criterion measures for statistics (cluster permutation
 % test):
-mkdir(fullfile('D:\dfi_experiment_data\eeg_data\experiment\sdt\freq_slide', pow_cond))
-save(fullfile('D:\dfi_experiment_data\eeg_data\experiment\sdt\freq_slide', pow_cond, ...
-	'sd_params_d_c.mat'), ...
+mkdir(fullfile(data_dir, 'sdt', 'freq_slide', pow_cond))
+save(fullfile(data_dir, 'sdt', 'freq_slide', pow_cond, 'sd_params_d_c.mat'), ...
     'dp_mat_cont', 'dp_within_SE', 'c_mat_cont', 'c_within_SE', 'tvect', 'time_windows');
 
 
