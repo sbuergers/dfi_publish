@@ -21,6 +21,24 @@
 % experiment (-0.6 to -0.1s at O2, PO4, PO8). Frequency terciles 1 and
 % 3 are contrasted.
 % 
+% ===========================================================================
+%
+%     dfi (double flash illusion) codebase accompanying the manuscript ...
+%     Copyright (C) 2021  Steffen Buergers
+% 
+%     This program is free software: you can redistribute it and/or modify
+%     it under the terms of the GNU General Public License as published by
+%     the Free Software Foundation, either version 3 of the License, or
+%     (at your option) any later version.
+% 
+%     This program is distributed in the hope that it will be useful,
+%     but WITHOUT ANY WARRANTY; without even the implied warranty of
+%     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+%     GNU General Public License for more details.
+% 
+%     You should have received a copy of the GNU General Public License
+%     along with this program.  If not, see <https://www.gnu.org/licenses/>.
+%
 % ---
 % Steffen Buergers, sbuergers@gmail.com,
 % Last modified Feb. 2021
@@ -79,7 +97,7 @@ end
 %% *** PREPARE DATA ***
 
 % load data for d-prime
-load(fullfile('D:\dfi_experiment_data\eeg_data\experiment\sdt\power', 'sd_params_d_c.mat'));
+load(fullfile(data_dir, 'sdt', 'power', 'sd_params_d_c.mat'));
 
 
 
@@ -243,11 +261,13 @@ for icond = 1:3
     xlim([-0.6 -0.1])
     
     % Save data to remake figures later (for paper)
-    save(fullfile('D:\dfi_experiment_figures\Paper_figures\iAF\power\ynt\dPrime', ...
+    save(fullfile('dfi_experiment_figures', 'Paper_figures', 'iAF', ...
+                  'power', 'ynt', 'dPrime', ...
         sprintf('Bayes_factors_PO4_O2_PO8_%s.mat', condvect{icond})), 'bf');
     
     % Save data to remake figures later (for paper)
-    save(fullfile('D:\dfi_experiment_figures\Paper_figures\iAF\power\ynt\dPrime', ...
+    save(fullfile('dfi_experiment_figures', 'Paper_figures', 'iAF', ...
+                  'power', 'ynt', 'dPrime', ...
         sprintf('figure_data_PO4_O2_PO8_%s.mat', condvect{icond})), ...
         'fslide_GA', 'tif', 'stat', 'sem_f1_w', 'sem_f2_w');
     
