@@ -19,6 +19,24 @@
 % Compute dprime and bias in pre-stim period over time for
 % high and low power terciles.
 %
+% ===========================================================================
+%
+%     dfi (double flash illusion) codebase accompanying the manuscript ...
+%     Copyright (C) 2021  Steffen Buergers
+% 
+%     This program is free software: you can redistribute it and/or modify
+%     it under the terms of the GNU General Public License as published by
+%     the Free Software Foundation, either version 3 of the License, or
+%     (at your option) any later version.
+% 
+%     This program is distributed in the hope that it will be useful,
+%     but WITHOUT ANY WARRANTY; without even the implied warranty of
+%     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+%     GNU General Public License for more details.
+% 
+%     You should have received a copy of the GNU General Public License
+%     along with this program.  If not, see <https://www.gnu.org/licenses/>.
+%
 % ---
 % Steffen Buergers, sbuergers@gmail.com,
 % Last modified Feb. 2021
@@ -76,8 +94,6 @@ for isubj = 1:N
     fprintf('Subject number %i\n', isubj);
     
     subj_dir = fullfile(data_dir, subjvect{isubj}, task, an_fold);
-    
-    cd('D:\');
     
     % Get session folder for this participant
     dirinfo = dir(subj_dir);
@@ -137,7 +153,7 @@ for isubj = 1:20
 end
 
 % Now I can use fslide_mat and btable, as they are both in table format
-save('D:\dfi_experiment_data\eeg_data\experiment\tfr_table_alpha_only.mat', ...
+save(fullfile(data_dir, 'tfr_table_alpha_only.mat'), ...
     'tfr_mat', 'btable', 'channels_of_interest', 'toi', 'foi', '-v7.3');
 
 
@@ -146,7 +162,7 @@ save('D:\dfi_experiment_data\eeg_data\experiment\tfr_table_alpha_only.mat', ...
 
 %% Look at temporal effects
 
-load('D:\dfi_experiment_data\eeg_data\experiment\tfr_table_alpha_only.mat', ...
+load(fullfile(data_dir, 'tfr_table_alpha_only.mat'), ...
     'tfr_mat', 'btable', 'channels_of_interest', 'toi', 'foi');
 
 
@@ -489,9 +505,8 @@ end
 
 
 % Save d-prime and criterion measures
-mkdir('D:\dfi_experiment_data\eeg_data\experiment\sdt\power\no_regress');
-save(fullfile('D:\dfi_experiment_data\eeg_data\experiment\sdt\power\no_regress', ...
-    'sd_params_d_c_tcollapse.mat'), ...
+mkdir(fullfile(data_dir, 'sdt', 'power', 'no_regress'));
+save(fullfile(data_dir, 'sdt', 'power', 'no_regress', 'sd_params_d_c_tcollapse.mat'), ...
     'dp_mat', 'dp_within_SE', 'c_mat', 'c_within_SE');
 
 
@@ -684,8 +699,8 @@ end
 
 % Save d-prime and criterion measures for statistics (cluster permutation
 % test):
-mkdir('D:\dfi_experiment_data\eeg_data\experiment\sdt\power\no_regress');
-save(fullfile('D:\dfi_experiment_data\eeg_data\experiment\sdt\power\no_regress', 'sd_params_d_c.mat'), ...
+mkdir(fullfile(data_dir, 'sdt', 'power', 'no_regress'));
+save(fullfile(data_dir, 'sdt', 'power', 'no_regress', 'sd_params_d_c.mat'), ...
     'dp_mat_cont', 'dp_within_SE', 'c_mat_cont', 'c_within_SE', 'tvect', 'time_windows');
 
 

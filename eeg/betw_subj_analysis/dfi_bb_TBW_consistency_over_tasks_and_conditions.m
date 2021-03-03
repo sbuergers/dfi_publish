@@ -1,4 +1,5 @@
 % TODO add scritp description and rename (looks at iAP not iAF)
+% dfi_bb_TBW_consistency_over_tasks_and_conditions.m
 
 
 %% *** SETUP ***
@@ -25,7 +26,7 @@ data_dir = fullfile('dfi_experiment_data', 'eeg_data', 'experiment');
 fig_dir  = fullfile('dfi_experiment_figures');
 
 % beta binom data dir
-figdir = 'D:\dfi_experiment_figures\PFs\beta_binom_weibull';
+figdir = fullfile('dfi_experiment_figures', 'PFs', 'beta_binom_weibull');
 
 % add fieldtrip folder to search path
 try
@@ -354,7 +355,7 @@ for ifold = 1:nfiles
     %% *** YNT data. SOA of PSE ***
 
     % Get psychometric function data
-    load('D:\dfi_experiment_data\data\experiment\d701to727_ynt.mat')
+    load(fullfile('dfi_experiment_data', 'data', 'experiment', 'd701to727_ynt.mat'))
     clear d7*
     
     subjects = unique(dall.partid);
@@ -421,24 +422,5 @@ for ifold = 1:nfiles
 end % data subset (folder name)
 
 
-
-
-
-% // eof
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+% eof
 
