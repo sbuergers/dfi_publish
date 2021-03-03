@@ -42,13 +42,13 @@ addpath(genpath('dfi'))
 
 
 % data import directory
-figdir = 'D:\dfi_experiment_figures\PFs\beta_binom_weibull';
+figdir = fullfile('dfi_experiment_figures', 'PFs', 'beta_binom_weibull');
 
 
 % some useful variables and behavioural data
 ttl = {'701', '702', '703', '704', '705', '706', '708', '709', '712', '714', ...
        '715', '716', '717', '718', '719', '720', '722', '725', '726', '727'};
-fn = 'D:\dfi_experiment_data\data\experiment\d701to727_2ifc';
+fn = fullfile('dfi_experiment_data', 'data', 'experiment', 'd701to727_2ifc.mat');
 load(fn)
 subjvect = unique(dall.partid);
 
@@ -80,7 +80,7 @@ d2ifc_joined = dataPF; clear dataPF
 
 
 % 2IFC - separate fits
-folder = '2ifc\sep_fits';
+folder = fullfile('2ifc', 'sep_fits');
 load(fullfile(figdir, folder, 'dataPF.mat'), 'dataPF')
 
 bad_fits_cell = {'701', '719'};
@@ -237,7 +237,7 @@ dyn_joined = dataPF; clear dataPF
 
 
 % Yes-no - separate fits
-folder = 'yn_pooled\sep_fits';
+folder = fullfile('yn_pooled', 'sep_fits');
 load(fullfile(figdir, folder, 'dataPF.mat'), 'dataPF')
 
 bad_fits_cell = {'701', '712', '714', '725'};
