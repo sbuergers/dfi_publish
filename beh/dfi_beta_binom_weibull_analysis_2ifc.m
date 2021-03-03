@@ -49,6 +49,7 @@ close all
 
 % require palamedes and add relevant paths
 addpath(genpath('dfi'))
+addpath('Palamedes')
 
 % set up general figure directory
 figdir = fullfile('dfi_experiment_figures', 'PFs', 'beta_binom_weibull');
