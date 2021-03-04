@@ -25,7 +25,7 @@
 addpath(genpath('dfi'))
 
 data_dir = fullfile('dfi_experiment_data', 'data', 'experiment');
-figdir = 'D:\dfi_experiment_figures\PFs\beta_binom_weibull';
+figdir = fullfile('dfi_experiment_figures', 'PFs', 'beta_binom_weibull');
 
 
 %% 2IFC
