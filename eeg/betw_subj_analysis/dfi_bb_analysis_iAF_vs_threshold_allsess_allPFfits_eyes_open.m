@@ -69,7 +69,8 @@ end
 dfi_startup
 
 % experiment data folder
-data_dir = fullfile('dfi_experiment_data', 'eeg_data', 'experiment');
+eeg_data_dir = fullfile('dfi_experiment_data', 'eeg_data', 'experiment');
+beh_data_dir = fullfile('dfi_experiment_data', 'data', 'experiment');
 fig_dir  = fullfile('dfi_experiment_figures');
 
 % beta binom data dir
@@ -382,7 +383,7 @@ for ifold = 1:nfiles
     %% *** YNT data. SOA of PSE ***
 
     % Get psychometric function data
-    load(fullfile(data_dir, 'd701to727_ynt.mat'))
+    load(fullfile(beh_data_dir, 'd701to727_ynt.mat'))
     clear d7*
     
     subjects = unique(dall.partid);
@@ -452,7 +453,7 @@ for ifold = 1:nfiles
     %% *** YN data. Response times 2IFC ***
     
     % Get response time data
-    load(fullfile(data_dir, 'd701to727_2ifc.mat'))
+    load(fullfile(beh_data_dir, 'd701to727_2ifc.mat'))
     dall.trlid(dall.trlid == 2) = 3;
     dall.trlid(dall.trlid == 5) = 6;
     dall.trlid(dall.trlid == 8) = 9;
@@ -479,7 +480,7 @@ for ifold = 1:nfiles
     
     
     % Correlate iAF with perceptual windows for all tasks (most importantly dfi)
-    load(fullfile(data_dir, 'full_channel_vect.mat'));
+    load(fullfile(eeg_data_dir, 'full_channel_vect.mat'));
     chanvect = full_channel_vect; clear full_channel_vect
     if ~exist(fullfile(fig_dir, fold_data), 'dir')
         mkdir(fullfile(fig_dir, fold_data));
