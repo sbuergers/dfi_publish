@@ -211,17 +211,6 @@ for isubj = 1:N
 end % subj loop
 
 
-%% Save / load data
-mkdir(fullfile('D:\dfi_experiment_data\eeg_data\experiment\source_analysis'));
-save(fullfile('D:\dfi_experiment_data\eeg_data\experiment\source_analysis', ...
-    'fun_localizer_1F2F_vs_all_noise_in_coi.mat'), ...
-    'leadfield', 'erp_subj_pre', 'erp_subj_post', 'contrast2*', 'lcmv_all', ...
-    '-v7.3');
-
-% Still need to fetch at the very least one lcmv_all and leadfield
-load(fullfile('D:\dfi_experiment_data\eeg_data\experiment\source_analysis', ...
-    'fun_localizer_1F2F_vs_all_noise_in_coi.mat'));
-
 
 %% Explore source data
 
