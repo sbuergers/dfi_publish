@@ -212,6 +212,15 @@ end % subj loop
 
 
 
+%% Save / load data
+mkdir(fullfile(data_dir, 'source_analysis'));
+save(fullfile(data_dir, 'source_analysis', ...
+    'fun_localizer_1F2F_vs_all_noise_in_coi.mat'), ...
+    'leadfield', 'erp_subj_pre', 'erp_subj_post', 'contrast2*', 'lcmv_all', ...
+    '-v7.3');
+
+
+
 %% Explore source data
 
 % Compute effect with second pipeline: 
