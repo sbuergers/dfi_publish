@@ -161,7 +161,7 @@ save(data_dir, 'fslide_mat', 'btable', 'channels_of_interest', 'toi', '-v7.3')
 
 %% Look at temporal effects
 
-load(fullfile(data_dir, 'fslide_table_yesno.mat')
+load(fullfile(data_dir, 'fslide_table_yesno.mat'))
 
 % subject vector
 partvect = unique(btable.partid);
