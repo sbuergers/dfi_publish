@@ -47,7 +47,7 @@ close all
 clear all
 restoredefaultpath
 
-% disable warnings for speed sakD:
+% disable warnings for speed sake:
 warning('off','all')
 
 % Name of directory to save things to
@@ -343,21 +343,5 @@ end % loop over participants
 warning('on','all')
 
 
-% // eof
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+% eof
 
