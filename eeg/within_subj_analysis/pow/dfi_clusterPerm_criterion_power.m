@@ -151,7 +151,7 @@ for icond = 1:3
 
     % show specs
     fprintf(['\n', '\n',  ...
-             'Running cluster permutation witD:', '\n', ...
+             'Running cluster permutation with:', '\n', ...
             ['Method        = ', method], '\n', ...
             ['Trials        = ', trltype], '\n', ...
             ['Channels      = ', chan], '\n', ...
@@ -260,6 +260,8 @@ for icond = 1:3
     xlim([-0.6 -0.1])
     
     % Save data to remake figures later (for paper)
+    mkdir(fullfile('dfi_experiment_figures', 'Paper_figures', 'iAF', ...
+                  'power', 'ynt', 'criterion'))
     save(fullfile('dfi_experiment_figures', 'Paper_figures', 'iAF', ...
                   'power', 'ynt', 'criterion', ...
         sprintf('Bayes_factors_PO4_O2_PO8_%s.mat', condvect{icond})), 'bf');
@@ -280,20 +282,5 @@ for icond = 1:3
 end
 
 
-
-
 % eof
-
-
-
-
-
-
-
-
-
-
-
-
-
 
