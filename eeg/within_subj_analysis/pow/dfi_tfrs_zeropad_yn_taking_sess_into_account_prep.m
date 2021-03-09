@@ -318,24 +318,5 @@ for isubj = 1:N
 end % loop over participants
 
 
-
-
-
-% // eof
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+% eof
 

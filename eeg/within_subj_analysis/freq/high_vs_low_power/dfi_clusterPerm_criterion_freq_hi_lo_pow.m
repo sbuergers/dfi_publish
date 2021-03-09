@@ -50,9 +50,9 @@ clear all
 
 %% SELECT: hi_pow, lo_pow
 
-pow_cond = 'lo_pow';
+pow_cond = 'hi_pow';
 
-% Ran hi_pow on 03.03.2021, xx:xxh
+% Ran hi_pow on 03.03.2021, 21:16h
 % Ran lo_pow on 08.03.2021, 21:05h
 
 
