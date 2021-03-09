@@ -132,7 +132,7 @@ choi = {'O2', 'PO4', 'PO8'};
 % Fit to average frequency in pre-stim window
 % Get time axis
 load(fullfile(data_dir, '701', 'yn_threshold', ...
-              'inst_freq_ynt', 'session_8', 'fslide_data_trls_all'));
+              'inst_freq_ynt', 'all_yn_sessions', 'fslide_data_trls_all'));
 toi = eeg_fslide.fslide_toi;
 tid = toi > -0.602 & toi < -0.102;
 btable.avgfslide = squeeze(nanmean(mean(fslide_mat(chid,tid,:),2),1));
@@ -164,7 +164,7 @@ tfr_mat(trls_to_delete,:,:,:) = [];
 
 % Get time and freq axes for power data
 load(fullfile(data_dir, '701', 'yn_threshold', 'tfr_zeropad', ...
-              'session_8', 'tfr_all_conds_all'));
+              'all_yn_sessions', 'tfr_all_conds_all'));
 toi = tfr_sub.time;
 foi = tfr_sub.freq; clear tfr_sub
 
