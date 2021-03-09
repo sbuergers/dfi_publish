@@ -70,7 +70,6 @@ fig_dir  = 'dfi_experiment_figures';
 % add fieldtrip folder to search path
 try
     addpath(fullfile('fieldtrip-20160816'))
-    addpath(fullfile('toolboxes', 'fieldtrip-20160816'))
 catch
     warning('Cannot find fieldtrip folder')
 end
