@@ -52,8 +52,8 @@ clear all
 
 pow_cond = 'lo_pow';
 
-% Ran hi_pow on 18.02.2021, 11.34h
-% Ran lo_pow on 18.02.2021, 11:39h
+% Ran hi_pow on 03.03.2021, xx:xxh
+% Ran lo_pow on 08.03.2021, 21:05h
 
 
 % Name of directory to save things to
@@ -158,7 +158,7 @@ for icond = 1:3
 
     % show specs
     fprintf(['\n', '\n',  ...
-             'Running cluster permutation witD:', '\n', ...
+             'Running cluster permutation with:', '\n', ...
             ['Method        = ', method], '\n', ...
             ['Trials        = ', trltype], '\n', ...
             ['Channels      = ', chan], '\n', ...
