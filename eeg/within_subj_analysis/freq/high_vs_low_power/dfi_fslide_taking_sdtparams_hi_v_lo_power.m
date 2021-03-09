@@ -164,7 +164,7 @@ tfr_mat(trls_to_delete,:,:,:) = [];
 
 % Get time and freq axes for power data
 load(fullfile(data_dir, '701', 'yn_threshold', 'tfr_zeropad', ...
-              'session8', 'tfr_all_conds_all'));
+              'session_8', 'tfr_all_conds_all'));
 toi = tfr_sub.time;
 foi = tfr_sub.freq; clear tfr_sub
 
