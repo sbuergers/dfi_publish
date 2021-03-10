@@ -51,8 +51,8 @@ clear all
 %% SELECT: hi_pow, lo_pow
 pow_cond = 'lo_pow';
 
-% Ran hi_pow on 18.02.2021, 11:20h
-% Ran lo_pow on 18.02.2021, 11:29h
+% Ran hi_pow on 09.03.2021, 19:41h
+% Ran lo_pow on 09.03.2021, 19:54h
 
 % Name of directory to save things to
 an_fold = 'sdt_params';
@@ -160,7 +160,7 @@ for icond = 1:3
 
     % show specs
     fprintf(['\n', '\n',  ...
-             'Running cluster permutation witD:', '\n', ...
+             'Running cluster permutation with:', '\n', ...
             ['Method        = ', method], '\n', ...
             ['Trials        = ', trltype], '\n', ...
             ['Channels      = ', chan], '\n', ...

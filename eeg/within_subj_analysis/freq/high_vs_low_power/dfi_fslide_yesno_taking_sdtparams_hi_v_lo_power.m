@@ -52,11 +52,11 @@ clear all
 
 % Do we use high or low alpha power?
 
-% 09.03.2021; xx:xxh: Running hi_pow
+% 09.03.2021; 15:33h: Running hi_pow
 % 09.03.2021; 15.06h: Running lo_pow
 
 
-pow_cond = 'lo_pow';  % lo_pow, hi_pow
+pow_cond = 'hi_pow';  % lo_pow, hi_pow
 
 
 fprintf('\nSignal detection analysis of high versus low frequency prestimulus\n')
