@@ -1,6 +1,8 @@
 % Create figures of pre-stimulus frequency within subject
 % analysis for both dprime and bias, and their bayes factors.
 %
+% TODO: Fix paths, see dfi_fig_eeg2_sdparams_freq_bias_dfi_neg.m
+%
 % Parent script(s): 
 %   ?
 %   
@@ -36,6 +38,7 @@ dfi_startup
 
 data_dir = fullfile('dfi_experiment_data', 'eeg_data', 'experiment');
 fig_dir  = fullfile('dfi_experiment_figures');
+main_dir = fullfile('dfi_experiment_figures', 'Paper_figures', 'iAF');
 
 try
     addpath(fullfile('fieldtrip-20160816'))
@@ -72,7 +75,7 @@ for icond = 1:3
     axes(ha(ids(icond)));
     
     % Load in figure data
-    load(fullfile('D:\dfi_experiment_figures\Paper_figures\iAF\fslide\yesno\dprime\no_regress', ...
+    load(fullfile(main_dir, 'fslide', 'yesno', 'dprime', 'no_regress', ...
             sprintf('figure_data_PO4_O2_PO8_%s.mat', condvect{icond})));
         
     % Which clusters are reliable?
@@ -156,7 +159,7 @@ for icond = 1:3
     axes(ha(ids(icond)));
     
     % Load in figure data
-    load(fullfile('D:\dfi_experiment_figures\Paper_figures\iAF\fslide\ynt\dPrime\no_regress', ...
+    load(fullfile(main_dir, 'fslide', 'ynt', 'dPrime', 'no_regress', ...
             sprintf('figure_data_PO4_O2_PO8_%s.mat', condvect{icond})));
         
     % Which clusters are reliable?
@@ -223,9 +226,11 @@ for icond = 1:3
 end % condition loop
 
 
-export_fig(fh1, 'D:\dfi_experiment_figures\Paper_figures\iAF\iAF_within\sd_params\fslide_dprime_no_regress', '-tiff', '-m2.5');
+%export_fig(fh1, fullfile(main_dir, 'iAF_within', 'sd_params', ...
+%    'fslide_dprime_no_regress'), '-tiff', '-m2.5');
 fh.Renderer = 'painters'; 
-saveas(fh1,fullfile('D:\dfi_experiment_figures\Paper_figures\iAF\iAF_within\sd_params\fslide_dprime_no_regress_svg.svg'))
+saveas(fh1,fullfile(main_dir, 'iAF_within', 'sd_params', ...
+    'fslide_dprime_no_regress_svg.svg'))
 close all
 
 
@@ -244,7 +249,7 @@ ids = 1:3;
 for icond = 1:3
     axes(ha(ids(icond)));
 
-    load(fullfile('D:\dfi_experiment_figures\Paper_figures\iAF\fslide\yesno\dprime\no_regress', ...
+    load(fullfile(main_dir, 'fslide', 'yesno', 'dprime', 'no_regress', ...
         sprintf('Bayes_factors_PO4_O2_PO8_%s.mat', condvect{icond})), 'bf');
 
     tif = linspace(-0.6016, -0.1211, length(bf));
@@ -279,7 +284,7 @@ for icond = 1:3
     axes(ha(ids(icond)));
     
     % Save data to remake figures later (for paper)
-    load(fullfile('D:\dfi_experiment_figures\Paper_figures\iAF\fslide\ynt\dPrime\no_regress', ...
+    load(fullfile(main_dir, 'fslide', 'ynt', 'dPrime', 'no_regress', ...
         sprintf('Bayes_factors_PO4_O2_PO8_%s.mat', condvect{icond})), 'bf');
     
     tif = linspace(-0.6016, -0.1211, length(bf));
@@ -303,11 +308,10 @@ for icond = 1:3
 end % condition loop
 
 
-export_fig(fh2, 'D:\dfi_experiment_figures\Paper_figures\iAF\iAF_within\sd_params\fslide_dprime_no_regress_bf', '-eps', '-tiff', '-m2.5');
-plot2svg('D:\dfi_experiment_figures\Paper_figures\iAF\iAF_within\sd_params\fslide_dprime_no_regress_bf_svg',fh2)
-
-
-
+%export_fig(fh2, fullfile(main_dir, 'iAF_within', 'sd_params', ...
+%    'fslide_dprime_no_regress_bf'), '-eps', '-tiff', '-m2.5');
+saveas(fh2,fullfile(main_dir, 'iAF_within', 'sd_params', ...
+    'fslide_dprime_no_regress_bf_svg'))
 
 
 
@@ -330,7 +334,7 @@ for icond = 1:3
     axes(ha(ids(icond)));
     
     % Load in figure data
-    load(fullfile('D:\dfi_experiment_figures\Paper_figures\iAF\fslide\yesno\criterion\no_regress', ...
+    load(fullfile(main_dir, 'fslide', 'yesno', 'criterion', 'no_regress', ...
             sprintf('figure_data_PO4_O2_PO8_%s.mat', condvect{icond})));
         
     % Make sure bias is consistent between conditions (i.e. 2F is always
@@ -421,7 +425,7 @@ for icond = 1:3
     axes(ha(ids(icond)));
     
     % Load in figure data
-    load(fullfile('D:\dfi_experiment_figures\Paper_figures\iAF\fslide\ynt\criterion\no_regress', ...
+    load(fullfile(main_dir, 'fslide', 'ynt', 'criterion', 'no_regress', ...
             sprintf('figure_data_PO4_O2_PO8_%s.mat', condvect{icond})));
     
     % Make sure bias is consistent between conditions (i.e. 2F is always
@@ -495,9 +499,11 @@ for icond = 1:3
 end % condition loop
 
 
-export_fig(fh1, 'D:\dfi_experiment_figures\Paper_figures\iAF\iAF_within\sd_params\fslide_criterion_no_regress_dfi_bug_fixed', '-tiff', '-m2.5');
+%export_fig(fh1, fullfile(main_dir, 'iAF_within', 'sd_params', ...
+%    'fslide_criterion_no_regress_dfi_bug_fixed'), '-tiff', '-m2.5');
 fh.Renderer = 'painters'; 
-saveas(fh1,fullfile('D:\dfi_experiment_figures\Paper_figures\iAF\iAF_within\sd_params\fslide_criterion_no_regress_dfi_bug_fixed.svg'))
+saveas(fh1,fullfile(main_dir, 'iAF_within', 'sd_params', ...
+    'fslide_criterion_no_regress_dfi_bug_fixed.svg'))
 close all
 
 
@@ -516,7 +522,7 @@ ids = 1:3;
 for icond = 1:3
     axes(ha(ids(icond)));
 
-    load(fullfile('D:\dfi_experiment_figures\Paper_figures\iAF\fslide\yesno\criterion\no_regress', ...
+    load(fullfile(main_dir, 'fslide', 'yesno', 'criterion', 'no_regress', ...
         sprintf('Bayes_factors_PO4_O2_PO8_%s.mat', condvect{icond})), 'bf');
 
     tif = linspace(-0.6016, -0.1211, length(bf));
@@ -551,7 +557,7 @@ for icond = 1:3
     axes(ha(ids(icond)));
     
     % Save data to remake figures later (for paper)
-    load(fullfile('D:\dfi_experiment_figures\Paper_figures\iAF\fslide\ynt\criterion\no_regress', ...
+    load(fullfile(main_dir, 'fslide', 'ynt', 'criterion', 'no_regress', ...
         sprintf('Bayes_factors_PO4_O2_PO8_%s.mat', condvect{icond})), 'bf');
     
     tif = linspace(-0.6016, -0.1211, length(bf));
@@ -575,43 +581,11 @@ for icond = 1:3
 end % condition loop
 
 
-export_fig(fh2, 'D:\dfi_experiment_figures\Paper_figures\iAF\iAF_within\sd_params\fslide_criterion_no_regress_bf', '-eps', '-tiff', '-m2.5');
-plot2svg('D:\dfi_experiment_figures\Paper_figures\iAF\iAF_within\sd_params\fslide_criterion_no_regress_bf_svg',fh2)
+%export_fig(fh2, fullfile(main_dir, 'iAF_within', 'sd_params', ...
+%    'fslide_criterion_no_regress_bf'), '-eps', '-tiff', '-m2.5');
+saveas(fh2, fullfile(main_dir, 'iAF_within', 'sd_params', ...
+    'fslide_criterion_no_regress_bf_svg'))
 
 
-
-
-
-
-
-
-
-
-
-
-% //eof
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+% eof
 

@@ -11,6 +11,7 @@
 %   
 %   [source level analyses (dipfit)]
 %   ?
+%   TODO: remove dipfit, include lcmv; fix paths
 %   
 % Children script(s): 
 %   None
