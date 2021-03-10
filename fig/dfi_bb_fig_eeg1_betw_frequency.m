@@ -8,6 +8,8 @@
 %       dfi_iAF_fits_eyes_open.m
 %       dfi_iAF_fits_eyes_closed_w_0padding.m
 %   TODO: missing dipfit source analysis scripts
+%   TODO: OR replace dipfit with lcmv source analysis... I probably won't
+%         use dipfit in the end now...
 %
 %   [psychometric function parameter estimates]
 %       dfi_beta_binom_combine_joined_and_sep_fits.m
@@ -55,12 +57,11 @@ end
 % run startup function
 dfi_startup
 
-% experiment data folder
+% folders
 data_dir = fullfile('dfi_experiment_data', 'eeg_data', 'experiment');
 fig_dir  = fullfile('dfi_experiment_figures');
-
-% beta binom data dir
-figdir = 'D:\dfi_experiment_figures\PFs\beta_binom_weibull';
+save_dir = fullfile(fig_dir, 'Paper_figures', 'iAF', 'iAF_betw_betabinom');
+beh_figdir = fullfile('dfi_experiment_figures', 'PFs', 'beta_binom_weibull');
 
 
 % add fieldtrip folder to search path
@@ -80,14 +81,14 @@ N = length(subjvect);
 
 % 2ifc
 folder = '2ifc';
-load(fullfile(figdir, folder, 'dataPF_joined_and_sep_fits_combined.mat'), ...
+load(fullfile(beh_figdir, folder, 'dataPF_joined_and_sep_fits_combined.mat'), ...
     'threshold_matrix', 'slope_matrix', 'guess_matrix', 'lapse_matrix', 'eta_matrix')
 threshold_2ifc = threshold_matrix;
 slope_2ifc = slope_matrix;
 
 % yesno
 folder = 'yn_pooled';
-load(fullfile(figdir, folder, 'dataPF_joined_and_sep_fits_combined.mat'), ...
+load(fullfile(beh_figdir, folder, 'dataPF_joined_and_sep_fits_combined.mat'), ...
     'threshold_matrix', 'slope_matrix', 'guess_matrix', 'lapse_matrix', 'eta_matrix')
 threshold_ynpool = threshold_matrix;
 slope_ynpool = slope_matrix;
@@ -107,17 +108,18 @@ max(threshold_2ifc)
 %% Load EEG data
 
 % Corcoran eyes-closed fits
-load('D:\dfi_experiment_figures\iAF_fits_corcoran_zeropadded\eyes_closed_pkinfo_yn_plus_ynt.mat')
+load(fullfile('dfi_experiment_figures', 'iAF_fits_corcoran_zeropadded', ...
+    'eyes_closed_pkinfo_yn_plus_ynt.mat'))
 peak_mat_ec = muPaf; clear muPaf
 
 
 % Corcoran eyes-open fits (pool over yes-no and ynt)
 
 % Load iAF peak fits (using the toolbox written by Corcoran, 2017)
-load(fullfile('D:\dfi_experiment_figures', 'iAF_fits_corcoran_zeropadded', ...
+load(fullfile('dfi_experiment_figures', 'iAF_fits_corcoran_zeropadded', ...
     'eyes_open_pkinfo.mat'));
 yn_pSpec = pSpec; clear pSpec
-load(fullfile('D:\dfi_experiment_figures', 'iAF_fits_corcoran_zeropadded', 'yn_threshold', ...
+load(fullfile('dfi_experiment_figures', 'iAF_fits_corcoran_zeropadded', 'yn_threshold', ...
     'eyes_open_pkinfo.mat'));
 ynt_pSpec = pSpec; clear pSpec
 
@@ -342,7 +344,7 @@ ylim([-1.2 1.2])
 
 % 3.) yn-threshold SOA versus iAF
 
-load('D:\dfi_experiment_data\data\experiment\d701to727_ynt.mat')
+load(fullfile('dfi_experiment_data', 'data', 'experiment', 'd701to727_ynt.mat'))
 clear d7*
 
 subjects = unique(dall.partid);
@@ -426,7 +428,7 @@ box off
 set(gca,'TickDir','out')
 set(gca,'TickLength',[0.02, 0.02])
 
-saveas(fh0,'D:\dfi_experiment_figures\Paper_figures\iAF\iAF_betw_betabinom\eyes_open_sensor_threshold_scatter_svg_freq.svg')
+saveas(fh0,fullfile(save_dir, 'eyes_open_sensor_threshold_scatter_svg_freq.svg'))
 
 close all
 
@@ -602,7 +604,7 @@ set(gca,'TickLength',[0.02, 0.02])
 
 % 3.) yn-threshold SOA versus iAF
 
-load('D:\dfi_experiment_data\data\experiment\d701to727_ynt.mat')
+load(fullfile('dfi_experiment_data', 'data', 'experiment', 'd701to727_ynt.mat'))
 clear d7*
 
 subjects = unique(dall.partid);
@@ -685,7 +687,7 @@ box off
 set(gca,'TickDir','out')
 set(gca,'TickLength',[0.02, 0.02])
 
-saveas(fh01,'D:\dfi_experiment_figures\Paper_figures\iAF\iAF_betw_betabinom\eyes_closed_sensor_threshold_scatter_svg_freq.svg')
+saveas(fh01,fullfile(save_dir, 'eyes_closed_sensor_threshold_scatter_svg_freq.svg'))
 
 close all
 
@@ -860,7 +862,7 @@ set(gca,'TickLength',[0.02, 0.02])
 
 % 3.) yn-threshold SOA versus iAF
 
-load('D:\dfi_experiment_data\data\experiment\d701to727_ynt.mat')
+load(fullfile('dfi_experiment_data', 'data', 'experiment', 'd701to727_ynt.mat'))
 clear d7*
 
 subjects = unique(dall.partid);
@@ -943,7 +945,7 @@ box off
 set(gca,'TickDir','out')
 set(gca,'TickLength',[0.02, 0.02])
 
-saveas(fh02,'D:\dfi_experiment_figures\Paper_figures\iAF\iAF_betw_betabinom\source_occipital_threshold_scatter_svg_freq.svg')
+saveas(fh02,fullfile(save_dir, 'source_occipital_threshold_scatter_svg_freq.svg'))
 
 close all
 
@@ -1116,7 +1118,7 @@ set(gca,'TickLength',[0.02, 0.02])
 
 % 3.) yn-threshold SOA versus iAF
 
-load('D:\dfi_experiment_data\data\experiment\d701to727_ynt.mat')
+load(fullfile('dfi_experiment_data', 'data', 'experiment', 'd701to727_ynt.mat'))
 clear d7*
 
 subjects = unique(dall.partid);
@@ -1199,7 +1201,7 @@ box off
 set(gca,'TickDir','out')
 set(gca,'TickLength',[0.02, 0.02])
 
-saveas(fh03,'D:\dfi_experiment_figures\Paper_figures\iAF\iAF_betw_betabinom\source_parietal_threshold_scatter_svg_freq.svg')
+saveas(fh03,fullfile(save_dir, 'source_parietal_threshold_scatter_svg_freq.svg'))
 
 close all
 
