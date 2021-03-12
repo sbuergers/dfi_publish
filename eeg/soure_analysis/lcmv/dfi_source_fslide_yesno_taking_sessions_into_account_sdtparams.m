@@ -91,9 +91,6 @@ task     = 'yesno';
 
 % Which channels do we want to investigate?
 channels_of_interest = {'src1', 'src2', 'src3', 'src4', 'src5', 'src6', 'src7'};
-
-
-% You can also directly get the data from g:\dfi_experiment_data\eeg_data\experiment
 btable = [];
 
 % loop over subjects
