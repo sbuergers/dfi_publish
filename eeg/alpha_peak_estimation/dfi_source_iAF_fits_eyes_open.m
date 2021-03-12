@@ -1,42 +1,22 @@
-% Compute spatial filters for source projection based on ERPs
+% Alpha peak frequency estimation for pre-stimulus, task related data
+% in source space (both yes-no and yes-no threshold tasks).
+% Use alpha peak frequency fitting method by Corcoran et al. (2018)
+%
+% Dependencies:
+% 	restingIAF (Corcoran et al. toolbox), with modified scripts
+% 	meanIAF_sb.m
+% 	restingIAF_sb.m
 %
 % Parent script(s): 
-%   None
+%   dfi_source_proj_erp.m
 %
 % Children script(s): 
-%   dfi_source_determine_func_roi.m
+%   ?
 %
 % Sibling script(s):
-%   None
-%
-%
-% DETAILS
-%
-% Compute filters for evenly spaced grid in source space
-% using linearly constrained minimum variance beamforming
-% following Van Veen et al. (1997). 
-% 
-% We use the -0.6 to -0.1s pre-stimulus period and 0.1 to 0.3s
-% post-stimulus period to compute the covariance matrix necessary
-% for estimating the filters. For the pre-stimulus data we include
-% all conditions (as all conditions are used for the analyses in
-% source space later on), but for post-stim we only focus on
-% 1-flash and 2-flash conditions (i.e. without beeps), to avoid
-% caveats related to correlated sources. 
-%
-% To assess filter quality, we compute various contrasts of the
-% form (VAR(post)-VAR(pre) ./ VAR(pre) in source space. Specifically, 
-% we either compute the contrast for single trials and then average,
-% or average over trials and then compute the contrast. Moreover,
-% we try two normalizations: 1. Subtract average contrast value over
-% all voxels, and 2. Divide by average contrast value over all
-% voxels. 
-%
-% NOTES
-% For this source analysis we use a newer fieldtrip version than for
-% the rest of the analyses (quite a bit has changed in fieldtrip 
-% regarding sourceanalysis over the years so this simply seems 
-% least likely to lead to problems).
+%   dfi_iAF_fits_eyes_open.m
+%   dfi_iAF_fits_eyes_open_ynt.m
+%	dfi_iAF_fits_eyes_closed_w_0padding.m
 % 
 % ===========================================================================
 %
@@ -86,17 +66,16 @@ subjvect = {'701', '702', '703', '704', '705', '706', '708', '709', '712', '714'
 N        = length(subjvect);
 tasks    = {'yesno', 'yn_threshold'};
 
-ft_headmodel_folder = fullfile(ft_path, 'template', 'headmodel');
-mri = ft_read_mri(fullfile(ft_headmodel_folder, 'standard_mri.mat'));
-seg = ft_read_mri(fullfile(ft_headmodel_folder, 'standard_seg.mat'));
-headmodel = load(fullfile(ft_headmodel_folder, 'standard_bem.mat'));
-headmodel = headmodel.vol;
+% Get voxels of interest (ROI)
+load(fullfile(src_dir, 'ROI_1f2f_vs_all_noise_in_coi.mat'), ...
+    'lf_vox_for_centroid', 'centroids');
+roi = lf_vox_for_centroid{1};
 
-cfg             = [];
-cfg.resolution  = 8;  % in mm
-cfg.headmodel   = headmodel;
-cfg.inwardshift = 1;  % shifts dipoles away from surfaces
-sourcemodel     = ft_prepare_sourcemodel(cfg);
+% Get a leadfield structure (for .pos field to find ROI)
+load(fullfile(src_dir, '701', 'sess2', ...
+	'inv_sols_lcmv_c27_100to300ms_600to100msBl_1F2F.mat'), 'leadfield');
+pos_inside = leadfield.pos(leadfield.inside,:);
+roi_idx = ismember(pos_inside, roi, 'rows');
 
 
 % Initialize variables for iAF estimation
@@ -314,12 +293,26 @@ for itask = 1:2
                 'inv_sols_lcmv_c27_100to300ms_600to100msBl_1F2F.mat'), 'W');
                         
             % Project data into source space
-            Nvox = sum(leadfield.inside);
             Ntpts = size(eeg_pre.time{1}, 2);
             Ntrls = length(eeg_pre.trialinfo);
+            Nvchan = sum(roi_idx);
             
-            pre_src = reshape(W * cell2mat(eeg_pre.trial), [Nvox, Ntpts, Ntrls]);   
-            
+            src_oi = nan(Nvchan, Ntpts, Ntrls);
+            for itrl=1:Ntrls
+                src = W * eeg_pre.trial{itrl};
+                src_oi(:, :, itrl) = src(roi_idx,:,:);
+            end
+
+            % Create fake ft structure
+            vchan_labels = cell(Nvchan, 1);
+            for ivchan = 1:Nvchan
+                vchan_labels{ivchan} = sprintf('src%i', ivchan);
+            end
+            eeg_src = eeg_stim;
+            eeg_src.label = vchan_labels;
+            for itrl = 1:size(src_oi,3)
+                eeg_src.trial{itrl} = src_oi(:,:,itrl);
+            end            
             
             %
             %% 3.) --- ALPHA PEAK FREQUENCY ---
@@ -329,21 +322,9 @@ for itask = 1:2
             fprintf('\n\nCorcoran iAF estimation in source space:')
             fprintf('Subject: %i, session %i\n\n', isubj, sessions(jx));
 
-            % Look only at pre-stimulus alpha between -0.7 and 0
-            cfg          = [];
-            cfg.toilim   = [-0.7, 0];
-            ps_trls      = ft_redefinetrial(cfg, eeg_stim);
-
-            % select all occipito-parietal sensors
-            cfg = [];
-            cfg.channel = {'O1', 'O2', 'Oz', 'PO9', 'PO7', 'PO3', 'POz', 'PO4', 'PO8', ...
-                           'PO10', 'P7', 'P5', 'P3', 'P1', 'Pz', 'P2', 'P4', 'P6', 'P8'}; 
-            ps_trls = ft_selectdata(cfg, ps_trls);
-
-            channel_vect = ps_trls.label;
-
             % treat trials as artifically continous segment (pwelch is going to cut it
             % up again exactly in the same way, and here we use no overlap!)
+            ps_trls = eeg_src;
             lentrl = size(ps_trls.trial{1},2);
             fk_cont_data = nan(numel(ps_trls.label), numel(ps_trls.trial)*lentrl);
             for i = 1:numel(ps_trls.trial)
@@ -358,13 +339,43 @@ for itask = 1:2
             );
 
         end  % session combinations
+        
+        % weighted average of mean IAF estimates across (j-th) recordings
+        if length(unique(sessions)) > 1
+            [muPaf(isubj,:), muCog(isubj,:), muPow(isubj,:), ...
+             muPow_osc(isubj,:), muPow_pk(isubj,:), muPow_pk_osc(isubj,:)] = ...
+                meanIAF_sb([pSpec(isubj, 1:length(unique(sessions))).sums], ...
+                    nchan(1:length(unique(sessions))) ...
+                );
+        end
                 
     end  % loop over participants
     
+    figure
+    plot(muPaf, 'b'); hold on
+    title(sprintf('Individual alpha peak frequencies (%s)', task))
+    xlabel('Subject ID'); set(gca, 'xtick', 1:20);
+    ylabel('iAF (Hz)'); grid on; xlim([1 20])
+    
+    
+    %% 4.) --- SAVE DATA ---
+    
+    if ~exist(fullfile(fig_dir, an_fold), 'dir')
+        mkdir(fullfile(fig_dir, an_fold));
+    end
+    
+    fname = 'eyes_open_pkinfo';
+    mkdir(fullfile(src_dir, task));
+    save(fullfile(src_dir, task, fname), ...
+        'muPaf*', 'muPow*', 'pSpec', 'cmin', 'channel_vect', ...
+        'fRange', 'w', 'Fs', 'Fw', 'k');
+    
 end % loop over tasks
+
 
 % enable warnings again
 warning('on','all')
 
 
 % eof
+
