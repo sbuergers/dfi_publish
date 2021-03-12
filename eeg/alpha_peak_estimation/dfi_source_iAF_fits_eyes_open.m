@@ -360,14 +360,10 @@ for itask = 1:2
     
     %% 4.) --- SAVE DATA ---
     
-    if ~exist(fullfile(fig_dir, an_fold), 'dir')
-        mkdir(fullfile(fig_dir, an_fold));
-    end
-    
     fname = 'eyes_open_pkinfo';
     mkdir(fullfile(src_dir, task));
     save(fullfile(src_dir, task, fname), ...
-        'muPaf*', 'muPow*', 'pSpec', 'cmin', 'channel_vect', ...
+        'muPaf*', 'muPow*', 'pSpec', 'cmin', ...
         'fRange', 'w', 'Fs', 'Fw', 'k');
     
 end % loop over tasks
