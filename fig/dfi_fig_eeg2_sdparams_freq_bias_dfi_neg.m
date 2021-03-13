@@ -9,9 +9,11 @@
 %   dfi_clusterPerm_criterion_freq_yesno.m
 %   dfi_clusterPerm_criterion_freq.m
 %   
-%   [source level analyses (dipfit)]
-%   ?
-%   TODO: remove dipfit, include lcmv; fix paths
+%   [source level analyses (lcmv)]
+%   dfi_source_clusterPerm_dprime_freq.m
+%   dfi_source_clusterPerm_dprime_freq_yesno.m
+%   dfi_source_clusterPerm_criterion_freq.m
+%   dfi_source_clusterPerm_criterion_freq_yesno.m
 %   
 % Children script(s): 
 %   None
@@ -22,9 +24,9 @@
 %
 % DETAILS
 %
-% Figure1: Dprime time courses (sensor and dipfit analysis)
+% Figure1: Dprime time courses (sensor and lcmv analysis)
 % Figure2: Bayes Factors corresponding to Figure1
-% Figure3: Bias time courses (sensor and dipfit analysis)
+% Figure3: Bias time courses (sensor and lcmv analysis)
 % Figure4: Bayes Factors corresponding to Figure3
 % 
 % ---
