@@ -83,9 +83,6 @@ task     = 'yn_threshold';
 
 % Which channels do we want to investigate?
 channels_of_interest = {'O2', 'PO4', 'PO8'};
-
-
-% You can also directly get the data from D:\dfi_experiment_data\eeg_data\experiment
 btable = [];
 
 % loop over subjects
@@ -450,7 +447,7 @@ colavg = [0 0.6 0; 0 0 1; 1 0 0];
 title_vect = {'1F vs 2F', '1F1S vs 2F1S', '1F2S vs 2F2S'};
 dp_within_SE = nan(3,3);
 for icond = 1:3
-    % get Cousineau within subject SE for plottinD:
+    % get Cousineau within subject SE for plotting:
     % Cancel out between subject variability by subtracting the subject
     % mean from each subject and then adding the grand mean
     data = squeeze(dp_mat(:,icond,:));
@@ -481,7 +478,7 @@ colavg = [0 0.6 0; 0 0 1; 1 0 0];
 title_vect = {'1F vs 2F', '1F1S vs 2F1S', '1F2S vs 2F2S'};
 c_within_SE = nan(3,3);
 for icond = 1:3
-    % get Cousineau within subject SE for plottinD:
+    % get Cousineau within subject SE for plotting:
     % Cancel out between subject variability by subtracting the subject
     % mean from each subject and then adding the grand mean
     data = squeeze(c_mat(:,icond,:));
@@ -642,7 +639,7 @@ title_vect = {'1F vs 2F', '1F1S vs 2F1S', '1F2S vs 2F2S'};
 tvect = time_windows(2:nt)-diff(time_windows);
 dp_within_SE = nan(size(squeeze(dp_mat_cont(:,:,1,:)),1),3,3);
 for icond = 1:3
-    % get Cousineau within subject SE for plottinD:
+    % get Cousineau within subject SE for plotting:
     % Cancel out between subject variability by subtracting the subject
     % mean from each subject and then adding the grand mean
     data = squeeze(dp_mat_cont(:,:,icond,:));
@@ -674,7 +671,7 @@ title_vect = {'1F vs 2F', '1F1S vs 2F1S', '1F2S vs 2F2S'};
 tvect = time_windows(2:nt)-diff(time_windows);
 c_within_SE = nan(size(data,1),3,3);
 for icond = 1:3
-    % get Cousineau within subject SE for plottinD:
+    % get Cousineau within subject SE for plotting:
     % Cancel out between subject variability by subtracting the subject
     % mean from each subject and then adding the grand mean
     data = squeeze(c_mat_cont(:,:,icond,:));
@@ -719,7 +716,7 @@ title_vect = {'1F', '2F', '1F1S', '2F1S', '1F2S', '2F2S'};
 tvect = time_windows(2:nt)-diff(time_windows);
 pow_within_SE = nan(size(squeeze(pow_mat_cont(:,:,1,:)),1),3,3);
 for icond = 1:6
-    % get Cousineau within subject SE for plottinD:
+    % get Cousineau within subject SE for plotting:
     % Cancel out between subject variability by subtracting the subject
     % mean from each subject and then adding the grand mean
     data = squeeze(pow_mat_cont(:,:,icond,:));
@@ -768,7 +765,7 @@ tvect = time_windows(2:nt)-diff(time_windows);
 pow_mat_all_cond = squeeze(nanmean(pow_mat_cont,3));
 for isubj = 1:N
     subplot(4,5,isubj)
-    % get Cousineau within subject SE for plottinD:
+    % get Cousineau within subject SE for plotting:
     % Cancel out between subject variability by subtracting the subject
     % mean from each subject and then adding the grand mean
     data = squeeze(pow_mat_all_cond(:,isubj,:));
@@ -792,7 +789,7 @@ tvect = time_windows(2:nt)-diff(time_windows);
 pow_mat_all_cond = squeeze(nanmean(pow_mat_cont,3));
 for isubj = 1:N
     subplot(4,5,isubj)
-    % get Cousineau within subject SE for plottinD:
+    % get Cousineau within subject SE for plotting:
     % Cancel out between subject variability by subtracting the subject
     % mean from each subject and then adding the grand mean
     data = squeeze(pow_mat_all_cond(:,isubj,:));
@@ -814,21 +811,5 @@ suptitle('Individual pre-stimulus log(power) quantiles');
 warning('on','all')
 
 
-% // eof
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+% eof
 

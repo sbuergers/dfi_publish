@@ -53,10 +53,10 @@ clear all
 
 % Do we use high or low alpha power?
 
-% 18.02.2021; 10:25h: Last run hi_pow
-% 18.02.2021; 10:29h: Last run lo_pow
+% 08.03.2021; 20:40h: Last run hi_pow
+% 08.03.2021; 20:30h: Last run lo_pow
 
-pow_cond = 'lo_pow';  % lo_pow, hi_pow
+pow_cond = 'hi_pow';  % lo_pow, hi_pow
 
 
 %% 0.) --- SETUP ---
@@ -132,7 +132,7 @@ choi = {'O2', 'PO4', 'PO8'};
 % Fit to average frequency in pre-stim window
 % Get time axis
 load(fullfile(data_dir, '701', 'yn_threshold', ...
-              'inst_freq_ynt', 'session_8', 'fslide_data_trls_all'));
+              'inst_freq_ynt', 'all_yn_sessions', 'fslide_data_trls_all'));
 toi = eeg_fslide.fslide_toi;
 tid = toi > -0.602 & toi < -0.102;
 btable.avgfslide = squeeze(nanmean(mean(fslide_mat(chid,tid,:),2),1));
@@ -330,7 +330,7 @@ colavg = [0 0.6 0; 0 0 1; 1 0 0];
 title_vect = {'1F vs 2F', '1F1S vs 2F1S', '1F2S vs 2F2S'};
 dp_within_SE = nan(3,3);
 for icond = 1:3
-    % get Cousineau within subject SE for plottinD:
+    % get Cousineau within subject SE for plotting:
     % Cancel out between subject variability by subtracting the subject
     % mean from each subject and then adding the grand mean
     data = squeeze(dp_mat(:,icond,:));
@@ -361,7 +361,7 @@ colavg = [0 0.6 0; 0 0 1; 1 0 0];
 title_vect = {'1F vs 2F', '1F1S vs 2F1S', '1F2S vs 2F2S'};
 c_within_SE = nan(3,3);
 for icond = 1:3
-    % get Cousineau within subject SE for plottinD:
+    % get Cousineau within subject SE for plotting:
     % Cancel out between subject variability by subtracting the subject
     % mean from each subject and then adding the grand mean
     data = squeeze(c_mat(:,icond,:));
@@ -520,7 +520,7 @@ title_vect = {'1F vs 2F', '1F1S vs 2F1S', '1F2S vs 2F2S'};
 tvect = time_windows(2:nt)-diff(time_windows);
 dp_within_SE = nan(size(squeeze(dp_mat_cont(:,:,1,:)),1),3,3);
 for icond = 1:3
-    % get Cousineau within subject SE for plottinD:
+    % get Cousineau within subject SE for plotting:
     % Cancel out between subject variability by subtracting the subject
     % mean from each subject and then adding the grand mean
     data = squeeze(dp_mat_cont(:,:,icond,:));
@@ -552,7 +552,7 @@ title_vect = {'1F vs 2F', '1F1S vs 2F1S', '1F2S vs 2F2S'};
 tvect = time_windows(2:nt)-diff(time_windows);
 c_within_SE = nan(size(squeeze(dp_mat_cont(:,:,1,:)),1),3,3);
 for icond = 1:3
-    % get Cousineau within subject SE for plottinD:
+    % get Cousineau within subject SE for plotting:
     % Cancel out between subject variability by subtracting the subject
     % mean from each subject and then adding the grand mean
     data = squeeze(c_mat_cont(:,:,icond,:));
@@ -596,7 +596,7 @@ title_vect = {'1F', '2F', '1F1S', '2F1S', '1F2S', '2F2S'};
 tvect = time_windows(2:nt)-diff(time_windows);
 freq_within_SE = nan(size(squeeze(freq_mat_cont(:,:,1,:)),1),3,3);
 for icond = 1:6
-    % get Cousineau within subject SE for plottinD:
+    % get Cousineau within subject SE for plotting:
     % Cancel out between subject variability by subtracting the subject
     % mean from each subject and then adding the grand mean
     data = squeeze(freq_mat_cont(:,:,icond,:));

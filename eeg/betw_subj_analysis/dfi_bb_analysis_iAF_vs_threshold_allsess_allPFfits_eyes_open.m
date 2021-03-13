@@ -49,7 +49,7 @@
 %% *** SETUP ***
 clear all
 
-% disable warnings for speed sakD:
+% disable warnings for speed sake
 % warning('off','all')
 
 % Name of directory to save things to
@@ -69,7 +69,8 @@ end
 dfi_startup
 
 % experiment data folder
-data_dir = fullfile('dfi_experiment_data', 'eeg_data', 'experiment');
+eeg_data_dir = fullfile('dfi_experiment_data', 'eeg_data', 'experiment');
+beh_data_dir = fullfile('dfi_experiment_data', 'data', 'experiment');
 fig_dir  = fullfile('dfi_experiment_figures');
 
 % beta binom data dir
@@ -92,9 +93,11 @@ N = length(subjvect);
 %load(fullfile(fig_dir, 'iAF_fits_corcoran', 'eyes_open_pkinfo.mat'));
 
 % Load iAF peak fits (using the toolbox written by Corcoran, 2017)
-load(fullfile('dfi_experiment_figures', 'iAF_fits_corcoran_zeropadded', 'eyes_open_pkinfo.mat'));
+load(fullfile('dfi_experiment_figures', 'iAF_fits_corcoran_zeropadded', ...
+    'eyes_open_pkinfo.mat'));
 yn_pSpec = pSpec; clear pSpec
-load(fullfile('dfi_experiment_figures', 'iAF_fits_corcoran_zeropadded', 'yn_threshold', 'eyes_open_pkinfo.mat'));
+load(fullfile('dfi_experiment_figures', 'iAF_fits_corcoran_zeropadded', ...
+    'yn_threshold', 'eyes_open_pkinfo.mat'));
 ynt_pSpec = pSpec; clear pSpec
 
 for isubj = 1:20
@@ -380,7 +383,7 @@ for ifold = 1:nfiles
     %% *** YNT data. SOA of PSE ***
 
     % Get psychometric function data
-    load('D:\dfi_experiment_data\data\experiment\d701to727_ynt.mat')
+    load(fullfile(beh_data_dir, 'd701to727_ynt.mat'))
     clear d7*
     
     subjects = unique(dall.partid);
@@ -450,7 +453,7 @@ for ifold = 1:nfiles
     %% *** YN data. Response times 2IFC ***
     
     % Get response time data
-    load('D:\dfi_experiment_data\data\experiment\d701to727_2ifc.mat')
+    load(fullfile(beh_data_dir, 'd701to727_2ifc.mat'))
     dall.trlid(dall.trlid == 2) = 3;
     dall.trlid(dall.trlid == 5) = 6;
     dall.trlid(dall.trlid == 8) = 9;
@@ -477,9 +480,9 @@ for ifold = 1:nfiles
     
     
     % Correlate iAF with perceptual windows for all tasks (most importantly dfi)
-    load(fullfile(data_dir, 'full_channel_vect.mat'));
+    load(fullfile(eeg_data_dir, 'full_channel_vect.mat'));
     chanvect = full_channel_vect; clear full_channel_vect
-    if ~exist(fullfile(fig_dir, fold_data), 'dir');
+    if ~exist(fullfile(fig_dir, fold_data), 'dir')
         mkdir(fullfile(fig_dir, fold_data));
     end
     percwin = ones(size(peak_mat))./peak_mat;
@@ -515,32 +518,11 @@ for ifold = 1:nfiles
     [spearRho, pval, nobs]
     saveas(fh, fullfile(fig_dir, an_fold, fold_data, sprintf('yn_iAF_RTs_eyes_open.emf')))
     close all
-    save(fullfile(fig_dir, an_fold, fold_data, 'yn_iAF_RTs_data'), 'spearRho', 'pval', 'r', 'b1', 'b0', 'nobs')
-    
-    
-    
+    save(fullfile(fig_dir, an_fold, fold_data, 'yn_iAF_RTs_data'), ...
+        'spearRho', 'pval', 'r', 'b1', 'b0', 'nobs')
     
 end % data subset (folder name)
 
 
-
-
-
-% // eof
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+% eof
 

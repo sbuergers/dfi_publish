@@ -23,40 +23,23 @@ clear all
 close all
 
 
-% access matlab file exchange functions
-addpath(genpath('D:\matlab_file_exchange'));
-
-
-
-%% *** Get data YN ***
-
-% Paths, and data
-cd('D:\')
+% Paths
 addpath(genpath('dfi'));
-data_dir = 'D:\dfi_experiment_data\data\experiment';
-fig_dir  = 'D:\dfi_experiment_figures\group_figures\beh\yn\701to727';
+data_dir = fullfile('dfi_experiment_data', 'data', 'experiment');
+load_dir = fullfile('dfi_experiment_figures', 'PFs', 'beta_binom_weibull');
+save_dir = fullfile('dfi_experiment_figures', 'Paper_figures', 'iAF', 'iAF_betw_betabinom');
+
+
+
+%% Yes-no data
+
 load(fullfile(data_dir, 'd701to727_yn.mat'))
-figdir = 'D:\dfi_experiment_figures\PFs\beta_binom_weibull';
 dyn = dall; clear dall
 
-savefigures = 1;
-
-
-S2_conditions = [3,6,8,9];
-
-
-%% *** Preprocessing and participant selection ***
-% delete no response and bad response trials
-draw_yn  = dyn;
-dyn(dyn.resp  == 0, :) = [];
-dyn(dyn.badRT ~= 0, :) = [];
-dyn(dyn.RT < 0.1,:)    = [];
-
-
-%% Prepare YN data
-
+% PF data
 folder = 'yn_pooled';
-load(fullfile(figdir, folder, 'dataPF_joined_and_sep_fits_combined_pffit.mat'), 'pffit')
+load(fullfile(load_dir, folder, 'dataPF_joined_and_sep_fits_combined_pffit.mat'), ...
+    'pffit')
 pffit_yn_pooled = pffit; clear pffit
 
 % Accumulate parameters of subjects in matrices (2 event conditions)
@@ -77,15 +60,11 @@ pc_SE_yn_pool = squeeze(std(pc_mat)) ./ sqrt(size(pc_mat,1));
 
 
 
+%% 2IFC data
 
-
-%% Preprocess 2IFC data
-
-load(fullfile(data_dir, 'd701to727_2ifc.mat'))
 folder = '2ifc';
-load(fullfile(figdir, folder, 'dataPF_joined_and_sep_fits_combined_pffit.mat'), 'pffit')
+load(fullfile(load_dir, folder, 'dataPF_joined_and_sep_fits_combined_pffit.mat'), 'pffit')
 pffit_2ifc = pffit; clear pffit
-d2ifc = dall; clear dall
 
 % Accumulate parameters of subjects in matrices
 [threshold_matrix, slope_matrix, lapse_matrix] = deal(nan(size(pffit_2ifc,2), 3));
@@ -114,7 +93,7 @@ pc_SE_2ifc       = squeeze(nanstd(pc_mat)) ./ sqrt(size(pc_mat,1));
 PF = @PAL_Weibull;
 
 soavect = unique(dyn.soa);
-soavect(6) = [];
+soavect([1, 7]) = [];
 StimLevels = repmat(soavect', [3,1]);
 
 col.indiv  = {[0.6 1 0.6], [0.6 0.6 1], [1 0.6 0.6], [0.6 0.6 0.6]};
@@ -202,23 +181,9 @@ for i = 1:ni % condition
 end % i
 
 fh3.Renderer = 'painters'; 
-saveas(fh3, 'D:\dfi_experiment_figures\Paper_figures\iAF\iAF_betw_betabinom\pfs_pool_end_2ifc_svg.svg')
-
+mkdir(save_dir);
+saveas(fh3, fullfile(save_dir, 'pfs_pool_end_2ifc_svg.svg'))
 
 
 % eof
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 

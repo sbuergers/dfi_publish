@@ -49,11 +49,11 @@ clear all
 
 %% SELECT: hi_pow, lo_pow
 
-pow_cond = 'lo_pow';  % hi_pow, lo_pow
+pow_cond = 'hi_pow';  % hi_pow, lo_pow
 
 
-% Ran hi_pow on 18.02.2021, 11:52h
-% Ran lo_pow on 18.02.2021, 11:56h
+% Ran hi_pow on 08.03.2021, 22:36h
+% Ran lo_pow on 08.03.2021, 21:34h
 
 
 % Name of directory to save things to
@@ -158,7 +158,7 @@ for icond = 1:3
 
     % show specs
     fprintf(['\n', '\n',  ...
-             'Running cluster permutation witD:', '\n', ...
+             'Running cluster permutation with:', '\n', ...
             ['Method        = ', method], '\n', ...
             ['Trials        = ', trltype], '\n', ...
             ['Channels      = ', chan], '\n', ...

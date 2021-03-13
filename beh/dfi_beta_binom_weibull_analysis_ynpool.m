@@ -91,6 +91,7 @@ for isubj = 1:numel(subjvect)
 end
 fprintf('\n')
 % save PF fits (in dataPF format - from Dave's code)
+mkdir(fullfile(figdir, folder))
 save(fullfile(figdir, folder, 'dataPF.mat'), 'dataPF')
 
 
@@ -152,7 +153,7 @@ OutOfNum_GA = squeeze(mean(outof_mat,1));
 
 
 % Plot parameter distributions
-fh = figure('color', 'w', 'Position', [30 30 1200 800])
+fh = figure('color', 'w', 'Position', [30 30 1200 800]);
 x = 1:size(threshold_matrix,1);
 
 % threshold

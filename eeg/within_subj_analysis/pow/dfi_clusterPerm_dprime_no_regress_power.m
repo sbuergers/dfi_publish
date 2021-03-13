@@ -152,7 +152,7 @@ for icond = 1:3
 
     % show specs
     fprintf(['\n', '\n',  ...
-             'Running cluster permutation witD:', '\n', ...
+             'Running cluster permutation with:', '\n', ...
             ['Method        = ', method], '\n', ...
             ['Trials        = ', trltype], '\n', ...
             ['Channels      = ', chan], '\n', ...
@@ -283,20 +283,5 @@ for icond = 1:3
 end
 
 
-
-
 % eof
-
-
-
-
-
-
-
-
-
-
-
-
-
 

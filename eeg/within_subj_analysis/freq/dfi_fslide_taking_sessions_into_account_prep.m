@@ -341,21 +341,5 @@ end % loop over participants
 warning('on','all')
 
 
-% // eof
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+% eof
 

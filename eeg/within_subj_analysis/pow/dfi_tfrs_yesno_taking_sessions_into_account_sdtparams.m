@@ -71,7 +71,6 @@ fig_dir  = 'dfi_experiment_figures';
 % add fieldtrip folder to search path
 try
     addpath(fullfile('fieldtrip-20160816'))
-    addpath(fullfile('toolboxes', 'fieldtrip-20160816'))
 catch
     warning('Cannot find fieldtrip folder')
 end
@@ -83,9 +82,6 @@ task     = 'yesno';
 
 % Which channels do we want to investigate?
 channels_of_interest = {'O2', 'PO4', 'PO8'};
-
-
-% You can also directly get the data from D:\dfi_experiment_data\eeg_data\experiment
 btable = [];
 
 % loop over subjects
@@ -501,7 +497,7 @@ colavg = [0 0.6 0; 0 0 1; 1 0 0];
 title_vect = {'1F vs 2F', '1F1S vs 2F1S', '1F2S vs 2F2S'};
 dp_within_SE = nan(3,3);
 for icond = 1:3
-    % get Cousineau within subject SE for plottinD:
+    % get Cousineau within subject SE for plotting:
     % Cancel out between subject variability by subtracting the subject
     % mean from each subject and then adding the grand mean
     data = squeeze(dp_mat(:,icond,:));
@@ -817,22 +813,9 @@ save(fullfile(data_dir, 'sdt', 'power', 'sd_params_d_c_yesno.mat'), ...
     'dp_mat_cont', 'dp_within_SE', 'c_mat_cont', 'c_within_SE', 'tvect', 'time_windows');
 
 
-
 % enable warnings again
 warning('on','all')
 
 
-% // eof
-
-
-
-
-
-
-
-
-
-
-
-
+% eof
 

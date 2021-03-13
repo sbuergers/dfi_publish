@@ -243,57 +243,7 @@ fh = plot_detailed_correlation(guess_A, guess_B, ...
 fh = plot_detailed_correlation(lapse_A, lapse_B, ...
                                {'0 vs 1 beep', '0 vs 2 beep', '1 vs 2 beep'}, ...
                                {'0B', '0B', '1B'}, {'1B', '2B', '2B'});
-                           
-                           
-
-%% Nested functions
-
-function fh = plot_correlation(mat1, mat2, xlbl, ylbl)
-    fh = figure('color', 'w', 'position', [50 50 900, 250]);
-    cond_labels = {'0S', '1S', '2S'};
-    for icond = 1:3
-        subplot(1,3,icond)
-        [spearRho, pval] = corr(mat1(:,icond), mat2(:,icond), 'type', 'Spearman', 'rows', 'complete');
-        [~,b1,b0] = regression(mat1(:,icond), mat2(:,icond), 'one');
-        plot(mat1(:,icond), mat2(:,icond), 'bo', 'markersize', 10); hold on
-        l1 = min([mat1(:,icond); mat2(:,icond)]); 
-        l2 = max([mat1(:,icond); mat2(:,icond)]);
-        line([l1  l2], [b0+b1*l1 b0+b1*l2], 'color', 'm');
-        xlim([l1, l2]); ylim([l1, l2]);
-        addtext(sprintf('\nrho = %.2f\np-value = %.5f\nN = %.2f', spearRho, pval, 20));
-        xlabel(xlbl);
-        ylabel(ylbl);
-        title(cond_labels{icond});
-    end
-end
-
-
-function fh = plot_detailed_correlation(mat1, mat2, ttl_labels, xlbl, ylbl)
-% ttl_labels (cell-array): titles of each subplot
-% xlbl (cell-array): x-label for each subplot
-% ylbl (cell-array): y-label for each subplot
-    fh = figure('color', 'w', 'position', [50 50 900, 250]);
-    for icond = 1:3
-        subplot(1,3,icond)
-        [spearRho, pval] = corr(mat1(:,icond), mat2(:,icond), 'type', 'Spearman', 'rows', 'complete');
-        [~,b1,b0] = regression(mat1(:,icond), mat2(:,icond), 'one');
-        plot(mat1(:,icond), mat2(:,icond), 'bo', 'markersize', 10); hold on
-        l1 = min([mat1(:,icond); mat2(:,icond)]); 
-        l2 = max([mat1(:,icond); mat2(:,icond)]);
-        line([l1  l2], [b0+b1*l1 b0+b1*l2], 'color', 'm');
-        xlim([l1, l2]); ylim([l1, l2]);
-        addtext(sprintf('\nrho = %.2f\np-value = %.5f\nN = %.2f', spearRho, pval, 20));
-        xlabel(xlbl{icond});
-        ylabel(ylbl{icond});
-        title(ttl_labels{icond});
-    end
-end
-
-
-
 
 
 % eof
-
-
 

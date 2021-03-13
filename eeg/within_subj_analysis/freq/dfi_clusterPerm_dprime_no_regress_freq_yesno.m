@@ -69,7 +69,7 @@ dfi_startup
 
 % experiment data folder
 data_dir = fullfile('dfi_experiment_data', 'eeg_data', 'experiment');
-load_dir = fullfile(data_dir, 'sdt', 'fslide', 'no_regress');
+load_dir = fullfile(data_dir, 'sdt', 'freq_slide', 'no_regress');
 fig_dir  = 'dfi_experiment_figures';
 save_dir = fullfile(fig_dir, 'Paper_figures', 'iAF', 'fslide', ...
                     'yesno', 'dPrime', 'no_regress');
@@ -159,7 +159,7 @@ for icond = 1:3
 
     % show specs
     fprintf(['\n', '\n',  ...
-             'Running cluster permutation witD:', '\n', ...
+             'Running cluster permutation with:', '\n', ...
             ['Method        = ', method], '\n', ...
             ['Trials        = ', trltype], '\n', ...
             ['Channels      = ', chan], '\n', ...
@@ -288,20 +288,5 @@ for icond = 1:3
 end
 
 
-
-
 % eof
-
-
-
-
-
-
-
-
-
-
-
-
-
 

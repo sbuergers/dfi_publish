@@ -16,24 +16,6 @@
 %
 % None
 % 
-% ===========================================================================
-%
-%     dfi (double flash illusion) codebase accompanying the manuscript ...
-%     Copyright (C) 2021  Steffen Buergers
-% 
-%     This program is free software: you can redistribute it and/or modify
-%     it under the terms of the GNU General Public License as published by
-%     the Free Software Foundation, either version 3 of the License, or
-%     (at your option) any later version.
-% 
-%     This program is distributed in the hope that it will be useful,
-%     but WITHOUT ANY WARRANTY; without even the implied warranty of
-%     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-%     GNU General Public License for more details.
-% 
-%     You should have received a copy of the GNU General Public License
-%     along with this program.  If not, see <https://www.gnu.org/licenses/>.
-%
 % ---
 % Steffen Buergers, sbuergers@gmail.com,
 % Last modified Feb. 2021
@@ -42,6 +24,7 @@
 % add project directory to path
 addpath(genpath('dfi'))
 
+data_dir = fullfile('dfi_experiment_data', 'data', 'experiment');
 figdir = fullfile('dfi_experiment_figures', 'PFs', 'beta_binom_weibull');
 
 
@@ -75,8 +58,7 @@ ifc_beta_lapse = lapse_matrix;
 
 
 % Import binomial parameter estimates
-load(fullfile('dfi_experiment_data', 'data', 'experiment', 'data_for_ulrik', ...
-    'preselected_data', '2ifc_pffits_preselected'))
+load(fullfile(data_dir, 'pf_fits_logistic_binomial', '2ifc_pffits_preselected'))
 pffit_all = pffit_2ifc; 
 
 ifc_threshold = nan(length(pffit_all), length(pffit_all{1}));
@@ -139,8 +121,7 @@ yn_beta_eta = eta_matrix;
 
 
 % Import binomial parameter estimates
-load(fullfile('dfi_experiment_data', 'data', 'experiment', 'data_for_ulrik', ...
-    'preselected_data', 'ynpool_pffits_preselected'))
+load(fullfile(data_dir, 'pf_fits_logistic_binomial', 'ynpool_pffits_preselected'))
 pffit_all = pffit_ynpool;
 
 yn_threshold = nan(length(pffit_all), length(pffit_all{1}));
@@ -170,63 +151,6 @@ fh = plot_correlation(yn_guess, yn_beta_guess, ...
 fh = plot_correlation(yn_lapse, yn_beta_lapse, ...
                       'binomial' ,'beta binomial'); 
 
-
-
-%% Nested functions
-
-function fh = plot_correlation(mat1, mat2, xlbl, ylbl)
-    fh = figure('color', 'w', 'position', [50 50 900, 250]);
-    cond_labels = {'0S', '1S', '2S'};
-    for icond = 1:3
-        subplot(1,3,icond)
-        [spearRho, pval] = corr(mat1(:,icond), mat2(:,icond), 'type', 'Spearman', 'rows', 'complete');
-        [~,b1,b0] = regression(mat1(:,icond), mat2(:,icond), 'one');
-        plot(mat1(:,icond), mat2(:,icond), 'bo', 'markersize', 10); hold on
-        l1 = min([mat1(:,icond); mat2(:,icond)]); 
-        l2 = max([mat1(:,icond); mat2(:,icond)]);
-        line([l1  l2], [b0+b1*l1 b0+b1*l2], 'color', 'm');
-        xlim([l1, l2]); ylim([l1, l2]);
-        addtext(sprintf('\nrho = %.2f\np-value = %.5f\nN = %.2f', spearRho, pval, 20));
-        xlabel(xlbl);
-        ylabel(ylbl);
-        title(cond_labels{icond});
-    end
-end
-
-
-
-
-
+                  
 % eof
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
