@@ -38,12 +38,15 @@ clear all
 
 % paths
 data_dir = fullfile('dfi_experiment_data', 'eeg_data', 'experiment');
-main_dir = fullfile(data_dir, 'sdt', 'freq_slide');
+main_dir = fullfile(data_dir, 'sdt', 'freq_slide', 'no_regress');
 main_save_dir = fullfile('dfi_experiment_figures', 'Paper_figures', 'iAF', ...
-                         'iAF_within', 'sd_params');
-src_dir = fullfile(data_dir, 'source_analysis', 'sdt', 'freq_slide');
+                         'iAF_within', 'sd_params', 'no_regress');
+src_dir = fullfile(data_dir, 'source_analysis', 'sdt', 'freq_slide', 'no_regress');
 src_save_dir = fullfile('dfi_experiment_figures', 'Paper_figures', 'iAF', ...
-                        'iAF_within', 'sd_params');
+                        'iAF_within', 'sd_params', 'no_regress');
+                    
+mkdir(main_save_dir)
+mkdir(src_save_dir)
 
 % Colours for plotting
 col1 = {[1 0 0], [1 0 0], [1 0 0], [1 0 0]}; % see1
