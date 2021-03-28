@@ -12,24 +12,17 @@ condvect = {'v2', 'Fus', 'Fis'};
 
 % Load yes-no sd params for frequency
 load(fullfile('dfi_experiment_data', 'eeg_data', 'experiment', 'sdt', 'freq_slide', ...
-    'sd_params_d_c.mat'));
+    'sd_params_d_c_tcollapse.mat'));
 
-dp_ynt = dp_mat_cont; clear dp_mat_cont
-c_ynt  = c_mat_cont; clear c_mat_cont
+dp_ynt = dp_mat; clear dp_mat
+c_ynt  = c_mat; clear c_mat
 
 % Load yes-no threshold sd params for frequency
 load(fullfile('dfi_experiment_data', 'eeg_data', 'experiment', 'sdt', 'freq_slide', ...
-    'sd_params_d_c_yesno.mat'));
+    'sd_params_d_c_yesno_tcollapse.mat'));
 
-% collapse over intermediate 4 SOAs (0.05 to 0.108)
-dp_mat_cont_full = dp_mat_cont; clear dp_mat_cont
-dp_mat_cont = squeeze(nanmean(dp_mat_cont_full(3:6,:,:,:,:)));
-
-c_mat_cont_full = c_mat_cont; clear c_mat_cont
-c_mat_cont = squeeze(nanmean(c_mat_cont_full(3:6,:,:,:,:)));
-
-dp_yn = dp_mat_cont; clear dp_mat_cont
-c_yn  = c_mat_cont; clear c_mat_cont
+dp_yn = dp_mat; clear dp_mat
+c_yn  = c_mat; clear c_mat
 
 
 % Some settings
@@ -54,8 +47,8 @@ ha = tight_subplot(3, 4,[0.01 0.03],[0.02],[0.02]);
 
 for icond = 1:3
     ic = icond;
-    x = squeeze(nanmean(dp_yn(:,:,:,1)-dp_yn(:,:,:,3),1));
-    y = squeeze(nanmean(dp_ynt(:,:,:,1)-dp_ynt(:,:,:,3),1));
+    x = squeeze(dp_yn(:,:,1)-dp_yn(:,:,3));
+    y = squeeze(dp_ynt(:,:,1)-dp_ynt(:,:,3));
     
     axes(ha(icond));
 
@@ -88,14 +81,16 @@ r
 pval_r
 spearRho
 pval
+r_dp = r;
+n_dp = N;
 
 
 %% Row 2: Criterion
 
 for icond = 1:3
     ic = icond;
-    x = squeeze(nanmean(c_yn(:,:,:,1)-c_yn(:,:,:,3),1));
-    y = squeeze(nanmean(c_ynt(:,:,:,1)-c_ynt(:,:,:,3),1));
+    x = squeeze(c_yn(:,:,1)-c_yn(:,:,3));
+    y = squeeze(c_ynt(:,:,1)-c_ynt(:,:,3));
     
     axes(ha(icond+4));
 
@@ -128,6 +123,8 @@ r
 pval_r
 spearRho
 pval
+r_c = r;
+n_c = N;
 
 
 fh.Renderer = 'painters'; 
@@ -138,9 +135,11 @@ close all
 
 %% Bayes factor figures
 
-% Fill in by hand!!!
-BFs_dp = [0.3432, 0.1707, 0.7716];
-BFs_c = [0.3722, 9.2528, 0.5945];
+[BFs_dp, BFs_c] = deal(nan(3,1));
+for i = 1:3
+    BFs_dp(i) = corrbf(r_dp(i), n_dp(i));
+    BFs_c(i) = corrbf(r_c(i), n_c(i));
+end
 
 fh1 = figure('color', [1 1 1], 'Position', [0, 0, 427, 350]);
 ha = tight_subplot(3, 4,[0.01 0.03],[0.02],[0.02]);
@@ -179,28 +178,22 @@ saveas(fh1, fullfile('dfi_experiment_figures', 'Paper_figures', 'iAF', ...
 close all
 
 
+
 %% LCMV (same analysis in source space)
 
 % Load yes-no sd params for frequency
 load(fullfile('dfi_experiment_data', 'eeg_data', 'experiment', 'source_analysis', 'sdt', 'freq_slide', ...
-    'sd_params_d_c.mat'));
+    'sd_params_d_c_tcollapse.mat'));
 
-dp_ynt = dp_mat_cont; clear dp_mat_cont
-c_ynt  = c_mat_cont; clear c_mat_cont
+dp_ynt = dp_mat; clear dp_mat
+c_ynt  = c_mat; clear c_mat
 
 % Load yes-no threshold sd params for frequency
 load(fullfile('dfi_experiment_data', 'eeg_data', 'experiment', 'source_analysis', 'sdt', 'freq_slide', ...
-    'sd_params_d_c_yesno.mat'));
+    'sd_params_d_c_yesno_tcollapse.mat'));
 
-% collapse over intermediate 4 SOAs (0.05 to 0.108)
-dp_mat_cont_full = dp_mat_cont; clear dp_mat_cont
-dp_mat_cont = squeeze(nanmean(dp_mat_cont_full(3:6,:,:,:,:)));
-
-c_mat_cont_full = c_mat_cont; clear c_mat_cont
-c_mat_cont = squeeze(nanmean(c_mat_cont_full(3:6,:,:,:,:)));
-
-dp_yn = dp_mat_cont; clear dp_mat_cont
-c_yn  = c_mat_cont; clear c_mat_cont
+dp_yn = dp_mat; clear dp_mat
+c_yn  = c_mat; clear c_mat
 
 
 % Some settings
@@ -224,8 +217,8 @@ ha = tight_subplot(3, 4,[0.01 0.03],[0.02],[0.02]);
 %% Row 1: Dprime
 for icond = 1:3
     ic = icond;
-    x = squeeze(nanmean(dp_yn(:,:,:,1)-dp_yn(:,:,:,3),1));
-    y = squeeze(nanmean(dp_ynt(:,:,:,1)-dp_ynt(:,:,:,3),1));
+    x = squeeze(dp_yn(:,:,1)-dp_yn(:,:,3));
+    y = squeeze(dp_ynt(:,:,1)-dp_ynt(:,:,3));
     
     axes(ha(icond));
 
@@ -258,13 +251,15 @@ r
 pval_r
 spearRho
 pval
+r_dp = r;
+n_dp = N;
 
 
 %% Row 2: Criterion
 for icond = 1:3
     ic = icond;
-    x = squeeze(nanmean(c_yn(:,:,:,1)-c_yn(:,:,:,3),1));
-    y = squeeze(nanmean(c_ynt(:,:,:,1)-c_ynt(:,:,:,3),1));
+    x = squeeze(c_yn(:,:,1)-c_yn(:,:,3));
+    y = squeeze(c_ynt(:,:,1)-c_ynt(:,:,3));
     
     axes(ha(icond+4));
 
@@ -297,6 +292,8 @@ r
 pval_r
 spearRho
 pval
+r_c = r;
+r_n = N;
 
 
 fh.Renderer = 'painters'; 
@@ -308,9 +305,11 @@ close all
 
 %% Bayes factor figures
 
-% Fill in by hand!!!
-BFs_dp = [0.1942, 0.1934, 0.4123];
-BFs_c = [0.1792, 0.2646, 0.1771];
+[BFs_dp, BFs_c] = deal(nan(3,1));
+for i = 1:3
+    BFs_dp(i) = corrbf(r_dp(i), n_dp(i));
+    BFs_c(i) = corrbf(r_c(i), n_c(i));
+end
 
 fh1 = figure('color', [1 1 1], 'Position', [0, 0, 427, 350]);
 ha = tight_subplot(3, 4,[0.01 0.03],[0.02],[0.02]);
