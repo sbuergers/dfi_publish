@@ -60,7 +60,6 @@ c_yn  = c_mat; clear c_mat
 
 % Some settings
 col_vect = [[0 0.6 0]; [0 0 1]; [1 0 0]; [0 0 0]];
-col_vect_ci = [[0.75 1 0.75]; [0.75 0.75 1]; [1 0.75 0.75]; [0.75 0.75 0.75]];
 col_lines = [[0 0.8 0]; [0 0 1]; [1 0 0]; [0 0 0]];
 opacity = 0.5; % transparency (alpha)
 lw = 0.6;
@@ -68,7 +67,6 @@ ls = '-';
 
 xl = [-0.6 0.4]; 
 yl = xl;
-plot_ci = false;
 
 
 % Scatter plot: Collapse over time, check yesno versus ynt
