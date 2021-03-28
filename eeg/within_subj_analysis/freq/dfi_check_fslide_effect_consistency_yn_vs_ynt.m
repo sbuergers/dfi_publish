@@ -5,6 +5,9 @@
 % Parent script(s): 
 %   dfi_fslide_yesno_taking_sessions_into_account_sdtparams.m
 %   dfi_fslide_taking_sessions_into_account_sdtparams.m
+%
+% Sibling script(s):
+%   dfi_check_fslide_effect_consistency_yn_vs_ynt_no_reg.m
 % 
 % ===========================================================================
 %
