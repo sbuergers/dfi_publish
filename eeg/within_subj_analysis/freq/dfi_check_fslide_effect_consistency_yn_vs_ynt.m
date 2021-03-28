@@ -33,19 +33,26 @@ clc
 close all
 clear all
 
+% paths
+data_dir = fullfile('dfi_experiment_data', 'eeg_data', 'experiment');
+main_dir = fullfile(data_dir, 'sdt', 'freq_slide');
+main_save_dir = fullfile('dfi_experiment_figures', 'Paper_figures', 'iAF', ...
+                         'iAF_within', 'sd_params');
+src_dir = fullfile(data_dir, 'source_analysis', 'sdt', 'freq_slide');
+src_save_dir = fullfile('dfi_experiment_figures', 'Paper_figures', 'iAF', ...
+                        'iAF_within', 'sd_params');
+
 % prepare data
 condvect = {'v2', 'Fus', 'Fis'}; 
 
 % Load yes-no sd params for frequency
-load(fullfile('dfi_experiment_data', 'eeg_data', 'experiment', 'sdt', 'freq_slide', ...
-    'sd_params_d_c_tcollapse.mat'));
+load(fullfile(main_dir, 'sd_params_d_c_tcollapse.mat'));
 
 dp_ynt = dp_mat; clear dp_mat
 c_ynt  = c_mat; clear c_mat
 
 % Load yes-no threshold sd params for frequency
-load(fullfile('dfi_experiment_data', 'eeg_data', 'experiment', 'sdt', 'freq_slide', ...
-    'sd_params_d_c_yesno_tcollapse.mat'));
+load(fullfile(main_dir, 'sd_params_d_c_yesno_tcollapse.mat'));
 
 dp_yn = dp_mat; clear dp_mat
 c_yn  = c_mat; clear c_mat
@@ -154,8 +161,7 @@ n_c = N;
 
 
 fh.Renderer = 'painters'; 
-saveas(fh0, fullfile('dfi_experiment_figures', 'Paper_figures', 'iAF', ...
-    'iAF_within', 'sd_params', 'Consistency_freq_sdparams_svg.svg'))
+saveas(fh0, fullfile(main_save_dir, 'Consistency_freq_sdparams_svg.svg'))
 close all
 
 
@@ -199,8 +205,7 @@ line([0.75, 0.75], [0, log10(BFs_c(3))])
 box off
 
 fh.Renderer = 'painters'; 
-saveas(fh1, fullfile('dfi_experiment_figures', 'Paper_figures', 'iAF', ...
-    'iAF_within', 'sd_params', 'Consistency_freq_sdparams_svg_BFs.svg'))
+saveas(fh1, fullfile(main_save_dir, 'Consistency_freq_sdparams_svg_BFs.svg'))
 close all
 
 
@@ -208,15 +213,13 @@ close all
 %% LCMV (same analysis in source space)
 
 % Load yes-no sd params for frequency
-load(fullfile('dfi_experiment_data', 'eeg_data', 'experiment', 'source_analysis', 'sdt', 'freq_slide', ...
-    'sd_params_d_c_tcollapse.mat'));
+load(fullfile(src_dir, 'sd_params_d_c_tcollapse.mat'));
 
 dp_ynt = dp_mat; clear dp_mat
 c_ynt  = c_mat; clear c_mat
 
 % Load yes-no threshold sd params for frequency
-load(fullfile('dfi_experiment_data', 'eeg_data', 'experiment', 'source_analysis', 'sdt', 'freq_slide', ...
-    'sd_params_d_c_yesno_tcollapse.mat'));
+load(fullfile(src_dir, 'sd_params_d_c_yesno_tcollapse.mat'));
 
 dp_yn = dp_mat; clear dp_mat
 c_yn  = c_mat; clear c_mat
@@ -323,8 +326,7 @@ r_n = N;
 
 
 fh.Renderer = 'painters'; 
-saveas(fh0, fullfile('dfi_experiment_figures', 'Paper_figures', 'iAF', ...
-    'iAF_within', 'sd_params', 'Consistency_freq_sdparams_lcmv_svg.svg'))
+saveas(fh0, fullfile(src_save_dir, 'Consistency_freq_sdparams_lcmv_svg.svg'))
 close all
 
 
@@ -370,8 +372,7 @@ line([0.75, 0.75], [0, log10(BFs_c(3))])
 box off
 
 fh.Renderer = 'painters'; 
-saveas(fh1, fullfile('dfi_experiment_figures', 'Paper_figures', 'iAF', ...
-    'iAF_within', 'sd_params', 'Consistency_freq_sdparams_svg_lcmv_BFs.svg'))
+saveas(fh1, fullfile(src_save_dir, 'Consistency_freq_sdparams_svg_lcmv_BFs.svg'))
 close all
 
 
