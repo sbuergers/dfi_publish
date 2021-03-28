@@ -60,6 +60,7 @@ condvect = {'v2', 'Fus', 'Fis'};
 fh1 = figure('color', [1 1 1], 'Position', [0, 0, 427, 705]);
 ha = tight_subplot(6, 4,[0.02 0.02],[0.02],[0.02]);
 
+
 %% Row 1 (yn_intermsoas, sensor)
 clear fslide_GA tif sem_f1 sem_f2 stat
 
@@ -91,9 +92,9 @@ for icond = 1:3
     set(gca,'TickDir','out')
     set(gca,'TickLength',[0.02, 0.02])
     set(gca,'XColor','k','YColor','k')
-    %set(gca, 'linewidth', 2)
     
 end % condition loop
+
 
 %% Row 2 (ynt sensor)
 clear fslide_GA tif sem_f1 sem_f2 stat
@@ -116,8 +117,6 @@ for icond = 1:3
     plot((icond-1)+1.1, mean(dp_mat(:,icond,3)), ...
         'ko', 'MarkerSize', 3, 'MarkerFaceColor', col1{icond});
     
-    % add grid lines
-    %gridxy(get(gca, 'xtick'), get(gca, 'ytick'), 'color', [0.9, 0.9, 0.9])
     xlim(xl)
     ylim(yl)
     yticks = 0:0.5:100;  set(gca, 'YTick', yticks);
@@ -128,7 +127,6 @@ for icond = 1:3
     set(gca,'TickDir','out')
     set(gca,'TickLength',[0.02, 0.02])
     set(gca,'XColor','k','YColor','k')
-    %set(gca, 'linewidth', 2)
     
 end % condition loop
 
@@ -141,6 +139,7 @@ close all
 
 fh2 = figure('color', [1 1 1], 'Position', [0, 0, 427, 400]);
 ha = tight_subplot(6, 4,[0.02 0.02],[0.02],[0.02]);
+
 
 %% Row 1 (yn_intermsoas, sensor)
 
@@ -162,8 +161,6 @@ end
 
 bar(log10(bfs)); hold on 
 
-% add grid lines
-%gridxy(get(gca, 'xtick'), get(gca, 'ytick'), 'color', [0.9, 0.9, 0.9])
 xlim(xl)
 ylim(yl)
 set(gca, 'xticklabel', [])
@@ -173,7 +170,7 @@ box off
 set(gca,'TickDir','out')
 set(gca,'TickLength',[0.02, 0.02])
 set(gca,'XColor','k','YColor','k')
-%set(gca, 'linewidth', 2)
+
     
 %% Row 4 (ynt sensor)
 
@@ -195,8 +192,6 @@ end
 
 bar(log10(bfs)); hold on 
 
-% add grid lines
-%gridxy(get(gca, 'xtick'), get(gca, 'ytick'), 'color', [0.9, 0.9, 0.9])
 xlim(xl)
 ylim(yl)
 set(gca, 'xticklabel', [])
@@ -206,7 +201,6 @@ box off
 set(gca,'TickDir','out')
 set(gca,'TickLength',[0.02, 0.02])
 set(gca,'XColor','k','YColor','k')
-%set(gca, 'linewidth', 2)
 
 
 fh2.Renderer = 'painters';
@@ -218,6 +212,7 @@ saveas(fh2, fullfile(main_save_dir, 'fslide_dprime_tcollapse_bf_svg.svg'))
 
 fh1 = figure('color', [1 1 1], 'Position', [0, 0, 427, 705]);
 ha = tight_subplot(6, 4,[0.02 0.02],[0.02],[0.02]);
+
 
 %% Row 1 (yn_intermsoas, sensor)
 
@@ -251,6 +246,7 @@ for icond = 1:3
     set(gca,'XColor','k','YColor','k')
     
 end % condition loop
+
 
 %% Row 4 (ynt sensor)
 
@@ -295,6 +291,7 @@ close all
 fh2 = figure('color', [1 1 1], 'Position', [0, 0, 427, 400]);
 ha = tight_subplot(6, 4,[0.02 0.02],[0.02],[0.02]);
 
+
 %% Row 1 (yn_intermsoas, sensor)
 axes(ha(1));
 
@@ -314,8 +311,6 @@ end
 
 bar(log10(bfs)); hold on 
 
-% add grid lines
-%gridxy(get(gca, 'xtick'), get(gca, 'ytick'), 'color', [0.9, 0.9, 0.9])
 xlim(xl)
 ylim(yl)
 set(gca, 'xticklabel', [])
@@ -325,7 +320,7 @@ box off
 set(gca,'TickDir','out')
 set(gca,'TickLength',[0.02, 0.02])
 set(gca,'XColor','k','YColor','k')
-%set(gca, 'linewidth', 2)
+
 
 %% Row 4 (ynt sensor)
 axes(ha(2));
@@ -346,8 +341,6 @@ end
 
 bar(log10(bfs)); hold on 
 
-% add grid lines
-%gridxy(get(gca, 'xtick'), get(gca, 'ytick'), 'color', [0.9, 0.9, 0.9])
 xlim(xl)
 ylim(yl)
 set(gca, 'xticklabel', [])
@@ -357,7 +350,6 @@ box off
 set(gca,'TickDir','out')
 set(gca,'TickLength',[0.02, 0.02])
 set(gca,'XColor','k','YColor','k')
-%set(gca, 'linewidth', 2)
 xl = [-0.6 -0.1];
 
 fh2.Renderer = 'painters'; 
