@@ -45,8 +45,8 @@ src_save_dir = fullfile('dfi_experiment_figures', 'Paper_figures', 'iAF', ...
                         'iAF_within', 'sd_params');
 
 % Colours for plotting
-col1 = {[1 0 0], [1 0 0], [1 0 0], [1 0 0]}; % see1
-col2 = {[0 0 1], [0 0 1], [0 0 1], [0 0 1]}; % see2
+col1 = {[1 0 0], [1 0 0], [1 0 0], [1 0 0]};
+col2 = {[0 0 1], [0 0 1], [0 0 1], [0 0 1]};
 
 % use opengl
 useopengl = false;
@@ -74,13 +74,13 @@ yl = [0.9, 2.4];
 for icond = 1:3
 
     errorbar((icond-1)+0.9, mean(dp_mat(:,icond,1)), dp_within_SE(icond,1), dp_within_SE(icond,1), ...
-        'Color', col2{icond}, 'LineWidth', 1.5); hold on
+        'Color', col1{icond}, 'LineWidth', 1.5); hold on
     errorbar((icond-1)+1.1, mean(dp_mat(:,icond,3)), dp_within_SE(icond,3), dp_within_SE(icond,3), ...
-        'Color', col1{icond}, 'LineWidth', 1.5);
+        'Color', col2{icond}, 'LineWidth', 1.5);
     plot((icond-1)+0.9, mean(dp_mat(:,icond,1)), ...
-        'ko', 'MarkerSize', 3, 'MarkerFaceColor', col2{icond});
-    plot((icond-1)+1.1, mean(dp_mat(:,icond,3)), ...
         'ko', 'MarkerSize', 3, 'MarkerFaceColor', col1{icond});
+    plot((icond-1)+1.1, mean(dp_mat(:,icond,3)), ...
+        'ko', 'MarkerSize', 3, 'MarkerFaceColor', col2{icond});
     
     xlim(xl)
     ylim(yl)
@@ -109,13 +109,13 @@ yl = [0.9, 2.4];
 for icond = 1:3
     
     errorbar((icond-1)+0.9, mean(dp_mat(:,icond,1)), dp_within_SE(icond,1), dp_within_SE(icond,1), ...
-        'Color', col2{icond}, 'LineWidth', 1.5); hold on
+        'Color', col1{icond}, 'LineWidth', 1.5); hold on
     errorbar((icond-1)+1.1, mean(dp_mat(:,icond,3)), dp_within_SE(icond,3), dp_within_SE(icond,3), ...
-        'Color', col1{icond}, 'LineWidth', 1.5);
+        'Color', col2{icond}, 'LineWidth', 1.5);
     plot((icond-1)+0.9, mean(dp_mat(:,icond,1)), ...
-        'ko', 'MarkerSize', 3, 'MarkerFaceColor', col2{icond});
-    plot((icond-1)+1.1, mean(dp_mat(:,icond,3)), ...
         'ko', 'MarkerSize', 3, 'MarkerFaceColor', col1{icond});
+    plot((icond-1)+1.1, mean(dp_mat(:,icond,3)), ...
+        'ko', 'MarkerSize', 3, 'MarkerFaceColor', col2{icond});
     
     xlim(xl)
     ylim(yl)
@@ -226,13 +226,13 @@ yl = [-1.25, 1.25];
 for icond = 1:3
 
     errorbar((icond-1)+0.9, mean(c_mat(:,icond,1)), c_within_SE(icond,1), c_within_SE(icond,1), ...
-        'Color', col2{icond}, 'LineWidth', 1.5); hold on
+        'Color', col1{icond}, 'LineWidth', 1.5); hold on
     errorbar((icond-1)+1.1, mean(c_mat(:,icond,3)), c_within_SE(icond,3), c_within_SE(icond,3), ...
-        'Color', col1{icond}, 'LineWidth', 1.5);
+        'Color', col2{icond}, 'LineWidth', 1.5);
     plot((icond-1)+0.9, mean(c_mat(:,icond,1)), ...
-        'ko', 'MarkerSize', 3, 'MarkerFaceColor', col2{icond});
-    plot((icond-1)+1.1, mean(c_mat(:,icond,3)), ...
         'ko', 'MarkerSize', 3, 'MarkerFaceColor', col1{icond});
+    plot((icond-1)+1.1, mean(c_mat(:,icond,3)), ...
+        'ko', 'MarkerSize', 3, 'MarkerFaceColor', col2{icond});
     
     xlim(xl)
     ylim(yl)
@@ -260,13 +260,13 @@ yl = [-1.25, 1.25];
 for icond = 1:3
     
     errorbar((icond-1)+0.9, mean(c_mat(:,icond,1)), c_within_SE(icond,1), c_within_SE(icond,1), ...
-        'Color', col2{icond}, 'LineWidth', 1.5); hold on
+        'Color', col1{icond}, 'LineWidth', 1.5); hold on
     errorbar((icond-1)+1.1, mean(c_mat(:,icond,3)), c_within_SE(icond,3), c_within_SE(icond,3), ...
-        'Color', col1{icond}, 'LineWidth', 1.5);
+        'Color', col2{icond}, 'LineWidth', 1.5);
     plot((icond-1)+0.9, mean(c_mat(:,icond,1)), ...
-        'ko', 'MarkerSize', 3, 'MarkerFaceColor', col2{icond});
-    plot((icond-1)+1.1, mean(c_mat(:,icond,3)), ...
         'ko', 'MarkerSize', 3, 'MarkerFaceColor', col1{icond});
+    plot((icond-1)+1.1, mean(c_mat(:,icond,3)), ...
+        'ko', 'MarkerSize', 3, 'MarkerFaceColor', col2{icond});
     
     xlim(xl)
     ylim(yl)
