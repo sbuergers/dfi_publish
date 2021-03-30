@@ -2,18 +2,21 @@
 %
 % Mostly recycled from post-stim and psychophysics projects
 %
-% sb, sbuergers@gmail.com, 05/12/2019
+% sb, sbuergers@gmail.com, 
+% last modified 30/03/2021
 
 
+restoredefaultpath
 clear all
 close all
 
 
 % access matlab file exchange functions
-addpath(genpath('D:\matlab_file_exchange'));
+%addpath(genpath('D:\matlab_file_exchange'));
 
-data_dir = 'D:\dfi_experiment_data\data\experiment';
-
+data_dir = fullfile('dfi_experiment_data', 'data', 'experiment');
+fig_dir = fullfile('dfi_experiment_figures', 'Paper_figures', 'iAF', 'beh');
+mkdir(fig_dir);
 
 
 %% -------2IFC--------
@@ -31,7 +34,6 @@ C_avg = squeeze(nanmean(C_yesno(3:6,:,:)));
 
 % Create figure and save for inkscape: dPrime
 yl = [0.9, 2.4];
-cond_labels = {'2F', 'Fus', 'Fis'};
 col_vect = [0 0.6 0; 0 0 1; 1 0 0]';
 acc_mat = dP_avg';
 fh = figure('color', [1 1 1], 'Position', [0, 0, 140, 140]);
@@ -64,9 +66,8 @@ xlim([0.5 3.5])
 
 % Export figures
 fname = 'beh_dP_adj_2ifc';
-mkdir('D:\dfi_experiment_figures\Paper_figures\iAF\beh');
-export_fig(fh, fullfile('D:\dfi_experiment_figures\Paper_figures\iAF\beh', fname), '-tiff', '-m2.5');
-fh.Renderer = 'painters'; saveas(fh,  fullfile('D:\dfi_experiment_figures\Paper_figures\iAF\beh', [fname, '_svg.svg']))
+export_fig(fh, fullfile(fig_dir, fname), '-tiff', '-m2.5');
+fh.Renderer = 'painters'; saveas(fh,  fullfile(fig_dir, [fname, '_svg.svg']))
 
 close all
 
@@ -74,7 +75,6 @@ close all
 
 % Create figure and save for inkscape: Criterion
 yl = [-1.25, 1.25];
-cond_labels = {'2F', 'Fus', 'Fis'};
 col_vect = [0 0.6 0; 0 0 1; 1 0 0]';
 acc_mat = C_avg';
 fh = figure('color', [1 1 1], 'Position', [0, 0, 140, 140]);
@@ -107,9 +107,9 @@ xlim([0.5 3.5])
 
 % Export figures
 fname = 'beh_C_adj_2ifc';
-mkdir('D:\dfi_experiment_figures\Paper_figures\iAF\beh');
-export_fig(fh, fullfile('D:\dfi_experiment_figures\Paper_figures\iAF\beh', fname), '-tiff', '-m2.5');
-fh.Renderer = 'painters'; saveas(fh,  fullfile('D:\dfi_experiment_figures\Paper_figures\iAF\beh', [fname, '_svg.svg']))
+mkdir(fig_dir);
+export_fig(fh, fullfile(fig_dir, fname), '-tiff', '-m2.5');
+fh.Renderer = 'painters'; saveas(fh,  fullfile(fig_dir, [fname, '_svg.svg']))
 
 close all
 
@@ -150,9 +150,9 @@ xlim([0.5 3.5])
 
 % Export figures
 fname = 'beh_actualC_adj_2ifc';
-mkdir('D:\dfi_experiment_figures\Paper_figures\iAF\beh');
-export_fig(fh, fullfile('D:\dfi_experiment_figures\Paper_figures\iAF\beh', fname), '-tiff', '-m2.5');
-fh.Renderer = 'painters'; saveas(fh,  fullfile('D:\dfi_experiment_figures\Paper_figures\iAF\beh', [fname, '_svg.svg']))
+mkdir(fig_dir);
+export_fig(fh, fullfile(fig_dir, fname), '-tiff', '-m2.5');
+fh.Renderer = 'painters'; saveas(fh,  fullfile(fig_dir, [fname, '_svg.svg']))
 
 close all
 
@@ -165,8 +165,8 @@ close all
 % Save data for SPSS
 oldwd = cd;
 dP_mat = dP_avg';
-mkdir('D:\dfi_experiment_data\data\experiment\twoIFC_beh_stats')
-cd('D:\dfi_experiment_data\data\experiment\twoIFC_beh_stats');
+mkdir(fullfile(data_dir, 'twoIFC_beh_stats'))
+cd(fullfile(data_dir, 'twoIFC_beh_stats'));
 dlmwrite('dP_mat_stats.txt', dP_mat, 'delimiter', '\t');
 cd(oldwd)
 
@@ -272,7 +272,7 @@ end
 % Save data for SPSS
 oldwd = cd;
 C_mat = C_avg';
-cd('D:\dfi_experiment_data\data\experiment\twoIFC_beh_stats');
+cd(fullfile(data_dir, 'twoIFC_beh_stats'));
 dlmwrite('C_mat_stats.txt', C_mat, 'delimiter', '\t');
 cd(oldwd)
 
@@ -362,7 +362,7 @@ shapiro_output
 % Save data for SPSS
 oldwd = cd;
 C_mat = C_avg' + dP_avg'./2;
-cd('D:\dfi_experiment_data\data\experiment\twoIFC_beh_stats');
+cd(fullfile(data_dir, 'twoIFC_beh_stats'));
 dlmwrite('Cnoise_mat_stats.txt', C_mat, 'delimiter', '\t');
 cd(oldwd)
 
@@ -496,9 +496,9 @@ xlim([0.5 3.5])
 
 % Export figures
 fname = 'beh_dP_adj';
-mkdir('D:\dfi_experiment_figures\Paper_figures\iAF\beh');
-export_fig(fh, fullfile('D:\dfi_experiment_figures\Paper_figures\iAF\beh', fname), '-tiff', '-m2.5');
-fh.Renderer = 'painters'; saveas(fh,  fullfile('D:\dfi_experiment_figures\Paper_figures\iAF\beh', [fname, '_svg.svg']))
+mkdir(fig_dir);
+export_fig(fh, fullfile(fig_dir, fname), '-tiff', '-m2.5');
+fh.Renderer = 'painters'; saveas(fh,  fullfile(fig_dir, [fname, '_svg.svg']))
 
 close all
 
@@ -540,9 +540,9 @@ xlim([0.5 3.5])
 
 % Export figures
 fname = 'beh_C_adj_2f2s_as_noise';
-mkdir('D:\dfi_experiment_figures\Paper_figures\iAF\beh');
-export_fig(fh, fullfile('D:\dfi_experiment_figures\Paper_figures\iAF\beh', fname), '-tiff', '-m2.5');
-fh.Renderer = 'painters'; saveas(fh,  fullfile('D:\dfi_experiment_figures\Paper_figures\iAF\beh', [fname, '_svg.svg']))
+mkdir(fig_dir);
+export_fig(fh, fullfile(fig_dir, fname), '-tiff', '-m2.5');
+fh.Renderer = 'painters'; saveas(fh,  fullfile(fig_dir, [fname, '_svg.svg']))
 
 close all
 
@@ -583,9 +583,9 @@ xlim([0.5 3.5])
 
 % Export figures
 fname = 'beh_actualC_adj_2f2s_as_noise';
-mkdir('D:\dfi_experiment_figures\Paper_figures\iAF\beh');
-export_fig(fh, fullfile('D:\dfi_experiment_figures\Paper_figures\iAF\beh', fname), '-tiff', '-m2.5');
-fh.Renderer = 'painters'; saveas(fh,  fullfile('D:\dfi_experiment_figures\Paper_figures\iAF\beh', [fname, '_svg.svg']))
+mkdir(fig_dir);
+export_fig(fh, fullfile(fig_dir, fname), '-tiff', '-m2.5');
+fh.Renderer = 'painters'; saveas(fh,  fullfile(fig_dir, [fname, '_svg.svg']))
 
 close all
 
@@ -594,8 +594,8 @@ close all
 % Save data for SPSS
 oldwd = cd;
 dP_mat = dP_avg';
-mkdir('D:\dfi_experiment_data\data\experiment\yn_beh_stats')
-cd('D:\dfi_experiment_data\data\experiment\yn_beh_stats');
+mkdir(fullfile(data_dir, 'yn_beh_stats'))
+cd(fullfile(data_dir, 'yn_beh_stats'));
 dlmwrite('dP_mat_stats.txt', dP_mat, 'delimiter', '\t');
 cd(oldwd)
 
@@ -684,7 +684,7 @@ shapiro_output
 % Save data for SPSS
 oldwd = cd;
 C_mat = C_avg';
-cd('D:\dfi_experiment_data\data\experiment\yn_beh_stats');
+cd(fullfile(data_dir, 'yn_beh_stats'));
 dlmwrite('C_mat_stats.txt', C_mat, 'delimiter', '\t');
 cd(oldwd)
 
@@ -776,7 +776,7 @@ oldwd = cd;
 acc_mat = C_avg' + dP_avg'./2; %bias_centre + dp/2 = C
 acc_mat(:,3) = -C_avg(3,:)' + dP_avg(3,:)'./2;
 C_mat = acc_mat;
-cd('D:\dfi_experiment_data\data\experiment\yn_beh_stats');
+cd(fullfile(data_dir, 'yn_beh_stats'));
 dlmwrite('Cnoise_mat_stats.txt', C_mat, 'delimiter', '\t');
 cd(oldwd)
 
@@ -865,10 +865,6 @@ shapiro_output
 % Name of directory to save things to
 an_fold = 'erps_ynt';
 
-% experiment data folder
-data_dir = fullfile('dfi_experiment_data', 'eeg_data', 'experiment');
-fig_dir  = 'dfi_experiment_figures';
-
 % useful variables
 subjvect = {'701', '702', '703', '704', '705', '706', '708', '709', '712', '714', ...
     '715', '716', '717', '718', '719', '720', '722', '725', '726', '727'};
@@ -880,7 +876,7 @@ cond_labels = {'2F', 'Fus', 'Fis'};
 
 
 % Load in trial indices to keep
-load(fullfile('dfi_experiment_data', 'data', 'experiment', 'eeg_stim_lock', 'ynt_trial_indeces_hands_matched_rt500.mat'))
+load(fullfile(data_dir, 'eeg_stim_lock', 'ynt_trial_indeces_hands_matched_rt500.mat'))
 
 
 % SOA distribution
@@ -890,7 +886,8 @@ trlids = [3,6,8];
 partvect = unique(dall_stim.partid);
 for isubj = 1:20
     for icond = 1:3
-        soavect(isubj,icond) = nanmean(unique(dall_stim.soa(dall_stim.partid == partvect(isubj) & dall_stim.trlid == trlids(icond))));
+        soavect(isubj,icond) = nanmean(unique(dall_stim.soa(...
+            dall_stim.partid == partvect(isubj) & dall_stim.trlid == trlids(icond))));
     end
 end
 
@@ -966,9 +963,9 @@ ylim(yl)
 
 % Export figures
 fname = 'dP_adj_ynt';
-mkdir('D:\dfi_experiment_figures\Paper_figures\iAF\beh');
-export_fig(fh, fullfile('D:\dfi_experiment_figures\Paper_figures\iAF\beh', fname), '-tiff', '-m2.5');
-fh.Renderer = 'painters'; saveas(fh,  fullfile('D:\dfi_experiment_figures\Paper_figures\iAF\beh', [fname, '_svg.svg']))
+mkdir(fig_dir);
+export_fig(fh, fullfile(fig_dir, fname), '-tiff', '-m2.5');
+fh.Renderer = 'painters'; saveas(fh,  fullfile(fig_dir, [fname, '_svg.svg']))
 
 close all
 
@@ -1009,9 +1006,9 @@ ylim(yl)
 
 % Export figures
 fname = 'C_adj_ynt_2f2s_as_noise';
-mkdir('D:\dfi_experiment_figures\Paper_figures\iAF\beh');
-export_fig(fh, fullfile('D:\dfi_experiment_figures\Paper_figures\iAF\beh', fname), '-tiff', '-m2.5');
-fh.Renderer = 'painters'; saveas(fh,  fullfile('D:\dfi_experiment_figures\Paper_figures\iAF\beh', [fname, '_svg.svg']))
+mkdir(fig_dir);
+export_fig(fh, fullfile(fig_dir, fname), '-tiff', '-m2.5');
+fh.Renderer = 'painters'; saveas(fh,  fullfile(fig_dir, [fname, '_svg.svg']))
 
 close all
 
@@ -1053,9 +1050,9 @@ ylim(yl)
 
 % Export figures
 fname = 'actualC_adj_ynt_2f2s_as_noise';
-mkdir('D:\dfi_experiment_figures\Paper_figures\iAF\beh');
-export_fig(fh, fullfile('D:\dfi_experiment_figures\Paper_figures\iAF\beh', fname), '-tiff', '-m2.5');
-fh.Renderer = 'painters'; saveas(fh,  fullfile('D:\dfi_experiment_figures\Paper_figures\iAF\beh', [fname, '_svg.svg']))
+mkdir(fig_dir);
+export_fig(fh, fullfile(fig_dir, fname), '-tiff', '-m2.5');
+fh.Renderer = 'painters'; saveas(fh,  fullfile(fig_dir, [fname, '_svg.svg']))
 
 close all
 
@@ -1311,5 +1308,9 @@ for i = 1:size(threshold_matrix, 2);
 end
 shapiro_output = [H, pValue, SWstatistic];
 shapiro_output
+
+
+% eof
+
 
 
