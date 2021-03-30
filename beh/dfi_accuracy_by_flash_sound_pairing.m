@@ -1,5 +1,6 @@
 % Compute performance accuracy for different flash-beep pairings
 % in yes-no and yes-no threshold task. 
+% Creates Supplementary Table 2
 %
 % Parent script(s): 
 %   None

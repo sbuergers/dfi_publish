@@ -12,7 +12,9 @@
 %
 % DETAILS
 %
-% None
+% Note that comparing different auditory contexts is problematic for
+% the yes-no threshold task, because SOAs were titrated separately
+% for them and may not be matched. 
 % 
 % ===========================================================================
 %
@@ -65,24 +67,24 @@ C_avg = squeeze(nanmean(C_2ifc(3:6,:,:)));
 % Create figure and save for inkscape: dPrime
 yl = [0.9, 2.4];
 col_vect = [0 0.6 0; 0 0 1; 1 0 0]';
-acc_mat = dP_avg';
+x_mat = dP_avg';
 fh = figure('color', [1 1 1], 'Position', [0, 0, 140, 140]);
 % get Cousineau within subject SE for plotting:
 % Cancel out between subject variability by subtracting the subject
 % mean from each subject and then adding the grand mean
-data = acc_mat;
+data = x_mat;
 subj_mean = nanmean(data,2);
 grand_mean = nanmean(subj_mean,1);
 data_corr = data - repmat(subj_mean, [1,3]) + repmat(grand_mean, [size(data,1),size(data,2)]);
 SE_w = nanstd(data_corr,0,1)./sqrt(sum(~isnan(data_corr),1));
 SE_b = nanstd(data,0,1)./sqrt(sum(~isnan(data),1));
 
-plot(1, nanmean(acc_mat(:,1)), 'ko', 'MarkerSize', 5, 'MarkerFaceColor', col_vect(:,1)); hold on
-plot(2, nanmean(acc_mat(:,2)), 'ko', 'MarkerSize', 5, 'MarkerFaceColor', col_vect(:,2)); hold on
-plot(3, nanmean(acc_mat(:,3)), 'ko', 'MarkerSize', 5, 'MarkerFaceColor', col_vect(:,3)); hold on
-errorbar(1, nanmean(acc_mat(:,1)), SE_w(1), SE_w(1), 'Color', col_vect(:,1), 'LineWidth', 1.5);
-errorbar(2, nanmean(acc_mat(:,2)), SE_w(2), SE_w(2), 'Color', col_vect(:,2), 'LineWidth', 1.5);
-errorbar(3, nanmean(acc_mat(:,3)), SE_w(3), SE_w(3), 'Color', col_vect(:,3), 'LineWidth', 1.5);
+plot(1, nanmean(x_mat(:,1)), 'ko', 'MarkerSize', 5, 'MarkerFaceColor', col_vect(:,1)); hold on
+plot(2, nanmean(x_mat(:,2)), 'ko', 'MarkerSize', 5, 'MarkerFaceColor', col_vect(:,2)); hold on
+plot(3, nanmean(x_mat(:,3)), 'ko', 'MarkerSize', 5, 'MarkerFaceColor', col_vect(:,3)); hold on
+errorbar(1, nanmean(x_mat(:,1)), SE_w(1), SE_w(1), 'Color', col_vect(:,1), 'LineWidth', 1.5);
+errorbar(2, nanmean(x_mat(:,2)), SE_w(2), SE_w(2), 'Color', col_vect(:,2), 'LineWidth', 1.5);
+errorbar(3, nanmean(x_mat(:,3)), SE_w(3), SE_w(3), 'Color', col_vect(:,3), 'LineWidth', 1.5);
 set(gca, 'xticklabel', [])
 %set(gca, 'yticklabel', [])
 box off
@@ -104,24 +106,24 @@ close all
 % Create figure and save for inkscape: Criterion
 yl = [-1.25, 1.25];
 col_vect = [0 0.6 0; 0 0 1; 1 0 0]';
-acc_mat = C_avg';
+x_mat = C_avg';
 fh = figure('color', [1 1 1], 'Position', [0, 0, 140, 140]);
 % get Cousineau within subject SE for plotting:
 % Cancel out between subject variability by subtracting the subject
 % mean from each subject and then adding the grand mean
-data = acc_mat;
+data = x_mat;
 subj_mean = nanmean(data,2);
 grand_mean = nanmean(subj_mean,1);
 data_corr = data - repmat(subj_mean, [1,3]) + repmat(grand_mean, [size(data,1),size(data,2)]);
 SE_w = nanstd(data_corr,0,1)./sqrt(sum(~isnan(data_corr),1));
 SE_b = nanstd(data,0,1)./sqrt(sum(~isnan(data),1));
 
-plot(1, nanmean(acc_mat(:,1)), 'ko', 'MarkerSize', 5, 'MarkerFaceColor', col_vect(:,1)); hold on
-plot(2, nanmean(acc_mat(:,2)), 'ko', 'MarkerSize', 5, 'MarkerFaceColor', col_vect(:,2)); hold on
-plot(3, nanmean(acc_mat(:,3)), 'ko', 'MarkerSize', 5, 'MarkerFaceColor', col_vect(:,3)); hold on
-errorbar(1, nanmean(acc_mat(:,1)), SE_w(1), SE_w(1), 'Color', col_vect(:,1), 'LineWidth', 1.5);
-errorbar(2, nanmean(acc_mat(:,2)), SE_w(2), SE_w(2), 'Color', col_vect(:,2), 'LineWidth', 1.5);
-errorbar(3, nanmean(acc_mat(:,3)), SE_w(3), SE_w(3), 'Color', col_vect(:,3), 'LineWidth', 1.5);
+plot(1, nanmean(x_mat(:,1)), 'ko', 'MarkerSize', 5, 'MarkerFaceColor', col_vect(:,1)); hold on
+plot(2, nanmean(x_mat(:,2)), 'ko', 'MarkerSize', 5, 'MarkerFaceColor', col_vect(:,2)); hold on
+plot(3, nanmean(x_mat(:,3)), 'ko', 'MarkerSize', 5, 'MarkerFaceColor', col_vect(:,3)); hold on
+errorbar(1, nanmean(x_mat(:,1)), SE_w(1), SE_w(1), 'Color', col_vect(:,1), 'LineWidth', 1.5);
+errorbar(2, nanmean(x_mat(:,2)), SE_w(2), SE_w(2), 'Color', col_vect(:,2), 'LineWidth', 1.5);
+errorbar(3, nanmean(x_mat(:,3)), SE_w(3), SE_w(3), 'Color', col_vect(:,3), 'LineWidth', 1.5);
 set(gca, 'xticklabel', [])
 %set(gca, 'yticklabel', [])
 box off
@@ -145,24 +147,24 @@ close all
 yl = [-1.25, 1.25];
 cond_labels = {'2F', 'Fus', 'Fis'};
 col_vect = [0 0.6 0; 0 0 1; 1 0 0]';
-acc_mat = C_avg' + dP_avg'./2; %bias_centre + dp/2 = C
+x_mat = C_avg' + dP_avg'./2; %bias_centre + dp/2 = C
 fh = figure('color', [1 1 1], 'Position', [0, 0, 140, 140]);
 % get Cousineau within subject SE for plotting:
 % Cancel out between subject variability by subtracting the subject
 % mean from each subject and then adding the grand mean
-data = acc_mat;
+data = x_mat;
 subj_mean = nanmean(data,2);
 grand_mean = nanmean(subj_mean,1);
 data_corr = data - repmat(subj_mean, [1,3]) + repmat(grand_mean, [size(data,1),size(data,2)]);
 SE_w = nanstd(data_corr,0,1)./sqrt(sum(~isnan(data_corr),1));
 SE_b = nanstd(data,0,1)./sqrt(sum(~isnan(data),1));
 
-plot(1, nanmean(acc_mat(:,1)), 'ko', 'MarkerSize', 5, 'MarkerFaceColor', col_vect(:,1)); hold on
-plot(2, nanmean(acc_mat(:,2)), 'ko', 'MarkerSize', 5, 'MarkerFaceColor', col_vect(:,2)); hold on
-plot(3, nanmean(acc_mat(:,3)), 'ko', 'MarkerSize', 5, 'MarkerFaceColor', col_vect(:,3)); hold on
-errorbar(1, nanmean(acc_mat(:,1)), SE_w(1), SE_w(1), 'Color', col_vect(:,1), 'LineWidth', 1.5);
-errorbar(2, nanmean(acc_mat(:,2)), SE_w(2), SE_w(2), 'Color', col_vect(:,2), 'LineWidth', 1.5);
-errorbar(3, nanmean(acc_mat(:,3)), SE_w(3), SE_w(3), 'Color', col_vect(:,3), 'LineWidth', 1.5);
+plot(1, nanmean(x_mat(:,1)), 'ko', 'MarkerSize', 5, 'MarkerFaceColor', col_vect(:,1)); hold on
+plot(2, nanmean(x_mat(:,2)), 'ko', 'MarkerSize', 5, 'MarkerFaceColor', col_vect(:,2)); hold on
+plot(3, nanmean(x_mat(:,3)), 'ko', 'MarkerSize', 5, 'MarkerFaceColor', col_vect(:,3)); hold on
+errorbar(1, nanmean(x_mat(:,1)), SE_w(1), SE_w(1), 'Color', col_vect(:,1), 'LineWidth', 1.5);
+errorbar(2, nanmean(x_mat(:,2)), SE_w(2), SE_w(2), 'Color', col_vect(:,2), 'LineWidth', 1.5);
+errorbar(3, nanmean(x_mat(:,3)), SE_w(3), SE_w(3), 'Color', col_vect(:,3), 'LineWidth', 1.5);
 set(gca, 'xticklabel', [])
 %set(gca, 'yticklabel', [])
 box off
@@ -471,25 +473,24 @@ C_avg = squeeze(nanmean(C_yesno(3:6,:,:)));
 yl = [0.9, 2.4];
 cond_labels = {'2F', 'Fus', 'Fis'};
 col_vect = [0 0.6 0; 0 0 1; 1 0 0]';
-acc_mat = dP_avg';
+x_mat = dP_avg';
 fh = figure('color', [1 1 1], 'Position', [0, 0, 140, 140]);
-%distributionPlot_DM([acc_mat],'globalNorm',true,'colormap',1-gray(128),'histOpt',1, 'showMM', 0,'addSpread',2, 'distWidth', 0.95); hold on % histOpt=2 works better for uniform distributions than the default
 % get Cousineau within subject SE for plotting:
 % Cancel out between subject variability by subtracting the subject
 % mean from each subject and then adding the grand mean
-data = acc_mat;
+data = x_mat;
 subj_mean = nanmean(data,2);
 grand_mean = nanmean(subj_mean,1);
 data_corr = data - repmat(subj_mean, [1,3]) + repmat(grand_mean, [size(data,1),size(data,2)]);
 SE_w = nanstd(data_corr,0,1)./sqrt(sum(~isnan(data_corr),1));
 SE_b = nanstd(data,0,1)./sqrt(sum(~isnan(data),1));
 
-plot(1, nanmean(acc_mat(:,1)), 'ko', 'MarkerSize', 5, 'MarkerFaceColor', col_vect(:,1)); hold on
-plot(2, nanmean(acc_mat(:,2)), 'ko', 'MarkerSize', 5, 'MarkerFaceColor', col_vect(:,2)); hold on
-plot(3, nanmean(acc_mat(:,3)), 'ko', 'MarkerSize', 5, 'MarkerFaceColor', col_vect(:,3)); hold on
-errorbar(1, nanmean(acc_mat(:,1)), SE_w(1), SE_w(1), 'Color', col_vect(:,1), 'LineWidth', 1.5);
-errorbar(2, nanmean(acc_mat(:,2)), SE_w(2), SE_w(2), 'Color', col_vect(:,2), 'LineWidth', 1.5);
-errorbar(3, nanmean(acc_mat(:,3)), SE_w(3), SE_w(3), 'Color', col_vect(:,3), 'LineWidth', 1.5);
+plot(1, nanmean(x_mat(:,1)), 'ko', 'MarkerSize', 5, 'MarkerFaceColor', col_vect(:,1)); hold on
+plot(2, nanmean(x_mat(:,2)), 'ko', 'MarkerSize', 5, 'MarkerFaceColor', col_vect(:,2)); hold on
+plot(3, nanmean(x_mat(:,3)), 'ko', 'MarkerSize', 5, 'MarkerFaceColor', col_vect(:,3)); hold on
+errorbar(1, nanmean(x_mat(:,1)), SE_w(1), SE_w(1), 'Color', col_vect(:,1), 'LineWidth', 1.5);
+errorbar(2, nanmean(x_mat(:,2)), SE_w(2), SE_w(2), 'Color', col_vect(:,2), 'LineWidth', 1.5);
+errorbar(3, nanmean(x_mat(:,3)), SE_w(3), SE_w(3), 'Color', col_vect(:,3), 'LineWidth', 1.5);
 set(gca, 'xticklabel', [])
 %set(gca, 'yticklabel', [])
 box off
@@ -513,26 +514,26 @@ close all
 yl = [-1.25, 1.25];
 cond_labels = {'2F', 'Fus', 'Fis'};
 col_vect = [0 0.6 0; 0 0 1; 1 0 0]';
-acc_mat = C_avg';
-acc_mat(:,3) = -acc_mat(:,3);
+x_mat = C_avg';
+x_mat(:,3) = -x_mat(:,3);
 fh = figure('color', [1 1 1], 'Position', [0, 0, 140, 140]);
 %distributionPlot_DM([acc_mat],'globalNorm',true,'colormap',1-gray(128),'histOpt',1, 'showMM', 0,'addSpread',2, 'distWidth', 0.95); hold on % histOpt=2 works better for uniform distributions than the default
 % get Cousineau within subject SE for plotting:
 % Cancel out between subject variability by subtracting the subject
 % mean from each subject and then adding the grand mean
-data = acc_mat;
+data = x_mat;
 subj_mean = nanmean(data,2);
 grand_mean = nanmean(subj_mean,1);
 data_corr = data - repmat(subj_mean, [1,3]) + repmat(grand_mean, [size(data,1),size(data,2)]);
 SE_w = nanstd(data_corr,0,1)./sqrt(sum(~isnan(data_corr),1));
 SE_b = nanstd(data,0,1)./sqrt(sum(~isnan(data),1));
 
-plot(1, nanmean(acc_mat(:,1)), 'ko', 'MarkerSize', 5, 'MarkerFaceColor', col_vect(:,1)); hold on
-plot(2, nanmean(acc_mat(:,2)), 'ko', 'MarkerSize', 5, 'MarkerFaceColor', col_vect(:,2)); hold on
-plot(3, nanmean(acc_mat(:,3)), 'ko', 'MarkerSize', 5, 'MarkerFaceColor', col_vect(:,3)); hold on
-errorbar(1, nanmean(acc_mat(:,1)), SE_w(1), SE_w(1), 'Color', col_vect(:,1), 'LineWidth', 1.5);
-errorbar(2, nanmean(acc_mat(:,2)), SE_w(2), SE_w(2), 'Color', col_vect(:,2), 'LineWidth', 1.5);
-errorbar(3, nanmean(acc_mat(:,3)), SE_w(3), SE_w(3), 'Color', col_vect(:,3), 'LineWidth', 1.5);
+plot(1, nanmean(x_mat(:,1)), 'ko', 'MarkerSize', 5, 'MarkerFaceColor', col_vect(:,1)); hold on
+plot(2, nanmean(x_mat(:,2)), 'ko', 'MarkerSize', 5, 'MarkerFaceColor', col_vect(:,2)); hold on
+plot(3, nanmean(x_mat(:,3)), 'ko', 'MarkerSize', 5, 'MarkerFaceColor', col_vect(:,3)); hold on
+errorbar(1, nanmean(x_mat(:,1)), SE_w(1), SE_w(1), 'Color', col_vect(:,1), 'LineWidth', 1.5);
+errorbar(2, nanmean(x_mat(:,2)), SE_w(2), SE_w(2), 'Color', col_vect(:,2), 'LineWidth', 1.5);
+errorbar(3, nanmean(x_mat(:,3)), SE_w(3), SE_w(3), 'Color', col_vect(:,3), 'LineWidth', 1.5);
 set(gca, 'xticklabel', [])
 %set(gca, 'yticklabel', [])
 box off
@@ -555,26 +556,26 @@ close all
 yl = [-2.25, 2.25];
 cond_labels = {'2F', 'Fus', 'Fis'};
 col_vect = [0 0.6 0; 0 0 1; 1 0 0]';
-acc_mat = C_avg' + dP_avg'./2; %bias_centre + dp/2 = C
-acc_mat(:,3) = -C_avg(3,:)' + dP_avg(3,:)'./2;
+x_mat = C_avg' + dP_avg'./2; %bias_centre + dp/2 = C
+x_mat(:,3) = -C_avg(3,:)' + dP_avg(3,:)'./2;
 fh = figure('color', [1 1 1], 'Position', [0, 0, 140, 140]);
 %distributionPlot_DM([acc_mat],'globalNorm',true,'colormap',1-gray(128),'histOpt',1, 'showMM', 0,'addSpread',2, 'distWidth', 0.95); hold on % histOpt=2 works better for uniform distributions than the default
 % get Cousineau within subject SE for plotting:
 % Cancel out between subject variability by subtracting the subject
 % mean from each subject and then adding the grand mean
-data = acc_mat;
+data = x_mat;
 subj_mean = nanmean(data,2);
 grand_mean = nanmean(subj_mean,1);
 data_corr = data - repmat(subj_mean, [1,3]) + repmat(grand_mean, [size(data,1),size(data,2)]);
 SE_w = nanstd(data_corr,0,1)./sqrt(sum(~isnan(data_corr),1));
 SE_b = nanstd(data,0,1)./sqrt(sum(~isnan(data),1));
 
-plot(1, nanmean(acc_mat(:,1)), 'ko', 'MarkerSize', 5, 'MarkerFaceColor', col_vect(:,1)); hold on
-plot(2, nanmean(acc_mat(:,2)), 'ko', 'MarkerSize', 5, 'MarkerFaceColor', col_vect(:,2)); hold on
-plot(3, nanmean(acc_mat(:,3)), 'ko', 'MarkerSize', 5, 'MarkerFaceColor', col_vect(:,3)); hold on
-errorbar(1, nanmean(acc_mat(:,1)), SE_w(1), SE_w(1), 'Color', col_vect(:,1), 'LineWidth', 1.5);
-errorbar(2, nanmean(acc_mat(:,2)), SE_w(2), SE_w(2), 'Color', col_vect(:,2), 'LineWidth', 1.5);
-errorbar(3, nanmean(acc_mat(:,3)), SE_w(3), SE_w(3), 'Color', col_vect(:,3), 'LineWidth', 1.5);
+plot(1, nanmean(x_mat(:,1)), 'ko', 'MarkerSize', 5, 'MarkerFaceColor', col_vect(:,1)); hold on
+plot(2, nanmean(x_mat(:,2)), 'ko', 'MarkerSize', 5, 'MarkerFaceColor', col_vect(:,2)); hold on
+plot(3, nanmean(x_mat(:,3)), 'ko', 'MarkerSize', 5, 'MarkerFaceColor', col_vect(:,3)); hold on
+errorbar(1, nanmean(x_mat(:,1)), SE_w(1), SE_w(1), 'Color', col_vect(:,1), 'LineWidth', 1.5);
+errorbar(2, nanmean(x_mat(:,2)), SE_w(2), SE_w(2), 'Color', col_vect(:,2), 'LineWidth', 1.5);
+errorbar(3, nanmean(x_mat(:,3)), SE_w(3), SE_w(3), 'Color', col_vect(:,3), 'LineWidth', 1.5);
 set(gca, 'xticklabel', [])
 %set(gca, 'yticklabel', [])
 box off
@@ -638,9 +639,6 @@ cohens_d(3) = nanmean( x(:,2) - x(:,3) ) / ...
     sqrt((nanstd(x(:,2)).^2 + nanstd(x(:,3)).^2)/2);
 cohens_d
 
-% sign rank test
-[p,h,stats] = signrank(x(:,2), x(:,3));
-
 % test assumptions, plot residuals!
 % 1.) Homoscedasticity
 figure('color', 'w')
@@ -686,7 +684,7 @@ dlmwrite('C_mat_stats.txt', C_mat, 'delimiter', '\t');
 cd(oldwd)
 
 % RM-Anova
-C_mat(:,3) = -C_mat(:,3);
+%C_mat(:,3) = -C_mat(:,3);
 x = C_mat;
 xTable = array2table(x, 'VariableNames', ...
     {'Flash_fusion', 'Fusion_illusion', 'Fission_illusion'});
@@ -760,104 +758,9 @@ end
 shapiro_output = [H, pValue, SWstatistic];
 shapiro_output
 
-%% stats Cnoise:
-
-% Save data for SPSS
-oldwd = cd;
-acc_mat = C_avg' + dP_avg'./2; %bias_centre + dp/2 = C
-acc_mat(:,3) = -C_avg(3,:)' + dP_avg(3,:)'./2;
-C_mat = acc_mat;
-cd(fullfile(data_dir, 'yn_beh_stats'));
-dlmwrite('Cnoise_mat_stats.txt', C_mat, 'delimiter', '\t');
-cd(oldwd)
-
-% RM-Anova
-x = C_mat;
-xTable = array2table(x, 'VariableNames', ...
-    {'Flash_fusion', 'Fusion_illusion', 'Fission_illusion'});
-% Create design table
-withinDesign = table(...
-    categorical({'Flash_fusion'; 'Fusion_illusion'; 'Fission_illusion'}),...
-    'VariableNames',{'illusion'});
-% create model object
-rm = fitrm(xTable,'Flash_fusion-Fission_illusion ~ 1','WithinDesign',withinDesign);
-% run repeated measures anova (this gives the same results as ezANOVA with
-% type 2 sum of squares in R!
-ranovaTable = ranova(rm,'WithinModel','illusion');
-
-% Test sphericity assumption.
-fprintf('\nMauchly`s test of sphericity:\n')
-tbl = mauchly(rm)
-
-% t-tests
-fprintf('\ncompare flash fusion to fusion illusion\n')
-[H,P,CI,STATS] = ttest(x(:,1), x(:,2))
-fprintf('\ncompare flash fusion to fission illusion\n')
-[H,P,CI,STATS] = ttest(x(:,1), x(:,3))
-fprintf('\ncompare fusion illusion to fission illusion\n')
-[~,P,CI,STATS] = ttest(x(:,2), x(:,3))
-
-% effect size
-cohens_d = nan(3,1);
-cohens_d(1) = nanmean( x(:,1) - x(:,2) ) / ...
-    sqrt((nanstd(x(:,1)).^2 + nanstd(x(:,2)).^2)/2);
-cohens_d(2) = nanmean( x(:,1) - x(:,3) ) / ...
-    sqrt((nanstd(x(:,1)).^2 + nanstd(x(:,3)).^2)/2);
-cohens_d(3) = nanmean( x(:,2) - x(:,3) ) / ...
-    sqrt((nanstd(x(:,2)).^2 + nanstd(x(:,3)).^2)/2);
-cohens_d
-
-% sign rank test
-[p,h,stats] = signrank(x(:,2), x(:,3));
-
-% test assumptions, plot residuals!
-% 1.) Homoscedasticity
-figure('color', 'w')
-residuals = x - repmat(nanmean(x,1),[size(x,1),1]);
-titles = {'Flash_fusion'; 'Fusion_illusion'; 'Fission_illusion'};
-for i = 1:size(x, 2);
-    subplot(1,3,i);
-    scatter(1:size(residuals,1), residuals(:,i), 'ro', 'filled');
-    title(titles{i});
-    if i > 4, xlabel('Subject'); end;
-    if ismember(i, [1,5,9,13]), ylabel('Residual value'); end;
-end
-suptitle('Residual plots');
-
-% Plot residual quantiles versus normal distribution
-% 2.) Normality
-figure('color', 'w');
-for i = 1:size(x, 2);
-    subplot(1,3,i);
-    qqplot(residuals(:,i));
-    title(titles{i});
-    if i <= 4, xlabel(''); end;
-    if ~ismember(i, [1,5,9,13]), ylabel(''); end;
-end
-suptitle('Residual plots');
-
-% Test normality with shapiro wilk test (very conservative test!)
-[H, pValue, SWstatistic] = deal(nan(size(residuals,2),1));
-for i = 1:size(x, 2);
-    alpha = 0.001; %as it's conservative let this be quite small
-    [H(i), pValue(i), SWstatistic(i)] = swtest(residuals(:,i), alpha);
-end
-shapiro_output = [H, pValue, SWstatistic];
-shapiro_output
 
 
 %% -------Yes-no threshold-------
-
-% Name of directory to save things to
-an_fold = 'erps_ynt';
-
-% useful variables
-subjvect = {'701', '702', '703', '704', '705', '706', '708', '709', '712', '714', ...
-    '715', '716', '717', '718', '719', '720', '722', '725', '726', '727'};
-N        = 20;
-task     = 'yn_threshold';
-
-condvect = [3,6,8];
 
 % Load in trial indices to keep
 load(fullfile(data_dir, 'd701to727_ynt.mat'))
@@ -922,24 +825,24 @@ end
 yl = [0.9, 2.4];
 cond_labels = {'2F', 'Fus', 'Fis'};
 col_vect = [0 0.6 0; 0 0 1; 1 0 0]';
-acc_mat = dP_mat;
+x_mat = dP_mat;
 fh = figure('color', [1 1 1], 'Position', [0, 0, 140, 140]);
 % get Cousineau within subject SE for plotting:
 % Cancel out between subject variability by subtracting the subject
 % mean from each subject and then adding the grand mean
-data = acc_mat;
+data = x_mat;
 subj_mean = nanmean(data,2);
 grand_mean = nanmean(subj_mean,1);
 data_corr = data - repmat(subj_mean, [1,3]) + repmat(grand_mean, [size(data,1),size(data,2)]);
 SE_w = nanstd(data_corr,0,1)./sqrt(sum(~isnan(data_corr),1));
 SE_b = nanstd(data,0,1)./sqrt(sum(~isnan(data),1));
 
-plot(1, nanmean(acc_mat(:,1)), 'ko', 'MarkerSize', 5, 'MarkerFaceColor', col_vect(:,1)); hold on
-plot(2, nanmean(acc_mat(:,2)), 'ko', 'MarkerSize', 5, 'MarkerFaceColor', col_vect(:,2)); hold on
-plot(3, nanmean(acc_mat(:,3)), 'ko', 'MarkerSize', 5, 'MarkerFaceColor', col_vect(:,3)); hold on
-errorbar(1, nanmean(acc_mat(:,1)), SE_w(1), SE_w(1), 'Color', col_vect(:,1), 'LineWidth', 1.5);
-errorbar(2, nanmean(acc_mat(:,2)), SE_w(2), SE_w(2), 'Color', col_vect(:,2), 'LineWidth', 1.5);
-errorbar(3, nanmean(acc_mat(:,3)), SE_w(3), SE_w(3), 'Color', col_vect(:,3), 'LineWidth', 1.5);
+plot(1, nanmean(x_mat(:,1)), 'ko', 'MarkerSize', 5, 'MarkerFaceColor', col_vect(:,1)); hold on
+plot(2, nanmean(x_mat(:,2)), 'ko', 'MarkerSize', 5, 'MarkerFaceColor', col_vect(:,2)); hold on
+plot(3, nanmean(x_mat(:,3)), 'ko', 'MarkerSize', 5, 'MarkerFaceColor', col_vect(:,3)); hold on
+errorbar(1, nanmean(x_mat(:,1)), SE_w(1), SE_w(1), 'Color', col_vect(:,1), 'LineWidth', 1.5);
+errorbar(2, nanmean(x_mat(:,2)), SE_w(2), SE_w(2), 'Color', col_vect(:,2), 'LineWidth', 1.5);
+errorbar(3, nanmean(x_mat(:,3)), SE_w(3), SE_w(3), 'Color', col_vect(:,3), 'LineWidth', 1.5);
 set(gca, 'xticklabel', [])
 %set(gca, 'yticklabel', [])
 box off
@@ -964,25 +867,25 @@ close all
 yl = [-1.25, 1.25];
 cond_labels = {'2F', 'Fus', 'Fis'};
 col_vect = [0 0.6 0; 0 0 1; 1 0 0]';
-acc_mat = C_mat;
-acc_mat(:,3) = -acc_mat(:,3);
+x_mat = C_mat;
+x_mat(:,3) = -x_mat(:,3);
 fh = figure('color', [1 1 1], 'Position', [0, 0, 140, 140]);
 % get Cousineau within subject SE for plotting:
 % Cancel out between subject variability by subtracting the subject
 % mean from each subject and then adding the grand mean
-data = acc_mat;
+data = x_mat;
 subj_mean = nanmean(data,2);
 grand_mean = nanmean(subj_mean,1);
 data_corr = data - repmat(subj_mean, [1,3]) + repmat(grand_mean, [size(data,1),size(data,2)]);
 SE_w = nanstd(data_corr,0,1)./sqrt(sum(~isnan(data_corr),1));
 SE_b = nanstd(data,0,1)./sqrt(sum(~isnan(data),1));
 
-plot(1, nanmean(acc_mat(:,1)), 'ko', 'MarkerSize', 5, 'MarkerFaceColor', col_vect(:,1)); hold on
-plot(2, nanmean(acc_mat(:,2)), 'ko', 'MarkerSize', 5, 'MarkerFaceColor', col_vect(:,2)); hold on
-plot(3, nanmean(acc_mat(:,3)), 'ko', 'MarkerSize', 5, 'MarkerFaceColor', col_vect(:,3)); hold on
-errorbar(1, nanmean(acc_mat(:,1)), SE_w(1), SE_w(1), 'Color', col_vect(:,1), 'LineWidth', 1.5);
-errorbar(2, nanmean(acc_mat(:,2)), SE_w(2), SE_w(2), 'Color', col_vect(:,2), 'LineWidth', 1.5);
-errorbar(3, nanmean(acc_mat(:,3)), SE_w(3), SE_w(3), 'Color', col_vect(:,3), 'LineWidth', 1.5);
+plot(1, nanmean(x_mat(:,1)), 'ko', 'MarkerSize', 5, 'MarkerFaceColor', col_vect(:,1)); hold on
+plot(2, nanmean(x_mat(:,2)), 'ko', 'MarkerSize', 5, 'MarkerFaceColor', col_vect(:,2)); hold on
+plot(3, nanmean(x_mat(:,3)), 'ko', 'MarkerSize', 5, 'MarkerFaceColor', col_vect(:,3)); hold on
+errorbar(1, nanmean(x_mat(:,1)), SE_w(1), SE_w(1), 'Color', col_vect(:,1), 'LineWidth', 1.5);
+errorbar(2, nanmean(x_mat(:,2)), SE_w(2), SE_w(2), 'Color', col_vect(:,2), 'LineWidth', 1.5);
+errorbar(3, nanmean(x_mat(:,3)), SE_w(3), SE_w(3), 'Color', col_vect(:,3), 'LineWidth', 1.5);
 set(gca, 'xticklabel', [])
 %set(gca, 'yticklabel', [])
 box off
@@ -1006,25 +909,25 @@ close all
 yl = [-2.25, 2.25];
 cond_labels = {'2F', 'Fus', 'Fis'};
 col_vect = [0 0.6 0; 0 0 1; 1 0 0]';
-acc_mat = actualC;
-acc_mat(:,3) = -C_mat(:,3) + dP_mat(:,3)./2;
+x_mat = actualC;
+x_mat(:,3) = -C_mat(:,3) + dP_mat(:,3)./2;
 fh = figure('color', [1 1 1], 'Position', [0, 0, 140, 140]);
 % get Cousineau within subject SE for plotting:
 % Cancel out between subject variability by subtracting the subject
 % mean from each subject and then adding the grand mean
-data = acc_mat;
+data = x_mat;
 subj_mean = nanmean(data,2);
 grand_mean = nanmean(subj_mean,1);
 data_corr = data - repmat(subj_mean, [1,3]) + repmat(grand_mean, [size(data,1),size(data,2)]);
 SE_w = nanstd(data_corr,0,1)./sqrt(sum(~isnan(data_corr),1));
 SE_b = nanstd(data,0,1)./sqrt(sum(~isnan(data),1));
 
-plot(1, nanmean(acc_mat(:,1)), 'ko', 'MarkerSize', 5, 'MarkerFaceColor', col_vect(:,1)); hold on
-plot(2, nanmean(acc_mat(:,2)), 'ko', 'MarkerSize', 5, 'MarkerFaceColor', col_vect(:,2)); hold on
-plot(3, nanmean(acc_mat(:,3)), 'ko', 'MarkerSize', 5, 'MarkerFaceColor', col_vect(:,3)); hold on
-errorbar(1, nanmean(acc_mat(:,1)), SE_w(1), SE_w(1), 'Color', col_vect(:,1), 'LineWidth', 1.5);
-errorbar(2, nanmean(acc_mat(:,2)), SE_w(2), SE_w(2), 'Color', col_vect(:,2), 'LineWidth', 1.5);
-errorbar(3, nanmean(acc_mat(:,3)), SE_w(3), SE_w(3), 'Color', col_vect(:,3), 'LineWidth', 1.5);
+plot(1, nanmean(x_mat(:,1)), 'ko', 'MarkerSize', 5, 'MarkerFaceColor', col_vect(:,1)); hold on
+plot(2, nanmean(x_mat(:,2)), 'ko', 'MarkerSize', 5, 'MarkerFaceColor', col_vect(:,2)); hold on
+plot(3, nanmean(x_mat(:,3)), 'ko', 'MarkerSize', 5, 'MarkerFaceColor', col_vect(:,3)); hold on
+errorbar(1, nanmean(x_mat(:,1)), SE_w(1), SE_w(1), 'Color', col_vect(:,1), 'LineWidth', 1.5);
+errorbar(2, nanmean(x_mat(:,2)), SE_w(2), SE_w(2), 'Color', col_vect(:,2), 'LineWidth', 1.5);
+errorbar(3, nanmean(x_mat(:,3)), SE_w(3), SE_w(3), 'Color', col_vect(:,3), 'LineWidth', 1.5);
 set(gca, 'xticklabel', [])
 %set(gca, 'yticklabel', [])
 box off
@@ -1126,85 +1029,8 @@ shapiro_output
 %% stats C:
 
 % RM-Anova
-C_mat(:,3) = -C_mat(:,3);
+%C_mat(:,3) = -C_mat(:,3);
 x = C_mat;
-xTable = array2table(x, 'VariableNames', ...
-    {'Flash_fusion', 'Fusion_illusion', 'Fission_illusion'});
-% Create design table
-withinDesign = table(...
-    categorical({'Flash_fusion'; 'Fusion_illusion'; 'Fission_illusion'}),...
-    'VariableNames',{'illusion'});
-% create model object
-rm = fitrm(xTable,'Flash_fusion-Fission_illusion ~ 1','WithinDesign',withinDesign);
-% run repeated measures anova (this gives the same results as ezANOVA with
-% type 2 sum of squares in R!
-ranovaTable = ranova(rm,'WithinModel','illusion');
-
-% Test sphericity assumption.
-fprintf('\nMauchly`s test of sphericity:\n')
-tbl = mauchly(rm)
-
-% t-tests
-fprintf('\ncompare flash fusion to fusion illusion\n')
-[H,P,CI,STATS] = ttest(x(:,1), x(:,2))
-fprintf('\ncompare flash fusion to fission illusion\n')
-[H,P,CI,STATS] = ttest(x(:,1), x(:,3))
-fprintf('\ncompare fusion illusion to fission illusion\n')
-[~,P,CI,STATS] = ttest(x(:,2), x(:,3))
-
-% effect size
-cohens_d = nan(3,1);
-cohens_d(1) = nanmean( x(:,1) - x(:,2) ) / ...
-    sqrt((nanstd(x(:,1)).^2 + nanstd(x(:,2)).^2)/2);
-cohens_d(2) = nanmean( x(:,1) - x(:,3) ) / ...
-    sqrt((nanstd(x(:,1)).^2 + nanstd(x(:,3)).^2)/2);
-cohens_d(3) = nanmean( x(:,2) - x(:,3) ) / ...
-    sqrt((nanstd(x(:,2)).^2 + nanstd(x(:,3)).^2)/2);
-cohens_d
-% sign rank test
-[p,h,stats] = signrank(x(:,2), x(:,3));
-
-% test assumptions, plot residuals!
-% 1.) Homoscedasticity
-figure('color', 'w')
-residuals = x - repmat(nanmean(x,1),[size(x,1),1]);
-titles = {'Flash_fusion'; 'Fusion_illusion'; 'Fission_illusion'};
-for i = 1:size(x, 2);
-    subplot(1,3,i);
-    scatter(1:size(residuals,1), residuals(:,i), 'ro', 'filled');
-    title(titles{i});
-    if i > 4, xlabel('Subject'); end;
-    if ismember(i, [1,5,9,13]), ylabel('Residual value'); end;
-end
-suptitle('Residual plots');
-
-% Plot residual quantiles versus normal distribution
-% 2.) Normality
-figure('color', 'w');
-for i = 1:size(x, 2);
-    subplot(1,3,i);
-    qqplot(residuals(:,i));
-    title(titles{i});
-    if i <= 4, xlabel(''); end;
-    if ~ismember(i, [1,5,9,13]), ylabel(''); end;
-end
-suptitle('Residual plots');
-
-% Test normality with shapiro wilk test (very conservative test!)
-[H, pValue, SWstatistic] = deal(nan(size(residuals,2),1));
-for i = 1:size(x, 2);
-    alpha = 0.001; %as it's conservative let this be quite small
-    [H(i), pValue(i), SWstatistic(i)] = swtest(residuals(:,i), alpha);
-end
-shapiro_output = [H, pValue, SWstatistic];
-shapiro_output
-
-
-
-%% stats Cnoise:
-
-% RM-Anova
-x = acc_mat;
 xTable = array2table(x, 'VariableNames', ...
     {'Flash_fusion', 'Fusion_illusion', 'Fission_illusion'});
 % Create design table
