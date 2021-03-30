@@ -25,11 +25,11 @@ mkdir(fig_dir);
 
 load(fullfile( data_dir, '2IFC', 'SD_params.mat' ));
 
-dP_yesno = dP_adj;
-C_yesno = C_adj;
+dP_2ifc = dP_adj;
+C_2ifc = C_adj;
 
-dP_avg = squeeze(nanmean(dP_yesno(3:6,:,:)));
-C_avg = squeeze(nanmean(C_yesno(3:6,:,:)));
+dP_avg = squeeze(nanmean(dP_2ifc(3:6,:,:)));
+C_avg = squeeze(nanmean(C_2ifc(3:6,:,:)));
 
 
 % Create figure and save for inkscape: dPrime
@@ -66,7 +66,6 @@ xlim([0.5 3.5])
 
 % Export figures
 fname = 'beh_dP_adj_2ifc';
-export_fig(fh, fullfile(fig_dir, fname), '-tiff', '-m2.5');
 fh.Renderer = 'painters'; saveas(fh,  fullfile(fig_dir, [fname, '_svg.svg']))
 
 close all
@@ -108,7 +107,6 @@ xlim([0.5 3.5])
 % Export figures
 fname = 'beh_C_adj_2ifc';
 mkdir(fig_dir);
-export_fig(fh, fullfile(fig_dir, fname), '-tiff', '-m2.5');
 fh.Renderer = 'painters'; saveas(fh,  fullfile(fig_dir, [fname, '_svg.svg']))
 
 close all
@@ -151,7 +149,6 @@ xlim([0.5 3.5])
 % Export figures
 fname = 'beh_actualC_adj_2ifc';
 mkdir(fig_dir);
-export_fig(fh, fullfile(fig_dir, fname), '-tiff', '-m2.5');
 fh.Renderer = 'painters'; saveas(fh,  fullfile(fig_dir, [fname, '_svg.svg']))
 
 close all
@@ -172,7 +169,8 @@ cd(oldwd)
 
 % RM-Anova
 threshold_matrix = dP_mat;
-absbiasTable = array2table(threshold_matrix, 'VariableNames', {'Flash_fusion', 'Fusion_illusion', 'Fission_illusion'});
+absbiasTable = array2table(threshold_matrix, 'VariableNames', ...
+    {'Flash_fusion', 'Fusion_illusion', 'Fission_illusion'});
 % Create design table
 withinDesign = table(...
     categorical({'Flash_fusion'; 'Fusion_illusion'; 'Fission_illusion'}),...
@@ -497,7 +495,6 @@ xlim([0.5 3.5])
 % Export figures
 fname = 'beh_dP_adj';
 mkdir(fig_dir);
-export_fig(fh, fullfile(fig_dir, fname), '-tiff', '-m2.5');
 fh.Renderer = 'painters'; saveas(fh,  fullfile(fig_dir, [fname, '_svg.svg']))
 
 close all
@@ -541,7 +538,6 @@ xlim([0.5 3.5])
 % Export figures
 fname = 'beh_C_adj_2f2s_as_noise';
 mkdir(fig_dir);
-export_fig(fh, fullfile(fig_dir, fname), '-tiff', '-m2.5');
 fh.Renderer = 'painters'; saveas(fh,  fullfile(fig_dir, [fname, '_svg.svg']))
 
 close all
@@ -584,7 +580,6 @@ xlim([0.5 3.5])
 % Export figures
 fname = 'beh_actualC_adj_2f2s_as_noise';
 mkdir(fig_dir);
-export_fig(fh, fullfile(fig_dir, fname), '-tiff', '-m2.5');
 fh.Renderer = 'painters'; saveas(fh,  fullfile(fig_dir, [fname, '_svg.svg']))
 
 close all
@@ -964,7 +959,6 @@ ylim(yl)
 % Export figures
 fname = 'dP_adj_ynt';
 mkdir(fig_dir);
-export_fig(fh, fullfile(fig_dir, fname), '-tiff', '-m2.5');
 fh.Renderer = 'painters'; saveas(fh,  fullfile(fig_dir, [fname, '_svg.svg']))
 
 close all
@@ -1007,7 +1001,6 @@ ylim(yl)
 % Export figures
 fname = 'C_adj_ynt_2f2s_as_noise';
 mkdir(fig_dir);
-export_fig(fh, fullfile(fig_dir, fname), '-tiff', '-m2.5');
 fh.Renderer = 'painters'; saveas(fh,  fullfile(fig_dir, [fname, '_svg.svg']))
 
 close all
@@ -1051,7 +1044,6 @@ ylim(yl)
 % Export figures
 fname = 'actualC_adj_ynt_2f2s_as_noise';
 mkdir(fig_dir);
-export_fig(fh, fullfile(fig_dir, fname), '-tiff', '-m2.5');
 fh.Renderer = 'painters'; saveas(fh,  fullfile(fig_dir, [fname, '_svg.svg']))
 
 close all
