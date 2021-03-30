@@ -12,6 +12,7 @@ close all
 
 
 addpath(genpath('dfi'))
+dfi_startup
 data_dir = fullfile('dfi_experiment_data', 'data', 'experiment');
 fig_dir = fullfile('dfi_experiment_figures', 'Paper_figures', 'iAF', 'beh');
 mkdir(fig_dir);
@@ -853,6 +854,7 @@ end
 shapiro_output = [H, pValue, SWstatistic];
 shapiro_output
 
+
 %% -------Yes-no threshold-------
 
 % Name of directory to save things to
@@ -865,22 +867,27 @@ N        = 20;
 task     = 'yn_threshold';
 
 condvect = [3,6,8];
-cond_labels = {'2F', 'Fus', 'Fis'};
-
 
 % Load in trial indices to keep
-load(fullfile(data_dir, 'eeg_stim_lock', 'ynt_trial_indeces_hands_matched_rt500.mat'))
+load(fullfile(data_dir, 'd701to727_ynt.mat'))
+
+
+% delete no response and bad response trials
+draw  = dall;
+dall(dall.resp  == 0, :) = [];
+dall(dall.badRT ~= 0, :) = [];
+dall(dall.RT < 0.1,:)    = [];
 
 
 % SOA distribution
-tabulate(dall_stim.soa)
+tabulate(dall.soa)
 soavect = nan(20,3);
 trlids = [3,6,8];
-partvect = unique(dall_stim.partid);
+partvect = unique(dall.partid);
 for isubj = 1:20
     for icond = 1:3
-        soavect(isubj,icond) = nanmean(unique(dall_stim.soa(...
-            dall_stim.partid == partvect(isubj) & dall_stim.trlid == trlids(icond))));
+        soavect(isubj,icond) = nanmean(unique(dall.soa(...
+            dall.partid == partvect(isubj) & dall.trlid == trlids(icond))));
     end
 end
 
@@ -895,7 +902,7 @@ pC_mat = nan(20,3);
 actualC = nan(20,3);
 for isubj = 1:20
     
-    beh = dall_stim(dall_stim.partid == partvect(isubj),:);
+    beh = dall(dall.partid == partvect(isubj),:);
     % 3.1) Type 1 signal detection parameters
     %S %N
     [~,sdm23] = dfi_SDM(beh,  3, 2, 0);
