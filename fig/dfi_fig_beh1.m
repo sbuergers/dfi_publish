@@ -1,4 +1,5 @@
 % Behavioural statistics and figures for dprime and bias.
+% "Creates" Supplementary Table 3
 %
 % Parent script(s): 
 %   dfi_sdt_analyses.m
