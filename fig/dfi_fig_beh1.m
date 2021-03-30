@@ -67,7 +67,6 @@ yl = [0.9, 2.4];
 col_vect = [0 0.6 0; 0 0 1; 1 0 0]';
 acc_mat = dP_avg';
 fh = figure('color', [1 1 1], 'Position', [0, 0, 140, 140]);
-%distributionPlot_DM([acc_mat],'globalNorm',true,'colormap',1-gray(128),'histOpt',1, 'showMM', 0,'addSpread',2, 'distWidth', 0.95); hold on % histOpt=2 works better for uniform distributions than the default
 % get Cousineau within subject SE for plotting:
 % Cancel out between subject variability by subtracting the subject
 % mean from each subject and then adding the grand mean
@@ -107,7 +106,6 @@ yl = [-1.25, 1.25];
 col_vect = [0 0.6 0; 0 0 1; 1 0 0]';
 acc_mat = C_avg';
 fh = figure('color', [1 1 1], 'Position', [0, 0, 140, 140]);
-%distributionPlot_DM([acc_mat],'globalNorm',true,'colormap',1-gray(128),'histOpt',1, 'showMM', 0,'addSpread',2, 'distWidth', 0.95); hold on % histOpt=2 works better for uniform distributions than the default
 % get Cousineau within subject SE for plotting:
 % Cancel out between subject variability by subtracting the subject
 % mean from each subject and then adding the grand mean
@@ -149,7 +147,6 @@ cond_labels = {'2F', 'Fus', 'Fis'};
 col_vect = [0 0.6 0; 0 0 1; 1 0 0]';
 acc_mat = C_avg' + dP_avg'./2; %bias_centre + dp/2 = C
 fh = figure('color', [1 1 1], 'Position', [0, 0, 140, 140]);
-%distributionPlot_DM([acc_mat],'globalNorm',true,'colormap',1-gray(128),'histOpt',1, 'showMM', 0,'addSpread',2, 'distWidth', 0.95); hold on % histOpt=2 works better for uniform distributions than the default
 % get Cousineau within subject SE for plotting:
 % Cancel out between subject variability by subtracting the subject
 % mean from each subject and then adding the grand mean
@@ -198,8 +195,8 @@ dlmwrite('dP_mat_stats.txt', dP_mat, 'delimiter', '\t');
 cd(oldwd)
 
 % RM-Anova
-threshold_matrix = dP_mat;
-absbiasTable = array2table(threshold_matrix, 'VariableNames', ...
+x = dP_mat;
+absbiasTable = array2table(x, 'VariableNames', ...
     {'Flash_fusion', 'Fusion_illusion', 'Fission_illusion'});
 % Create design table
 withinDesign = table(...
@@ -210,13 +207,6 @@ rm = fitrm(absbiasTable,'Flash_fusion-Fission_illusion ~ 1','WithinDesign',withi
 % run repeated measures anova (this gives the same results as ezANOVA with
 % type 2 sum of squares in R!
 ranovaTable = ranova(rm,'WithinModel','illusion');
-% Note that given that this table is balanced there is no difference
-% between type I, II or III sum of squares, this only occurs when data is
-% unbalanced. Generally II and III are preferable over I, as they take into
-% account other main effects assuming no interactions and other main
-% effects and interactions respectively (if there is an interaction main
-% effects are not really interpretable). See:
-% https://mcfromnz.wordpress.com/2011/03/02/anova-type-iiiiii-ss-explained/
 
 % Test sphericity assumption.
 fprintf('\nMauchly`s test of sphericity:\n')
@@ -224,31 +214,31 @@ tbl = mauchly(rm)
 
 % t-tests
 fprintf('\ncompare flash fusion to fusion illusion\n')
-[H,P,CI,STATS] = ttest(threshold_matrix(:,1), threshold_matrix(:,2))
+[H,P,CI,STATS] = ttest(x(:,1), x(:,2))
 fprintf('\ncompare flash fusion to fission illusion\n')
-[H,P,CI,STATS] = ttest(threshold_matrix(:,1), threshold_matrix(:,3))
+[H,P,CI,STATS] = ttest(x(:,1), x(:,3))
 fprintf('\ncompare fusion illusion to fission illusion\n')
-[~,P,CI,STATS] = ttest(threshold_matrix(:,2), threshold_matrix(:,3))
+[~,P,CI,STATS] = ttest(x(:,2), x(:,3))
 
 % effect size
 cohens_d = nan(3,1);
-cohens_d(1) = nanmean( threshold_matrix(:,1) - threshold_matrix(:,2) ) / ...
-    sqrt((nanstd(threshold_matrix(:,1)).^2 + nanstd(threshold_matrix(:,2)).^2)/2);
-cohens_d(2) = nanmean( threshold_matrix(:,1) - threshold_matrix(:,3) ) / ...
-    sqrt((nanstd(threshold_matrix(:,1)).^2 + nanstd(threshold_matrix(:,3)).^2)/2);
-cohens_d(3) = nanmean( threshold_matrix(:,2) - threshold_matrix(:,3) ) / ...
-    sqrt((nanstd(threshold_matrix(:,2)).^2 + nanstd(threshold_matrix(:,3)).^2)/2);
+cohens_d(1) = nanmean( x(:,1) - x(:,2) ) / ...
+    sqrt((nanstd(x(:,1)).^2 + nanstd(x(:,2)).^2)/2);
+cohens_d(2) = nanmean( x(:,1) - x(:,3) ) / ...
+    sqrt((nanstd(x(:,1)).^2 + nanstd(x(:,3)).^2)/2);
+cohens_d(3) = nanmean( x(:,2) - x(:,3) ) / ...
+    sqrt((nanstd(x(:,2)).^2 + nanstd(x(:,3)).^2)/2);
 cohens_d
 
 % sign rank test
-[p,h,stats] = signrank(threshold_matrix(:,2), threshold_matrix(:,3));
+[p,h,stats] = signrank(x(:,2), x(:,3));
 
 % test assumptions, plot residuals!
 % 1.) Homoscedasticity
 figure('color', 'w')
-residuals = threshold_matrix - repmat(nanmean(threshold_matrix,1),[size(threshold_matrix,1),1]);
+residuals = x - repmat(nanmean(x,1),[size(x,1),1]);
 titles = {'Flash_fusion'; 'Fusion_illusion'; 'Fission_illusion'};
-for i = 1:size(threshold_matrix, 2);
+for i = 1:size(x, 2);
     subplot(1,3,i);
     scatter(1:size(residuals,1), residuals(:,i), 'ro', 'filled');
     title(titles{i});
@@ -260,7 +250,7 @@ suptitle('Residual plots');
 % Plot residual quantiles versus normal distribution
 % 2.) Normality
 figure('color', 'w');
-for i = 1:size(threshold_matrix, 2);
+for i = 1:size(x, 2);
     subplot(1,3,i);
     qqplot(residuals(:,i));
     title(titles{i});
@@ -271,7 +261,7 @@ suptitle('Residual plots');
 
 % Test normality with shapiro wilk test (very conservative test!)
 [H, pValue, SWstatistic] = deal(nan(size(residuals,2),1));
-for i = 1:size(threshold_matrix, 2);
+for i = 1:size(x, 2);
     alpha = 0.001; %as it's conservative let this be quite small
     [H(i), pValue(i), SWstatistic(i)] = swtest(residuals(:,i), alpha);
 end
@@ -305,8 +295,9 @@ dlmwrite('C_mat_stats.txt', C_mat, 'delimiter', '\t');
 cd(oldwd)
 
 % RM-Anova
-threshold_matrix = C_mat;
-absbiasTable = array2table(threshold_matrix, 'VariableNames', {'Flash_fusion', 'Fusion_illusion', 'Fission_illusion'});
+x = C_mat;
+absbiasTable = array2table(x, 'VariableNames', ...
+    {'Flash_fusion', 'Fusion_illusion', 'Fission_illusion'});
 % Create design table
 withinDesign = table(...
     categorical({'Flash_fusion'; 'Fusion_illusion'; 'Fission_illusion'}),...
@@ -316,13 +307,6 @@ rm = fitrm(absbiasTable,'Flash_fusion-Fission_illusion ~ 1','WithinDesign',withi
 % run repeated measures anova (this gives the same results as ezANOVA with
 % type 2 sum of squares in R!
 ranovaTable = ranova(rm,'WithinModel','illusion');
-% Note that given that this table is balanced there is no difference
-% between type I, II or III sum of squares, this only occurs when data is
-% unbalanced. Generally II and III are preferable over I, as they take into
-% account other main effects assuming no interactions and other main
-% effects and interactions respectively (if there is an interaction main
-% effects are not really interpretable). See:
-% https://mcfromnz.wordpress.com/2011/03/02/anova-type-iiiiii-ss-explained/
 
 % Test sphericity assumption.
 fprintf('\nMauchly`s test of sphericity:\n')
@@ -330,31 +314,31 @@ tbl = mauchly(rm)
 
 % t-tests
 fprintf('\ncompare flash fusion to fusion illusion\n')
-[H,P,CI,STATS] = ttest(threshold_matrix(:,1), threshold_matrix(:,2))
+[H,P,CI,STATS] = ttest(x(:,1), x(:,2))
 fprintf('\ncompare flash fusion to fission illusion\n')
-[H,P,CI,STATS] = ttest(threshold_matrix(:,1), threshold_matrix(:,3))
+[H,P,CI,STATS] = ttest(x(:,1), x(:,3))
 fprintf('\ncompare fusion illusion to fission illusion\n')
-[~,P,CI,STATS] = ttest(threshold_matrix(:,2), threshold_matrix(:,3))
+[~,P,CI,STATS] = ttest(x(:,2), x(:,3))
 
 % effect size
 cohens_d = nan(3,1);
-cohens_d(1) = nanmean( threshold_matrix(:,1) - threshold_matrix(:,2) ) / ...
-    sqrt((nanstd(threshold_matrix(:,1)).^2 + nanstd(threshold_matrix(:,2)).^2)/2);
-cohens_d(2) = nanmean( threshold_matrix(:,1) - threshold_matrix(:,3) ) / ...
-    sqrt((nanstd(threshold_matrix(:,1)).^2 + nanstd(threshold_matrix(:,3)).^2)/2);
-cohens_d(3) = nanmean( threshold_matrix(:,2) - threshold_matrix(:,3) ) / ...
-    sqrt((nanstd(threshold_matrix(:,2)).^2 + nanstd(threshold_matrix(:,3)).^2)/2);
+cohens_d(1) = nanmean( x(:,1) - x(:,2) ) / ...
+    sqrt((nanstd(x(:,1)).^2 + nanstd(x(:,2)).^2)/2);
+cohens_d(2) = nanmean( x(:,1) - x(:,3) ) / ...
+    sqrt((nanstd(x(:,1)).^2 + nanstd(x(:,3)).^2)/2);
+cohens_d(3) = nanmean( x(:,2) - x(:,3) ) / ...
+    sqrt((nanstd(x(:,2)).^2 + nanstd(x(:,3)).^2)/2);
 cohens_d
 
 % sign rank test
-[p,h,stats] = signrank(threshold_matrix(:,2), threshold_matrix(:,3));
+[p,h,stats] = signrank(x(:,2), x(:,3));
 
 % test assumptions, plot residuals!
 % 1.) Homoscedasticity
 figure('color', 'w')
-residuals = threshold_matrix - repmat(nanmean(threshold_matrix,1),[size(threshold_matrix,1),1]);
+residuals = x - repmat(nanmean(x,1),[size(x,1),1]);
 titles = {'Flash_fusion'; 'Fusion_illusion'; 'Fission_illusion'};
-for i = 1:size(threshold_matrix, 2);
+for i = 1:size(x, 2);
     subplot(1,3,i);
     scatter(1:size(residuals,1), residuals(:,i), 'ro', 'filled');
     title(titles{i});
@@ -366,7 +350,7 @@ suptitle('Residual plots');
 % Plot residual quantiles versus normal distribution
 % 2.) Normality
 figure('color', 'w');
-for i = 1:size(threshold_matrix, 2);
+for i = 1:size(x, 2);
     subplot(1,3,i);
     qqplot(residuals(:,i));
     title(titles{i});
@@ -377,7 +361,7 @@ suptitle('Residual plots');
 
 % Test normality with shapiro wilk test (very conservative test!)
 [H, pValue, SWstatistic] = deal(nan(size(residuals,2),1));
-for i = 1:size(threshold_matrix, 2);
+for i = 1:size(x, 2);
     alpha = 0.001; %as it's conservative let this be quite small
     [H(i), pValue(i), SWstatistic(i)] = swtest(residuals(:,i), alpha);
 end
@@ -395,8 +379,9 @@ dlmwrite('Cnoise_mat_stats.txt', C_mat, 'delimiter', '\t');
 cd(oldwd)
 
 % RM-Anova
-threshold_matrix = C_avg' + dP_avg'./2;
-absbiasTable = array2table(threshold_matrix, 'VariableNames', {'Flash_fusion', 'Fusion_illusion', 'Fission_illusion'});
+x = C_avg' + dP_avg'./2;
+absbiasTable = array2table(x, 'VariableNames', ...
+    {'Flash_fusion', 'Fusion_illusion', 'Fission_illusion'});
 % Create design table
 withinDesign = table(...
     categorical({'Flash_fusion'; 'Fusion_illusion'; 'Fission_illusion'}),...
@@ -406,13 +391,6 @@ rm = fitrm(absbiasTable,'Flash_fusion-Fission_illusion ~ 1','WithinDesign',withi
 % run repeated measures anova (this gives the same results as ezANOVA with
 % type 2 sum of squares in R!
 ranovaTable = ranova(rm,'WithinModel','illusion');
-% Note that given that this table is balanced there is no difference
-% between type I, II or III sum of squares, this only occurs when data is
-% unbalanced. Generally II and III are preferable over I, as they take into
-% account other main effects assuming no interactions and other main
-% effects and interactions respectively (if there is an interaction main
-% effects are not really interpretable). See:
-% https://mcfromnz.wordpress.com/2011/03/02/anova-type-iiiiii-ss-explained/
 
 % Test sphericity assumption.
 fprintf('\nMauchly`s test of sphericity:\n')
@@ -420,31 +398,31 @@ tbl = mauchly(rm)
 
 % t-tests
 fprintf('\ncompare flash fusion to fusion illusion\n')
-[H,P,CI,STATS] = ttest(threshold_matrix(:,1), threshold_matrix(:,2))
+[H,P,CI,STATS] = ttest(x(:,1), x(:,2))
 fprintf('\ncompare flash fusion to fission illusion\n')
-[H,P,CI,STATS] = ttest(threshold_matrix(:,1), threshold_matrix(:,3))
+[H,P,CI,STATS] = ttest(x(:,1), x(:,3))
 fprintf('\ncompare fusion illusion to fission illusion\n')
-[~,P,CI,STATS] = ttest(threshold_matrix(:,2), threshold_matrix(:,3))
+[~,P,CI,STATS] = ttest(x(:,2), x(:,3))
 
 % effect size
 cohens_d = nan(3,1);
-cohens_d(1) = nanmean( threshold_matrix(:,1) - threshold_matrix(:,2) ) / ...
-    sqrt((nanstd(threshold_matrix(:,1)).^2 + nanstd(threshold_matrix(:,2)).^2)/2);
-cohens_d(2) = nanmean( threshold_matrix(:,1) - threshold_matrix(:,3) ) / ...
-    sqrt((nanstd(threshold_matrix(:,1)).^2 + nanstd(threshold_matrix(:,3)).^2)/2);
-cohens_d(3) = nanmean( threshold_matrix(:,2) - threshold_matrix(:,3) ) / ...
-    sqrt((nanstd(threshold_matrix(:,2)).^2 + nanstd(threshold_matrix(:,3)).^2)/2);
+cohens_d(1) = nanmean( x(:,1) - x(:,2) ) / ...
+    sqrt((nanstd(x(:,1)).^2 + nanstd(x(:,2)).^2)/2);
+cohens_d(2) = nanmean( x(:,1) - x(:,3) ) / ...
+    sqrt((nanstd(x(:,1)).^2 + nanstd(x(:,3)).^2)/2);
+cohens_d(3) = nanmean( x(:,2) - x(:,3) ) / ...
+    sqrt((nanstd(x(:,2)).^2 + nanstd(x(:,3)).^2)/2);
 cohens_d
 
 % sign rank test
-[p,h,stats] = signrank(threshold_matrix(:,2), threshold_matrix(:,3));
+[p,h,stats] = signrank(x(:,2), x(:,3));
 
 % test assumptions, plot residuals!
 % 1.) Homoscedasticity
 figure('color', 'w')
-residuals = threshold_matrix - repmat(nanmean(threshold_matrix,1),[size(threshold_matrix,1),1]);
+residuals = x - repmat(nanmean(x,1),[size(x,1),1]);
 titles = {'Flash_fusion'; 'Fusion_illusion'; 'Fission_illusion'};
-for i = 1:size(threshold_matrix, 2);
+for i = 1:size(x, 2);
     subplot(1,3,i);
     scatter(1:size(residuals,1), residuals(:,i), 'ro', 'filled');
     title(titles{i});
@@ -456,7 +434,7 @@ suptitle('Residual plots');
 % Plot residual quantiles versus normal distribution
 % 2.) Normality
 figure('color', 'w');
-for i = 1:size(threshold_matrix, 2);
+for i = 1:size(x, 2);
     subplot(1,3,i);
     qqplot(residuals(:,i));
     title(titles{i});
@@ -467,7 +445,7 @@ suptitle('Residual plots');
 
 % Test normality with shapiro wilk test (very conservative test!)
 [H, pValue, SWstatistic] = deal(nan(size(residuals,2),1));
-for i = 1:size(threshold_matrix, 2);
+for i = 1:size(x, 2);
     alpha = 0.001; %as it's conservative let this be quite small
     [H(i), pValue(i), SWstatistic(i)] = swtest(residuals(:,i), alpha);
 end
@@ -625,8 +603,9 @@ dlmwrite('dP_mat_stats.txt', dP_mat, 'delimiter', '\t');
 cd(oldwd)
 
 % RM-Anova
-threshold_matrix = dP_mat;
-absbiasTable = array2table(threshold_matrix, 'VariableNames', {'Flash_fusion', 'Fusion_illusion', 'Fission_illusion'});
+x = dP_mat;
+absbiasTable = array2table(x, 'VariableNames', ...
+    {'Flash_fusion', 'Fusion_illusion', 'Fission_illusion'});
 % Create design table
 withinDesign = table(...
     categorical({'Flash_fusion'; 'Fusion_illusion'; 'Fission_illusion'}),...
@@ -636,13 +615,6 @@ rm = fitrm(absbiasTable,'Flash_fusion-Fission_illusion ~ 1','WithinDesign',withi
 % run repeated measures anova (this gives the same results as ezANOVA with
 % type 2 sum of squares in R!
 ranovaTable = ranova(rm,'WithinModel','illusion');
-% Note that given that this table is balanced there is no difference
-% between type I, II or III sum of squares, this only occurs when data is
-% unbalanced. Generally II and III are preferable over I, as they take into
-% account other main effects assuming no interactions and other main
-% effects and interactions respectively (if there is an interaction main
-% effects are not really interpretable). See:
-% https://mcfromnz.wordpress.com/2011/03/02/anova-type-iiiiii-ss-explained/
 
 % Test sphericity assumption.
 fprintf('\nMauchly`s test of sphericity:\n')
@@ -650,31 +622,31 @@ tbl = mauchly(rm)
 
 % t-tests
 fprintf('\ncompare flash fusion to fusion illusion\n')
-[H,P,CI,STATS] = ttest(threshold_matrix(:,1), threshold_matrix(:,2))
+[H,P,CI,STATS] = ttest(x(:,1), x(:,2))
 fprintf('\ncompare flash fusion to fission illusion\n')
-[H,P,CI,STATS] = ttest(threshold_matrix(:,1), threshold_matrix(:,3))
+[H,P,CI,STATS] = ttest(x(:,1), x(:,3))
 fprintf('\ncompare fusion illusion to fission illusion\n')
-[~,P,CI,STATS] = ttest(threshold_matrix(:,2), threshold_matrix(:,3))
+[~,P,CI,STATS] = ttest(x(:,2), x(:,3))
 
 % effect size
 cohens_d = nan(3,1);
-cohens_d(1) = nanmean( threshold_matrix(:,1) - threshold_matrix(:,2) ) / ...
-    sqrt((nanstd(threshold_matrix(:,1)).^2 + nanstd(threshold_matrix(:,2)).^2)/2);
-cohens_d(2) = nanmean( threshold_matrix(:,1) - threshold_matrix(:,3) ) / ...
-    sqrt((nanstd(threshold_matrix(:,1)).^2 + nanstd(threshold_matrix(:,3)).^2)/2);
-cohens_d(3) = nanmean( threshold_matrix(:,2) - threshold_matrix(:,3) ) / ...
-    sqrt((nanstd(threshold_matrix(:,2)).^2 + nanstd(threshold_matrix(:,3)).^2)/2);
+cohens_d(1) = nanmean( x(:,1) - x(:,2) ) / ...
+    sqrt((nanstd(x(:,1)).^2 + nanstd(x(:,2)).^2)/2);
+cohens_d(2) = nanmean( x(:,1) - x(:,3) ) / ...
+    sqrt((nanstd(x(:,1)).^2 + nanstd(x(:,3)).^2)/2);
+cohens_d(3) = nanmean( x(:,2) - x(:,3) ) / ...
+    sqrt((nanstd(x(:,2)).^2 + nanstd(x(:,3)).^2)/2);
 cohens_d
 
 % sign rank test
-[p,h,stats] = signrank(threshold_matrix(:,2), threshold_matrix(:,3));
+[p,h,stats] = signrank(x(:,2), x(:,3));
 
 % test assumptions, plot residuals!
 % 1.) Homoscedasticity
 figure('color', 'w')
-residuals = threshold_matrix - repmat(nanmean(threshold_matrix,1),[size(threshold_matrix,1),1]);
+residuals = x - repmat(nanmean(x,1),[size(x,1),1]);
 titles = {'Flash_fusion'; 'Fusion_illusion'; 'Fission_illusion'};
-for i = 1:size(threshold_matrix, 2);
+for i = 1:size(x, 2);
     subplot(1,3,i);
     scatter(1:size(residuals,1), residuals(:,i), 'ro', 'filled');
     title(titles{i});
@@ -686,7 +658,7 @@ suptitle('Residual plots');
 % Plot residual quantiles versus normal distribution
 % 2.) Normality
 figure('color', 'w');
-for i = 1:size(threshold_matrix, 2);
+for i = 1:size(x, 2);
     subplot(1,3,i);
     qqplot(residuals(:,i));
     title(titles{i});
@@ -697,7 +669,7 @@ suptitle('Residual plots');
 
 % Test normality with shapiro wilk test (very conservative test!)
 [H, pValue, SWstatistic] = deal(nan(size(residuals,2),1));
-for i = 1:size(threshold_matrix, 2);
+for i = 1:size(x, 2);
     alpha = 0.001; %as it's conservative let this be quite small
     [H(i), pValue(i), SWstatistic(i)] = swtest(residuals(:,i), alpha);
 end
@@ -715,8 +687,9 @@ cd(oldwd)
 
 % RM-Anova
 C_mat(:,3) = -C_mat(:,3);
-threshold_matrix = C_mat;
-absbiasTable = array2table(threshold_matrix, 'VariableNames', {'Flash_fusion', 'Fusion_illusion', 'Fission_illusion'});
+x = C_mat;
+absbiasTable = array2table(x, 'VariableNames', ...
+    {'Flash_fusion', 'Fusion_illusion', 'Fission_illusion'});
 % Create design table
 withinDesign = table(...
     categorical({'Flash_fusion'; 'Fusion_illusion'; 'Fission_illusion'}),...
@@ -726,13 +699,6 @@ rm = fitrm(absbiasTable,'Flash_fusion-Fission_illusion ~ 1','WithinDesign',withi
 % run repeated measures anova (this gives the same results as ezANOVA with
 % type 2 sum of squares in R!
 ranovaTable = ranova(rm,'WithinModel','illusion');
-% Note that given that this table is balanced there is no difference
-% between type I, II or III sum of squares, this only occurs when data is
-% unbalanced. Generally II and III are preferable over I, as they take into
-% account other main effects assuming no interactions and other main
-% effects and interactions respectively (if there is an interaction main
-% effects are not really interpretable). See:
-% https://mcfromnz.wordpress.com/2011/03/02/anova-type-iiiiii-ss-explained/
 
 % Test sphericity assumption.
 fprintf('\nMauchly`s test of sphericity:\n')
@@ -740,31 +706,31 @@ tbl = mauchly(rm)
 
 % t-tests
 fprintf('\ncompare flash fusion to fusion illusion\n')
-[H,P,CI,STATS] = ttest(threshold_matrix(:,1), threshold_matrix(:,2))
+[H,P,CI,STATS] = ttest(x(:,1), x(:,2))
 fprintf('\ncompare flash fusion to fission illusion\n')
-[H,P,CI,STATS] = ttest(threshold_matrix(:,1), threshold_matrix(:,3))
+[H,P,CI,STATS] = ttest(x(:,1), x(:,3))
 fprintf('\ncompare fusion illusion to fission illusion\n')
-[~,P,CI,STATS] = ttest(threshold_matrix(:,2), threshold_matrix(:,3))
+[~,P,CI,STATS] = ttest(x(:,2), x(:,3))
 
 % effect size
 cohens_d = nan(3,1);
-cohens_d(1) = nanmean( threshold_matrix(:,1) - threshold_matrix(:,2) ) / ...
-    sqrt((nanstd(threshold_matrix(:,1)).^2 + nanstd(threshold_matrix(:,2)).^2)/2);
-cohens_d(2) = nanmean( threshold_matrix(:,1) - threshold_matrix(:,3) ) / ...
-    sqrt((nanstd(threshold_matrix(:,1)).^2 + nanstd(threshold_matrix(:,3)).^2)/2);
-cohens_d(3) = nanmean( threshold_matrix(:,2) - threshold_matrix(:,3) ) / ...
-    sqrt((nanstd(threshold_matrix(:,2)).^2 + nanstd(threshold_matrix(:,3)).^2)/2);
+cohens_d(1) = nanmean( x(:,1) - x(:,2) ) / ...
+    sqrt((nanstd(x(:,1)).^2 + nanstd(x(:,2)).^2)/2);
+cohens_d(2) = nanmean( x(:,1) - x(:,3) ) / ...
+    sqrt((nanstd(x(:,1)).^2 + nanstd(x(:,3)).^2)/2);
+cohens_d(3) = nanmean( x(:,2) - x(:,3) ) / ...
+    sqrt((nanstd(x(:,2)).^2 + nanstd(x(:,3)).^2)/2);
 cohens_d
 
 % sign rank test
-[p,h,stats] = signrank(threshold_matrix(:,2), threshold_matrix(:,3));
+[p,h,stats] = signrank(x(:,2), x(:,3));
 
 % test assumptions, plot residuals!
 % 1.) Homoscedasticity
 figure('color', 'w')
-residuals = threshold_matrix - repmat(nanmean(threshold_matrix,1),[size(threshold_matrix,1),1]);
+residuals = x - repmat(nanmean(x,1),[size(x,1),1]);
 titles = {'Flash_fusion'; 'Fusion_illusion'; 'Fission_illusion'};
-for i = 1:size(threshold_matrix, 2);
+for i = 1:size(x, 2);
     subplot(1,3,i);
     scatter(1:size(residuals,1), residuals(:,i), 'ro', 'filled');
     title(titles{i});
@@ -776,7 +742,7 @@ suptitle('Residual plots');
 % Plot residual quantiles versus normal distribution
 % 2.) Normality
 figure('color', 'w');
-for i = 1:size(threshold_matrix, 2);
+for i = 1:size(x, 2);
     subplot(1,3,i);
     qqplot(residuals(:,i));
     title(titles{i});
@@ -787,7 +753,7 @@ suptitle('Residual plots');
 
 % Test normality with shapiro wilk test (very conservative test!)
 [H, pValue, SWstatistic] = deal(nan(size(residuals,2),1));
-for i = 1:size(threshold_matrix, 2);
+for i = 1:size(x, 2);
     alpha = 0.001; %as it's conservative let this be quite small
     [H(i), pValue(i), SWstatistic(i)] = swtest(residuals(:,i), alpha);
 end
@@ -806,8 +772,9 @@ dlmwrite('Cnoise_mat_stats.txt', C_mat, 'delimiter', '\t');
 cd(oldwd)
 
 % RM-Anova
-threshold_matrix = C_mat;
-absbiasTable = array2table(threshold_matrix, 'VariableNames', {'Flash_fusion', 'Fusion_illusion', 'Fission_illusion'});
+x = C_mat;
+absbiasTable = array2table(x, 'VariableNames', ...
+    {'Flash_fusion', 'Fusion_illusion', 'Fission_illusion'});
 % Create design table
 withinDesign = table(...
     categorical({'Flash_fusion'; 'Fusion_illusion'; 'Fission_illusion'}),...
@@ -817,13 +784,6 @@ rm = fitrm(absbiasTable,'Flash_fusion-Fission_illusion ~ 1','WithinDesign',withi
 % run repeated measures anova (this gives the same results as ezANOVA with
 % type 2 sum of squares in R!
 ranovaTable = ranova(rm,'WithinModel','illusion');
-% Note that given that this table is balanced there is no difference
-% between type I, II or III sum of squares, this only occurs when data is
-% unbalanced. Generally II and III are preferable over I, as they take into
-% account other main effects assuming no interactions and other main
-% effects and interactions respectively (if there is an interaction main
-% effects are not really interpretable). See:
-% https://mcfromnz.wordpress.com/2011/03/02/anova-type-iiiiii-ss-explained/
 
 % Test sphericity assumption.
 fprintf('\nMauchly`s test of sphericity:\n')
@@ -831,31 +791,31 @@ tbl = mauchly(rm)
 
 % t-tests
 fprintf('\ncompare flash fusion to fusion illusion\n')
-[H,P,CI,STATS] = ttest(threshold_matrix(:,1), threshold_matrix(:,2))
+[H,P,CI,STATS] = ttest(x(:,1), x(:,2))
 fprintf('\ncompare flash fusion to fission illusion\n')
-[H,P,CI,STATS] = ttest(threshold_matrix(:,1), threshold_matrix(:,3))
+[H,P,CI,STATS] = ttest(x(:,1), x(:,3))
 fprintf('\ncompare fusion illusion to fission illusion\n')
-[~,P,CI,STATS] = ttest(threshold_matrix(:,2), threshold_matrix(:,3))
+[~,P,CI,STATS] = ttest(x(:,2), x(:,3))
 
 % effect size
 cohens_d = nan(3,1);
-cohens_d(1) = nanmean( threshold_matrix(:,1) - threshold_matrix(:,2) ) / ...
-    sqrt((nanstd(threshold_matrix(:,1)).^2 + nanstd(threshold_matrix(:,2)).^2)/2);
-cohens_d(2) = nanmean( threshold_matrix(:,1) - threshold_matrix(:,3) ) / ...
-    sqrt((nanstd(threshold_matrix(:,1)).^2 + nanstd(threshold_matrix(:,3)).^2)/2);
-cohens_d(3) = nanmean( threshold_matrix(:,2) - threshold_matrix(:,3) ) / ...
-    sqrt((nanstd(threshold_matrix(:,2)).^2 + nanstd(threshold_matrix(:,3)).^2)/2);
+cohens_d(1) = nanmean( x(:,1) - x(:,2) ) / ...
+    sqrt((nanstd(x(:,1)).^2 + nanstd(x(:,2)).^2)/2);
+cohens_d(2) = nanmean( x(:,1) - x(:,3) ) / ...
+    sqrt((nanstd(x(:,1)).^2 + nanstd(x(:,3)).^2)/2);
+cohens_d(3) = nanmean( x(:,2) - x(:,3) ) / ...
+    sqrt((nanstd(x(:,2)).^2 + nanstd(x(:,3)).^2)/2);
 cohens_d
 
 % sign rank test
-[p,h,stats] = signrank(threshold_matrix(:,2), threshold_matrix(:,3));
+[p,h,stats] = signrank(x(:,2), x(:,3));
 
 % test assumptions, plot residuals!
 % 1.) Homoscedasticity
 figure('color', 'w')
-residuals = threshold_matrix - repmat(nanmean(threshold_matrix,1),[size(threshold_matrix,1),1]);
+residuals = x - repmat(nanmean(x,1),[size(x,1),1]);
 titles = {'Flash_fusion'; 'Fusion_illusion'; 'Fission_illusion'};
-for i = 1:size(threshold_matrix, 2);
+for i = 1:size(x, 2);
     subplot(1,3,i);
     scatter(1:size(residuals,1), residuals(:,i), 'ro', 'filled');
     title(titles{i});
@@ -867,7 +827,7 @@ suptitle('Residual plots');
 % Plot residual quantiles versus normal distribution
 % 2.) Normality
 figure('color', 'w');
-for i = 1:size(threshold_matrix, 2);
+for i = 1:size(x, 2);
     subplot(1,3,i);
     qqplot(residuals(:,i));
     title(titles{i});
@@ -878,7 +838,7 @@ suptitle('Residual plots');
 
 % Test normality with shapiro wilk test (very conservative test!)
 [H, pValue, SWstatistic] = deal(nan(size(residuals,2),1));
-for i = 1:size(threshold_matrix, 2);
+for i = 1:size(x, 2);
     alpha = 0.001; %as it's conservative let this be quite small
     [H(i), pValue(i), SWstatistic(i)] = swtest(residuals(:,i), alpha);
 end
@@ -964,7 +924,6 @@ cond_labels = {'2F', 'Fus', 'Fis'};
 col_vect = [0 0.6 0; 0 0 1; 1 0 0]';
 acc_mat = dP_mat;
 fh = figure('color', [1 1 1], 'Position', [0, 0, 140, 140]);
-%distributionPlot_DM([acc_mat],'globalNorm',true,'colormap',1-gray(128),'histOpt',1, 'showMM', 0,'addSpread',2, 'distWidth', 0.95); hold on % histOpt=2 works better for uniform distributions than the default
 % get Cousineau within subject SE for plotting:
 % Cancel out between subject variability by subtracting the subject
 % mean from each subject and then adding the grand mean
@@ -1008,7 +967,6 @@ col_vect = [0 0.6 0; 0 0 1; 1 0 0]';
 acc_mat = C_mat;
 acc_mat(:,3) = -acc_mat(:,3);
 fh = figure('color', [1 1 1], 'Position', [0, 0, 140, 140]);
-%distributionPlot_DM([acc_mat],'globalNorm',true,'colormap',1-gray(128),'histOpt',1, 'showMM', 0,'addSpread',2, 'distWidth', 0.95); hold on % histOpt=2 works better for uniform distributions than the default
 % get Cousineau within subject SE for plotting:
 % Cancel out between subject variability by subtracting the subject
 % mean from each subject and then adding the grand mean
@@ -1051,7 +1009,6 @@ col_vect = [0 0.6 0; 0 0 1; 1 0 0]';
 acc_mat = actualC;
 acc_mat(:,3) = -C_mat(:,3) + dP_mat(:,3)./2;
 fh = figure('color', [1 1 1], 'Position', [0, 0, 140, 140]);
-%distributionPlot_DM([acc_mat],'globalNorm',true,'colormap',1-gray(128),'histOpt',1, 'showMM', 0,'addSpread',2, 'distWidth', 0.95); hold on % histOpt=2 works better for uniform distributions than the default
 % get Cousineau within subject SE for plotting:
 % Cancel out between subject variability by subtracting the subject
 % mean from each subject and then adding the grand mean
@@ -1091,8 +1048,8 @@ close all
 %% stats dP:
 
 % RM-Anova
-threshold_matrix = dP_mat;
-absbiasTable = array2table(threshold_matrix, 'VariableNames', ...
+x = dP_mat;
+absbiasTable = array2table(x, 'VariableNames', ...
     {'Flash_fusion', 'Fusion_illusion', 'Fission_illusion'});
 % Create design table
 withinDesign = table(...
@@ -1103,13 +1060,6 @@ rm = fitrm(absbiasTable,'Flash_fusion-Fission_illusion ~ 1','WithinDesign',withi
 % run repeated measures anova (this gives the same results as ezANOVA with
 % type 2 sum of squares in R!
 ranovaTable = ranova(rm,'WithinModel','illusion');
-% Note that given that this table is balanced there is no difference
-% between type I, II or III sum of squares, this only occurs when data is
-% unbalanced. Generally II and III are preferable over I, as they take into
-% account other main effects assuming no interactions and other main
-% effects and interactions respectively (if there is an interaction main
-% effects are not really interpretable). See:
-% https://mcfromnz.wordpress.com/2011/03/02/anova-type-iiiiii-ss-explained/
 
 % Test sphericity assumption.
 fprintf('\nMauchly`s test of sphericity:\n')
@@ -1117,30 +1067,30 @@ tbl = mauchly(rm)
 
 % t-tests
 fprintf('\ncompare flash fusion to fusion illusion\n')
-[H,P,CI,STATS] = ttest(threshold_matrix(:,1), threshold_matrix(:,2))
+[H,P,CI,STATS] = ttest(x(:,1), x(:,2))
 fprintf('\ncompare flash fusion to fission illusion\n')
-[H,P,CI,STATS] = ttest(threshold_matrix(:,1), threshold_matrix(:,3))
+[H,P,CI,STATS] = ttest(x(:,1), x(:,3))
 fprintf('\ncompare fusion illusion to fission illusion\n')
-[~,P,CI,STATS] = ttest(threshold_matrix(:,2), threshold_matrix(:,3))
+[~,P,CI,STATS] = ttest(x(:,2), x(:,3))
 
 % effect size
 cohens_d = nan(3,1);
-cohens_d(1) = nanmean( threshold_matrix(:,1) - threshold_matrix(:,2) ) / ...
-    sqrt((nanstd(threshold_matrix(:,1)).^2 + nanstd(threshold_matrix(:,2)).^2)/2);
-cohens_d(2) = nanmean( threshold_matrix(:,1) - threshold_matrix(:,3) ) / ...
-    sqrt((nanstd(threshold_matrix(:,1)).^2 + nanstd(threshold_matrix(:,3)).^2)/2);
-cohens_d(3) = nanmean( threshold_matrix(:,2) - threshold_matrix(:,3) ) / ...
-    sqrt((nanstd(threshold_matrix(:,2)).^2 + nanstd(threshold_matrix(:,3)).^2)/2);
+cohens_d(1) = nanmean( x(:,1) - x(:,2) ) / ...
+    sqrt((nanstd(x(:,1)).^2 + nanstd(x(:,2)).^2)/2);
+cohens_d(2) = nanmean( x(:,1) - x(:,3) ) / ...
+    sqrt((nanstd(x(:,1)).^2 + nanstd(x(:,3)).^2)/2);
+cohens_d(3) = nanmean( x(:,2) - x(:,3) ) / ...
+    sqrt((nanstd(x(:,2)).^2 + nanstd(x(:,3)).^2)/2);
 cohens_d
 % sign rank test
-[p,h,stats] = signrank(threshold_matrix(:,2), threshold_matrix(:,3));
+[p,h,stats] = signrank(x(:,2), x(:,3));
 
 % test assumptions, plot residuals!
 % 1.) Homoscedasticity
 figure('color', 'w')
-residuals = threshold_matrix - repmat(nanmean(threshold_matrix,1),[size(threshold_matrix,1),1]);
+residuals = x - repmat(nanmean(x,1),[size(x,1),1]);
 titles = {'Flash_fusion'; 'Fusion_illusion'; 'Fission_illusion'};
-for i = 1:size(threshold_matrix, 2);
+for i = 1:size(x, 2);
     subplot(1,3,i);
     scatter(1:size(residuals,1), residuals(:,i), 'ro', 'filled');
     title(titles{i});
@@ -1152,7 +1102,7 @@ suptitle('Residual plots');
 % Plot residual quantiles versus normal distribution
 % 2.) Normality
 figure('color', 'w');
-for i = 1:size(threshold_matrix, 2);
+for i = 1:size(x, 2);
     subplot(1,3,i);
     qqplot(residuals(:,i));
     title(titles{i});
@@ -1163,7 +1113,7 @@ suptitle('Residual plots');
 
 % Test normality with shapiro wilk test (very conservative test!)
 [H, pValue, SWstatistic] = deal(nan(size(residuals,2),1));
-for i = 1:size(threshold_matrix, 2);
+for i = 1:size(x, 2);
     alpha = 0.001; %as it's conservative let this be quite small
     [H(i), pValue(i), SWstatistic(i)] = swtest(residuals(:,i), alpha);
 end
@@ -1177,8 +1127,8 @@ shapiro_output
 
 % RM-Anova
 C_mat(:,3) = -C_mat(:,3);
-threshold_matrix = C_mat;
-absbiasTable = array2table(threshold_matrix, 'VariableNames', ...
+x = C_mat;
+absbiasTable = array2table(x, 'VariableNames', ...
     {'Flash_fusion', 'Fusion_illusion', 'Fission_illusion'});
 % Create design table
 withinDesign = table(...
@@ -1189,13 +1139,6 @@ rm = fitrm(absbiasTable,'Flash_fusion-Fission_illusion ~ 1','WithinDesign',withi
 % run repeated measures anova (this gives the same results as ezANOVA with
 % type 2 sum of squares in R!
 ranovaTable = ranova(rm,'WithinModel','illusion');
-% Note that given that this table is balanced there is no difference
-% between type I, II or III sum of squares, this only occurs when data is
-% unbalanced. Generally II and III are preferable over I, as they take into
-% account other main effects assuming no interactions and other main
-% effects and interactions respectively (if there is an interaction main
-% effects are not really interpretable). See:
-% https://mcfromnz.wordpress.com/2011/03/02/anova-type-iiiiii-ss-explained/
 
 % Test sphericity assumption.
 fprintf('\nMauchly`s test of sphericity:\n')
@@ -1203,30 +1146,30 @@ tbl = mauchly(rm)
 
 % t-tests
 fprintf('\ncompare flash fusion to fusion illusion\n')
-[H,P,CI,STATS] = ttest(threshold_matrix(:,1), threshold_matrix(:,2))
+[H,P,CI,STATS] = ttest(x(:,1), x(:,2))
 fprintf('\ncompare flash fusion to fission illusion\n')
-[H,P,CI,STATS] = ttest(threshold_matrix(:,1), threshold_matrix(:,3))
+[H,P,CI,STATS] = ttest(x(:,1), x(:,3))
 fprintf('\ncompare fusion illusion to fission illusion\n')
-[~,P,CI,STATS] = ttest(threshold_matrix(:,2), threshold_matrix(:,3))
+[~,P,CI,STATS] = ttest(x(:,2), x(:,3))
 
 % effect size
 cohens_d = nan(3,1);
-cohens_d(1) = nanmean( threshold_matrix(:,1) - threshold_matrix(:,2) ) / ...
-    sqrt((nanstd(threshold_matrix(:,1)).^2 + nanstd(threshold_matrix(:,2)).^2)/2);
-cohens_d(2) = nanmean( threshold_matrix(:,1) - threshold_matrix(:,3) ) / ...
-    sqrt((nanstd(threshold_matrix(:,1)).^2 + nanstd(threshold_matrix(:,3)).^2)/2);
-cohens_d(3) = nanmean( threshold_matrix(:,2) - threshold_matrix(:,3) ) / ...
-    sqrt((nanstd(threshold_matrix(:,2)).^2 + nanstd(threshold_matrix(:,3)).^2)/2);
+cohens_d(1) = nanmean( x(:,1) - x(:,2) ) / ...
+    sqrt((nanstd(x(:,1)).^2 + nanstd(x(:,2)).^2)/2);
+cohens_d(2) = nanmean( x(:,1) - x(:,3) ) / ...
+    sqrt((nanstd(x(:,1)).^2 + nanstd(x(:,3)).^2)/2);
+cohens_d(3) = nanmean( x(:,2) - x(:,3) ) / ...
+    sqrt((nanstd(x(:,2)).^2 + nanstd(x(:,3)).^2)/2);
 cohens_d
 % sign rank test
-[p,h,stats] = signrank(threshold_matrix(:,2), threshold_matrix(:,3));
+[p,h,stats] = signrank(x(:,2), x(:,3));
 
 % test assumptions, plot residuals!
 % 1.) Homoscedasticity
 figure('color', 'w')
-residuals = threshold_matrix - repmat(nanmean(threshold_matrix,1),[size(threshold_matrix,1),1]);
+residuals = x - repmat(nanmean(x,1),[size(x,1),1]);
 titles = {'Flash_fusion'; 'Fusion_illusion'; 'Fission_illusion'};
-for i = 1:size(threshold_matrix, 2);
+for i = 1:size(x, 2);
     subplot(1,3,i);
     scatter(1:size(residuals,1), residuals(:,i), 'ro', 'filled');
     title(titles{i});
@@ -1238,7 +1181,7 @@ suptitle('Residual plots');
 % Plot residual quantiles versus normal distribution
 % 2.) Normality
 figure('color', 'w');
-for i = 1:size(threshold_matrix, 2);
+for i = 1:size(x, 2);
     subplot(1,3,i);
     qqplot(residuals(:,i));
     title(titles{i});
@@ -1249,7 +1192,7 @@ suptitle('Residual plots');
 
 % Test normality with shapiro wilk test (very conservative test!)
 [H, pValue, SWstatistic] = deal(nan(size(residuals,2),1));
-for i = 1:size(threshold_matrix, 2);
+for i = 1:size(x, 2);
     alpha = 0.001; %as it's conservative let this be quite small
     [H(i), pValue(i), SWstatistic(i)] = swtest(residuals(:,i), alpha);
 end
@@ -1261,8 +1204,8 @@ shapiro_output
 %% stats Cnoise:
 
 % RM-Anova
-threshold_matrix = acc_mat;
-absbiasTable = array2table(threshold_matrix, 'VariableNames', ...
+x = acc_mat;
+absbiasTable = array2table(x, 'VariableNames', ...
     {'Flash_fusion', 'Fusion_illusion', 'Fission_illusion'});
 % Create design table
 withinDesign = table(...
@@ -1273,13 +1216,6 @@ rm = fitrm(absbiasTable,'Flash_fusion-Fission_illusion ~ 1','WithinDesign',withi
 % run repeated measures anova (this gives the same results as ezANOVA with
 % type 2 sum of squares in R!
 ranovaTable = ranova(rm,'WithinModel','illusion');
-% Note that given that this table is balanced there is no difference
-% between type I, II or III sum of squares, this only occurs when data is
-% unbalanced. Generally II and III are preferable over I, as they take into
-% account other main effects assuming no interactions and other main
-% effects and interactions respectively (if there is an interaction main
-% effects are not really interpretable). See:
-% https://mcfromnz.wordpress.com/2011/03/02/anova-type-iiiiii-ss-explained/
 
 % Test sphericity assumption.
 fprintf('\nMauchly`s test of sphericity:\n')
@@ -1287,30 +1223,30 @@ tbl = mauchly(rm)
 
 % t-tests
 fprintf('\ncompare flash fusion to fusion illusion\n')
-[H,P,CI,STATS] = ttest(threshold_matrix(:,1), threshold_matrix(:,2))
+[H,P,CI,STATS] = ttest(x(:,1), x(:,2))
 fprintf('\ncompare flash fusion to fission illusion\n')
-[H,P,CI,STATS] = ttest(threshold_matrix(:,1), threshold_matrix(:,3))
+[H,P,CI,STATS] = ttest(x(:,1), x(:,3))
 fprintf('\ncompare fusion illusion to fission illusion\n')
-[~,P,CI,STATS] = ttest(threshold_matrix(:,2), threshold_matrix(:,3))
+[~,P,CI,STATS] = ttest(x(:,2), x(:,3))
 
 % effect size
 cohens_d = nan(3,1);
-cohens_d(1) = nanmean( threshold_matrix(:,1) - threshold_matrix(:,2) ) / ...
-    sqrt((nanstd(threshold_matrix(:,1)).^2 + nanstd(threshold_matrix(:,2)).^2)/2);
-cohens_d(2) = nanmean( threshold_matrix(:,1) - threshold_matrix(:,3) ) / ...
-    sqrt((nanstd(threshold_matrix(:,1)).^2 + nanstd(threshold_matrix(:,3)).^2)/2);
-cohens_d(3) = nanmean( threshold_matrix(:,2) - threshold_matrix(:,3) ) / ...
-    sqrt((nanstd(threshold_matrix(:,2)).^2 + nanstd(threshold_matrix(:,3)).^2)/2);
+cohens_d(1) = nanmean( x(:,1) - x(:,2) ) / ...
+    sqrt((nanstd(x(:,1)).^2 + nanstd(x(:,2)).^2)/2);
+cohens_d(2) = nanmean( x(:,1) - x(:,3) ) / ...
+    sqrt((nanstd(x(:,1)).^2 + nanstd(x(:,3)).^2)/2);
+cohens_d(3) = nanmean( x(:,2) - x(:,3) ) / ...
+    sqrt((nanstd(x(:,2)).^2 + nanstd(x(:,3)).^2)/2);
 cohens_d
 % sign rank test
-[p,h,stats] = signrank(threshold_matrix(:,2), threshold_matrix(:,3));
+[p,h,stats] = signrank(x(:,2), x(:,3));
 
 % test assumptions, plot residuals!
 % 1.) Homoscedasticity
 figure('color', 'w')
-residuals = threshold_matrix - repmat(nanmean(threshold_matrix,1),[size(threshold_matrix,1),1]);
+residuals = x - repmat(nanmean(x,1),[size(x,1),1]);
 titles = {'Flash_fusion'; 'Fusion_illusion'; 'Fission_illusion'};
-for i = 1:size(threshold_matrix, 2);
+for i = 1:size(x, 2);
     subplot(1,3,i);
     scatter(1:size(residuals,1), residuals(:,i), 'ro', 'filled');
     title(titles{i});
@@ -1322,7 +1258,7 @@ suptitle('Residual plots');
 % Plot residual quantiles versus normal distribution
 % 2.) Normality
 figure('color', 'w');
-for i = 1:size(threshold_matrix, 2);
+for i = 1:size(x, 2);
     subplot(1,3,i);
     qqplot(residuals(:,i));
     title(titles{i});
@@ -1333,7 +1269,7 @@ suptitle('Residual plots');
 
 % Test normality with shapiro wilk test (very conservative test!)
 [H, pValue, SWstatistic] = deal(nan(size(residuals,2),1));
-for i = 1:size(threshold_matrix, 2);
+for i = 1:size(x, 2);
     alpha = 0.001; %as it's conservative let this be quite small
     [H(i), pValue(i), SWstatistic(i)] = swtest(residuals(:,i), alpha);
 end
