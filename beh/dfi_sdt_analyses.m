@@ -159,8 +159,8 @@ for isubj = 1:length(subjvect)
         dP_mat(soavect, 3, isubj) = sdm89.dP;
         
         pC_mat(soavect, 1, isubj) = sdm23.pC;
-        pC_mat(soavect, 2, isubj) = sdm23.pC;
-        pC_mat(soavect, 3, isubj) = sdm23.pC;
+        pC_mat(soavect, 2, isubj) = sdm56.pC;
+        pC_mat(soavect, 3, isubj) = sdm89.pC;
         
         C_mat(soavect, 1, isubj) = sdm23.C;
         C_mat(soavect, 2, isubj) = sdm56.C;
@@ -171,8 +171,8 @@ for isubj = 1:length(subjvect)
         dP_adj(soavect, 3, isubj) = sdm89_adj.dP_adj;
         
         pC_adj(soavect, 1, isubj) = sdm23_adj.pC_adj;
-        pC_adj(soavect, 2, isubj) = sdm23_adj.pC_adj;
-        pC_adj(soavect, 3, isubj) = sdm23_adj.pC_adj;
+        pC_adj(soavect, 2, isubj) = sdm56_adj.pC_adj;
+        pC_adj(soavect, 3, isubj) = sdm89_adj.pC_adj;
         
         C_adj(soavect, 1, isubj) = sdm23_adj.C_adj;
         C_adj(soavect, 2, isubj) = sdm56_adj.C_adj;
@@ -219,7 +219,7 @@ suptitle(sprintf('Sensitivity, all sessions'))
 % save signal detection paramters
 mkdir(fullfile(data_dir, '2IFC'))
 save(fullfile( data_dir, '2IFC', 'SD_params.mat' ), ...
-    'dP_mat', 'C_mat', 'dP_adj', 'C_adj', 'soaAll');
+    'dP_mat', 'C_mat', 'dP_adj', 'C_adj', 'pC_mat', 'pC_adj', 'soaAll');
 close all
 
 
@@ -297,12 +297,9 @@ for isubj = 1:length(subjvect)
     d = dall(dall.partid == subjvect(isubj),:);
     
     if ~isempty(d)
-        
-        sdm23 = dfi_SDM(d,  3, 2, 1);
-        sdm56 = dfi_SDM(d,  6, 5, 1);
-        sdm89 = dfi_SDM(d,  9, 8, 1);
-        dP_vect  = [sdm23.dP, sdm56.dP, sdm89.dP];
-        C_vect   = [sdm23.C,  sdm56.C,  sdm89.C ];
+        [sdm23, sdm23_adj] = dfi_SDM(d,  3, 2, 1);
+        [sdm56, sdm56_adj] = dfi_SDM(d,  6, 5, 1);
+        [sdm89, sdm89_adj] = dfi_SDM(d,  9, 8, 1);
         
         soavect = zeros(nsoa,1);
         for isoa = 1:length(soaAll)
@@ -317,12 +314,24 @@ for isubj = 1:length(subjvect)
         dP_mat(soavect, 3, isubj) = sdm89.dP;
         
         pC_mat(soavect, 1, isubj) = sdm23.pC;
-        pC_mat(soavect, 2, isubj) = sdm23.pC;
-        pC_mat(soavect, 3, isubj) = sdm23.pC;
+        pC_mat(soavect, 2, isubj) = sdm56.pC;
+        pC_mat(soavect, 3, isubj) = sdm89.pC;
         
         C_mat(soavect, 1, isubj) = sdm23.C;
         C_mat(soavect, 2, isubj) = sdm56.C;
         C_mat(soavect, 3, isubj) = sdm89.C;
+        
+        dP_adj(soavect, 1, isubj) = sdm23_adj.dP_adj;
+        dP_adj(soavect, 2, isubj) = sdm56_adj.dP_adj;
+        dP_adj(soavect, 3, isubj) = sdm89_adj.dP_adj;
+        
+        pC_adj(soavect, 1, isubj) = sdm23_adj.pC_adj;
+        pC_adj(soavect, 2, isubj) = sdm56_adj.pC_adj;
+        pC_adj(soavect, 3, isubj) = sdm89_adj.pC_adj;
+        
+        C_adj(soavect, 1, isubj) = sdm23_adj.C_adj;
+        C_adj(soavect, 2, isubj) = sdm56_adj.C_adj;
+        C_adj(soavect, 3, isubj) = sdm89_adj.C_adj;
         
         % plot
         axes(ha(isubj))
@@ -365,7 +374,8 @@ suptitle(sprintf('Sensitivity, all sessions'))
 
 % save signal detection paramters
 mkdir(fullfile( data_dir, 'yesno'))
-save(fullfile( data_dir, 'yesno', 'SD_params.mat'), 'dP_mat', 'C_mat', 'soaAll');
+save(fullfile( data_dir, 'yesno', 'SD_params.mat'), ...
+    'dP_mat', 'C_mat', 'dP_adj', 'C_adj', 'pC_mat', 'pC_adj', 'soaAll');
 
 
 % eof

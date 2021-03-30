@@ -196,14 +196,14 @@ cd(oldwd)
 
 % RM-Anova
 x = dP_mat;
-absbiasTable = array2table(x, 'VariableNames', ...
+xTable = array2table(x, 'VariableNames', ...
     {'Flash_fusion', 'Fusion_illusion', 'Fission_illusion'});
 % Create design table
 withinDesign = table(...
     categorical({'Flash_fusion'; 'Fusion_illusion'; 'Fission_illusion'}),...
     'VariableNames',{'illusion'});
 % create model object
-rm = fitrm(absbiasTable,'Flash_fusion-Fission_illusion ~ 1','WithinDesign',withinDesign);
+rm = fitrm(xTable,'Flash_fusion-Fission_illusion ~ 1','WithinDesign',withinDesign);
 % run repeated measures anova (this gives the same results as ezANOVA with
 % type 2 sum of squares in R!
 ranovaTable = ranova(rm,'WithinModel','illusion');
@@ -296,14 +296,14 @@ cd(oldwd)
 
 % RM-Anova
 x = C_mat;
-absbiasTable = array2table(x, 'VariableNames', ...
+xTable = array2table(x, 'VariableNames', ...
     {'Flash_fusion', 'Fusion_illusion', 'Fission_illusion'});
 % Create design table
 withinDesign = table(...
     categorical({'Flash_fusion'; 'Fusion_illusion'; 'Fission_illusion'}),...
     'VariableNames',{'illusion'});
 % create model object
-rm = fitrm(absbiasTable,'Flash_fusion-Fission_illusion ~ 1','WithinDesign',withinDesign);
+rm = fitrm(xTable,'Flash_fusion-Fission_illusion ~ 1','WithinDesign',withinDesign);
 % run repeated measures anova (this gives the same results as ezANOVA with
 % type 2 sum of squares in R!
 ranovaTable = ranova(rm,'WithinModel','illusion');
@@ -380,14 +380,14 @@ cd(oldwd)
 
 % RM-Anova
 x = C_avg' + dP_avg'./2;
-absbiasTable = array2table(x, 'VariableNames', ...
+xTable = array2table(x, 'VariableNames', ...
     {'Flash_fusion', 'Fusion_illusion', 'Fission_illusion'});
 % Create design table
 withinDesign = table(...
     categorical({'Flash_fusion'; 'Fusion_illusion'; 'Fission_illusion'}),...
     'VariableNames',{'illusion'});
 % create model object
-rm = fitrm(absbiasTable,'Flash_fusion-Fission_illusion ~ 1','WithinDesign',withinDesign);
+rm = fitrm(xTable,'Flash_fusion-Fission_illusion ~ 1','WithinDesign',withinDesign);
 % run repeated measures anova (this gives the same results as ezANOVA with
 % type 2 sum of squares in R!
 ranovaTable = ranova(rm,'WithinModel','illusion');
@@ -604,14 +604,14 @@ cd(oldwd)
 
 % RM-Anova
 x = dP_mat;
-absbiasTable = array2table(x, 'VariableNames', ...
+xTable = array2table(x, 'VariableNames', ...
     {'Flash_fusion', 'Fusion_illusion', 'Fission_illusion'});
 % Create design table
 withinDesign = table(...
     categorical({'Flash_fusion'; 'Fusion_illusion'; 'Fission_illusion'}),...
     'VariableNames',{'illusion'});
 % create model object
-rm = fitrm(absbiasTable,'Flash_fusion-Fission_illusion ~ 1','WithinDesign',withinDesign);
+rm = fitrm(xTable,'Flash_fusion-Fission_illusion ~ 1','WithinDesign',withinDesign);
 % run repeated measures anova (this gives the same results as ezANOVA with
 % type 2 sum of squares in R!
 ranovaTable = ranova(rm,'WithinModel','illusion');
@@ -688,14 +688,14 @@ cd(oldwd)
 % RM-Anova
 C_mat(:,3) = -C_mat(:,3);
 x = C_mat;
-absbiasTable = array2table(x, 'VariableNames', ...
+xTable = array2table(x, 'VariableNames', ...
     {'Flash_fusion', 'Fusion_illusion', 'Fission_illusion'});
 % Create design table
 withinDesign = table(...
     categorical({'Flash_fusion'; 'Fusion_illusion'; 'Fission_illusion'}),...
     'VariableNames',{'illusion'});
 % create model object
-rm = fitrm(absbiasTable,'Flash_fusion-Fission_illusion ~ 1','WithinDesign',withinDesign);
+rm = fitrm(xTable,'Flash_fusion-Fission_illusion ~ 1','WithinDesign',withinDesign);
 % run repeated measures anova (this gives the same results as ezANOVA with
 % type 2 sum of squares in R!
 ranovaTable = ranova(rm,'WithinModel','illusion');
@@ -773,14 +773,14 @@ cd(oldwd)
 
 % RM-Anova
 x = C_mat;
-absbiasTable = array2table(x, 'VariableNames', ...
+xTable = array2table(x, 'VariableNames', ...
     {'Flash_fusion', 'Fusion_illusion', 'Fission_illusion'});
 % Create design table
 withinDesign = table(...
     categorical({'Flash_fusion'; 'Fusion_illusion'; 'Fission_illusion'}),...
     'VariableNames',{'illusion'});
 % create model object
-rm = fitrm(absbiasTable,'Flash_fusion-Fission_illusion ~ 1','WithinDesign',withinDesign);
+rm = fitrm(xTable,'Flash_fusion-Fission_illusion ~ 1','WithinDesign',withinDesign);
 % run repeated measures anova (this gives the same results as ezANOVA with
 % type 2 sum of squares in R!
 ranovaTable = ranova(rm,'WithinModel','illusion');
@@ -1049,14 +1049,14 @@ close all
 
 % RM-Anova
 x = dP_mat;
-absbiasTable = array2table(x, 'VariableNames', ...
+xTable = array2table(x, 'VariableNames', ...
     {'Flash_fusion', 'Fusion_illusion', 'Fission_illusion'});
 % Create design table
 withinDesign = table(...
     categorical({'Flash_fusion'; 'Fusion_illusion'; 'Fission_illusion'}),...
     'VariableNames',{'illusion'});
 % create model object
-rm = fitrm(absbiasTable,'Flash_fusion-Fission_illusion ~ 1','WithinDesign',withinDesign);
+rm = fitrm(xTable,'Flash_fusion-Fission_illusion ~ 1','WithinDesign',withinDesign);
 % run repeated measures anova (this gives the same results as ezANOVA with
 % type 2 sum of squares in R!
 ranovaTable = ranova(rm,'WithinModel','illusion');
@@ -1128,14 +1128,14 @@ shapiro_output
 % RM-Anova
 C_mat(:,3) = -C_mat(:,3);
 x = C_mat;
-absbiasTable = array2table(x, 'VariableNames', ...
+xTable = array2table(x, 'VariableNames', ...
     {'Flash_fusion', 'Fusion_illusion', 'Fission_illusion'});
 % Create design table
 withinDesign = table(...
     categorical({'Flash_fusion'; 'Fusion_illusion'; 'Fission_illusion'}),...
     'VariableNames',{'illusion'});
 % create model object
-rm = fitrm(absbiasTable,'Flash_fusion-Fission_illusion ~ 1','WithinDesign',withinDesign);
+rm = fitrm(xTable,'Flash_fusion-Fission_illusion ~ 1','WithinDesign',withinDesign);
 % run repeated measures anova (this gives the same results as ezANOVA with
 % type 2 sum of squares in R!
 ranovaTable = ranova(rm,'WithinModel','illusion');
@@ -1205,14 +1205,14 @@ shapiro_output
 
 % RM-Anova
 x = acc_mat;
-absbiasTable = array2table(x, 'VariableNames', ...
+xTable = array2table(x, 'VariableNames', ...
     {'Flash_fusion', 'Fusion_illusion', 'Fission_illusion'});
 % Create design table
 withinDesign = table(...
     categorical({'Flash_fusion'; 'Fusion_illusion'; 'Fission_illusion'}),...
     'VariableNames',{'illusion'});
 % create model object
-rm = fitrm(absbiasTable,'Flash_fusion-Fission_illusion ~ 1','WithinDesign',withinDesign);
+rm = fitrm(xTable,'Flash_fusion-Fission_illusion ~ 1','WithinDesign',withinDesign);
 % run repeated measures anova (this gives the same results as ezANOVA with
 % type 2 sum of squares in R!
 ranovaTable = ranova(rm,'WithinModel','illusion');
