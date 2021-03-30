@@ -11,9 +11,7 @@ clear all
 close all
 
 
-% access matlab file exchange functions
-%addpath(genpath('D:\matlab_file_exchange'));
-
+addpath(genpath('dfi'))
 data_dir = fullfile('dfi_experiment_data', 'data', 'experiment');
 fig_dir = fullfile('dfi_experiment_figures', 'Paper_figures', 'iAF', 'beh');
 mkdir(fig_dir);
