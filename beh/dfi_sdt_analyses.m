@@ -2,6 +2,18 @@
 % and 2IFC data for the analyses and figure script
 % "dfi_fig_beh1.m". 
 %
+% Parent script(s): 
+%   None
+%   
+% Children script(s): 
+%   dfi_fig_beh1.m
+%
+% Sibling script(s):
+%   None
+%
+%
+% DETAILS
+%
 %       Stimulus overview
 %
 %     STIM1   Stim2      ID
@@ -13,10 +25,28 @@
 %      A1A2    A1    =   7            A 
 %      V1A2   V2A2   =   8            Fis
 %      V2A2   V1A2   =   9            Fis 
+% 
+% ===========================================================================
 %
-%---------------------------------------------------
-% sb, sbuergers@gmail.com, 
-% last modified 30/03/2021
+%     dfi (double flash illusion) codebase accompanying the manuscript ...
+%     Copyright (C) 2021  Steffen Buergers
+% 
+%     This program is free software: you can redistribute it and/or modify
+%     it under the terms of the GNU General Public License as published by
+%     the Free Software Foundation, either version 3 of the License, or
+%     (at your option) any later version.
+% 
+%     This program is distributed in the hope that it will be useful,
+%     but WITHOUT ANY WARRANTY; without even the implied warranty of
+%     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+%     GNU General Public License for more details.
+% 
+%     You should have received a copy of the GNU General Public License
+%     along with this program.  If not, see <https://www.gnu.org/licenses/>.
+%
+% ---
+% Steffen Buergers, sbuergers@gmail.com,
+% Last modified 30/03/2021
 
 
 restoredefaultpath
