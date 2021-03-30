@@ -1,7 +1,5 @@
 % Behavioural statistics and figures for pre-stim manuscript (SIFI project)
 %
-% Mostly recycled from post-stim and psychophysics projects
-%
 % sb, sbuergers@gmail.com, 
 % last modified 30/03/2021
 
@@ -1061,7 +1059,8 @@ close all
 
 % RM-Anova
 threshold_matrix = dP_mat;
-absbiasTable = array2table(threshold_matrix, 'VariableNames', {'Flash_fusion', 'Fusion_illusion', 'Fission_illusion'});
+absbiasTable = array2table(threshold_matrix, 'VariableNames', ...
+    {'Flash_fusion', 'Fusion_illusion', 'Fission_illusion'});
 % Create design table
 withinDesign = table(...
     categorical({'Flash_fusion'; 'Fusion_illusion'; 'Fission_illusion'}),...
@@ -1146,7 +1145,8 @@ shapiro_output
 % RM-Anova
 C_mat(:,3) = -C_mat(:,3);
 threshold_matrix = C_mat;
-absbiasTable = array2table(threshold_matrix, 'VariableNames', {'Flash_fusion', 'Fusion_illusion', 'Fission_illusion'});
+absbiasTable = array2table(threshold_matrix, 'VariableNames', ...
+    {'Flash_fusion', 'Fusion_illusion', 'Fission_illusion'});
 % Create design table
 withinDesign = table(...
     categorical({'Flash_fusion'; 'Fusion_illusion'; 'Fission_illusion'}),...
@@ -1229,7 +1229,8 @@ shapiro_output
 
 % RM-Anova
 threshold_matrix = acc_mat;
-absbiasTable = array2table(threshold_matrix, 'VariableNames', {'Flash_fusion', 'Fusion_illusion', 'Fission_illusion'});
+absbiasTable = array2table(threshold_matrix, 'VariableNames', ...
+    {'Flash_fusion', 'Fusion_illusion', 'Fission_illusion'});
 % Create design table
 withinDesign = table(...
     categorical({'Flash_fusion'; 'Fusion_illusion'; 'Fission_illusion'}),...
@@ -1308,6 +1309,4 @@ shapiro_output
 
 
 % eof
-
-
 
