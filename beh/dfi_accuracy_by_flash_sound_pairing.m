@@ -1,4 +1,5 @@
 % Compute performance accuracy for different flash-beep pairings
+% in yes-no and yes-no threshold task. 
 %
 % Parent script(s): 
 %   None
@@ -88,12 +89,6 @@ for isubj = 1:20
     end % condition
 end % subject
 
-% How many times do ppts say "2 flash" when 1 flash is presented?
-1-nanmean(per_cor) % first column 1 flash, second column 1flash,1sound
-
-% What about the dfi context, 1f2s (only intermediate soas)?
-1-nanmean(pc_mat)
-
 % Get one matrix including data averaged for intermediate soas for 2event
 % contexts:
 pc = pc_mat;
@@ -151,12 +146,6 @@ for isubj = 1:20
         per_cor(isubj,icond) = sum(dtemp.acc) / length(dtemp);
     end % condition
 end % subject
-
-% How many times do ppts say "2 flash" when 1 flash is presented?
-1-nanmean(per_cor) % first column 1 flash, second column 1flash,1sound
-
-% What about the dfi context, 1f2s (only intermediate soas)?
-1-nanmean(nanmean(pc_mat(:,:,3:6),3))
 
 % Get one matrix including data averaged for intermediate soas for 2event
 % contexts:
