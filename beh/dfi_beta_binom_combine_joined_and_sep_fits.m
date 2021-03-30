@@ -101,13 +101,18 @@ for isubj = 1:bad_fits
 end
 d2ifc_sep = dataPF; clear dataPF
 
-%
+% remember bad fits in both joined and separate attempts 
+% in a boolean matrix of subj x cond
+% Filled in by hand!!!
+reject = true(20,3);
+reject(ismember(ttl, '719'), 2) = false;
 
 
 % Save pffit (after combining sep and joined fits) for plotting in
 % dfi_bb_fig_beh1_all_PFs.m
 folder = '2ifc';
-save(fullfile(figdir, folder, 'dataPF_joined_and_sep_fits_combined_pffit.mat'), 'pffit')
+save(fullfile(figdir, folder, 'dataPF_joined_and_sep_fits_combined_pffit.mat'), ...
+    'pffit', 'reject')
 
 
 
@@ -260,11 +265,18 @@ for isubj = 1:numel(bad_fits)
 end
 dyn_sep = dataPF; clear dataPF
 
+% remember bad fits in both joined and separate attempts 
+% in a boolean matrix of subj x cond
+% Filled in by hand!!!
+reject = true(20,3);
+reject(ismember(ttl, '712'), 3) = false;
+
 
 % Save pffit (after combining sep and joined fits) for plotting in
 % dfi_bb_fig_beh1_all_PFs.m
 folder = 'yn_pooled';
-save(fullfile(figdir, folder, 'dataPF_joined_and_sep_fits_combined_pffit.mat'), 'pffit')
+save(fullfile(figdir, folder, 'dataPF_joined_and_sep_fits_combined_pffit.mat'), ...
+    'pffit', 'reject')
 
 
 % Accumulate parameters of subjects in matrices
@@ -358,8 +370,6 @@ saveas(fh, fullfile(figdir, folder, 'PF_params_joined_and_sep_fits_combined.emf'
 save(fullfile(figdir, folder, 'dataPF_joined_and_sep_fits_combined.mat'), ...
     'threshold_matrix', 'slope_matrix', 'guess_matrix', 'lapse_matrix', 'eta_matrix')
 close all
-
-
 
 
 % eof
