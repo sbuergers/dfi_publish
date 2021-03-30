@@ -76,8 +76,6 @@ for isubj = 1:length(partvect)
             outof_mat(isubj,icond) = length(acc);
     end % condition
 end % subject
-pc_GA       = squeeze(nanmean(pc_mat,1));
-pc_SE       = squeeze(nanstd(pc_mat)) ./ sqrt(size(pc_mat,1));
 
 % Accumulate parameters of subjects in matrices (1 event conditions)
 condition_vect = [2,5];
@@ -97,9 +95,10 @@ pc(:, [1, 3]) = per_cor;
 pc_GA = squeeze(nanmean(pc,1));
 pc_SE = squeeze(nanstd(pc)) ./ sqrt(size(pc,1));
 
-condvect'
-pc_GA
-pc_SE
+disp('Yes-no threshold')
+disp(condvect')
+disp(pc_GA)
+disp(pc_SE)
 
 
 
@@ -134,8 +133,6 @@ for isubj = 1:length(partvect)
         end
     end % condition
 end % subject
-pc_GA       = squeeze(nanmean(pc_mat,1));
-pc_SE       = squeeze(nanstd(pc_mat)) ./ sqrt(size(pc_mat,1));
 
 % Accumulate parameters of subjects in matrices (1 event conditions)
 condition_vect = [2,5];
@@ -155,9 +152,10 @@ pc(:,[1,3]) = per_cor;
 pc_GA = squeeze(nanmean(pc,1));
 pc_SE = squeeze(nanstd(pc)) ./ sqrt(size(pc,1));
 
-condvect'
-pc_GA
-pc_SE
+disp('Yes-no intermediate SOAs')
+disp(condvect')
+disp(pc_GA)
+disp(pc_SE)
 
 
 % eof
