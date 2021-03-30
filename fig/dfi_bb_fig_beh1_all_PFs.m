@@ -66,9 +66,9 @@ pffit_yn_pooled = pffit; clear pffit
 for isubj = 1:length(pffit_yn_pooled)
     for icond = 1:length(pffit_yn_pooled{isubj})
         threshold_matrix(isubj, icond) = pffit_yn_pooled{isubj}{icond}.par(1);
-        slope_matrix(isubj, icond)  = pffit_yn_pooled{isubj}{icond}.par(2);
-        lapse_matrix(isubj, icond)  = pffit_yn_pooled{isubj}{icond}.par(4);
-        pc_mat(isubj, icond, :)     = pffit_yn_pooled{isubj}{icond}.perCor;
+        slope_matrix(isubj, icond) = pffit_yn_pooled{isubj}{icond}.par(2);
+        lapse_matrix(isubj, icond) = pffit_yn_pooled{isubj}{icond}.par(4);
+        pc_mat(isubj, icond, :) = pffit_yn_pooled{isubj}{icond}.perCor;
     end % condition
 end % subject
 
@@ -124,7 +124,7 @@ cols_1F1S  = [0.3 0.3 0.5];
 jitterAmount = 0.01;
 
 lw   = 1;  % PF line widths
-dtsz = 5;   % size of PF dots
+dtsz = 5;  % size of PF dots
 
 
 

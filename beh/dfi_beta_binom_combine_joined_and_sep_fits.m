@@ -101,6 +101,8 @@ for isubj = 1:bad_fits
 end
 d2ifc_sep = dataPF; clear dataPF
 
+%
+
 
 % Save pffit (after combining sep and joined fits) for plotting in
 % dfi_bb_fig_beh1_all_PFs.m
