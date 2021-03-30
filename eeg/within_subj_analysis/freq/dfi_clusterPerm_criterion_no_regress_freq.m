@@ -274,8 +274,7 @@ for icond = 1:3
     if ~exist(fullfile(fig_dir, an_fold, foldername, fold_data, task), 'dir')
         mkdir(fullfile(fig_dir, an_fold, foldername, fold_data, task))
     end
-    %export_fig(fh, fullfile(fig_dir, an_fold, foldername, fold_data, task, sprintf('criterion_no_regress_fslide_w_BF_PO4_O2_PO8_%s_%s', condvect{icond}, chan)), '-eps', '-tiff', '-m2.5')
-    close all
+    %close all
     
 end
 
