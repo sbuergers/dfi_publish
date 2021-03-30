@@ -104,8 +104,8 @@ d2ifc_sep = dataPF; clear dataPF
 % remember bad fits in both joined and separate attempts 
 % in a boolean matrix of subj x cond
 % Filled in by hand!!!
-reject = true(20,3);
-reject(ismember(ttl, '719'), 2) = false;
+reject = false(20,3);
+reject(ismember(ttl, '719'), 2) = true;
 
 
 % Save pffit (after combining sep and joined fits) for plotting in
@@ -268,8 +268,8 @@ dyn_sep = dataPF; clear dataPF
 % remember bad fits in both joined and separate attempts 
 % in a boolean matrix of subj x cond
 % Filled in by hand!!!
-reject = true(20,3);
-reject(ismember(ttl, '712'), 3) = false;
+reject = false(20,3);
+reject(ismember(ttl, '712'), 3) = true;
 
 
 % Save pffit (after combining sep and joined fits) for plotting in

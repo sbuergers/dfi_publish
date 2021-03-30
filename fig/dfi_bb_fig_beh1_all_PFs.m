@@ -57,11 +57,11 @@ dyn = dall; clear dall
 % PF data
 folder = 'yn_pooled';
 load(fullfile(load_dir, folder, 'dataPF_joined_and_sep_fits_combined_pffit.mat'), ...
-    'pffit')
+    'pffit', 'reject')
 pffit_yn_pooled = pffit; clear pffit
 
 % Accumulate parameters of subjects in matrices (2 event conditions)
-[threshold_matrix, slope_matrix, lapse_matrix] = deal(nan(size(pffit_yn_pooled,2), 4));
+[threshold_matrix, slope_matrix, lapse_matrix] = deal(nan(size(pffit_yn_pooled,2), 3));
 [pc_mat] = deal(nan(size(pffit_yn_pooled,2), 3, 8));
 for isubj = 1:length(pffit_yn_pooled)
     for icond = 1:length(pffit_yn_pooled{isubj})
@@ -72,6 +72,12 @@ for isubj = 1:length(pffit_yn_pooled)
     end % condition
 end % subject
 
+% remove bad fits
+threshold_matrix(reject) = nan;
+slope_matrix(reject) = nan;
+lapse_matrix(reject) = nan;
+reject_ynpool = reject;
+
 pc_GA_yn_pool = squeeze(mean(pc_mat,1));
 pc_SE_yn_pool = squeeze(std(pc_mat)) ./ sqrt(size(pc_mat,1));
 
@@ -81,7 +87,8 @@ pc_SE_yn_pool = squeeze(std(pc_mat)) ./ sqrt(size(pc_mat,1));
 %% 2IFC data
 
 folder = '2ifc';
-load(fullfile(load_dir, folder, 'dataPF_joined_and_sep_fits_combined_pffit.mat'), 'pffit')
+load(fullfile(load_dir, folder, 'dataPF_joined_and_sep_fits_combined_pffit.mat'), ...
+    'pffit', 'reject')
 pffit_2ifc = pffit; clear pffit
 
 % Accumulate parameters of subjects in matrices
@@ -100,6 +107,13 @@ for isubj = 1:length(pffit_2ifc)
         pc_mat(isubj, icond, idvect)     = pffit_2ifc{isubj}{icond}.perCor;
     end % condition
 end % subject
+
+% remove bad fits
+threshold_matrix(reject) = nan;
+slope_matrix(reject) = nan;
+lapse_matrix(reject) = nan;
+reject_2ifc = reject;
+
 pc_GA_2ifc       = squeeze(nanmean(pc_mat,1));
 pc_SE_2ifc       = squeeze(nanstd(pc_mat)) ./ sqrt(size(pc_mat,1));
 
@@ -139,17 +153,21 @@ ha = tight_subplot(2, 3,[0.02 0.014],[0.02],[0.02]);
 nj = 20;
 ni = 3; 
 id = 1:3;
+Ns = nan(20,3);
 for i = 1:ni % condition
     axes(ha(id(i)));
     
     for j = 1:nj % subj
-        soa  = pffit_yn_pooled{j}{i}.soa;
-        soal = round((soa*1000))/1000; % round for plotting to two decimal places
-        
-        % Plot PFs (individual subject)
-        soaHR = min(soa):max(soa)/1000:max(soa);
-        pffit_yn_pooledML = PF(pffit_yn_pooled{j}{i}.par,    soaHR);
-        plot(soaHR, pffit_yn_pooledML, '-', 'Color', col.indiv{i}, 'LineWidth', lw); hold on
+        if ~reject_ynpool(j,i)
+            soa  = pffit_yn_pooled{j}{i}.soa;
+            soal = round((soa*1000))/1000; % round for plotting to two decimal places
+
+            % Plot PFs (individual subject)
+            soaHR = min(soa):max(soa)/1000:max(soa);
+            pffit_yn_pooledML = PF(pffit_yn_pooled{j}{i}.par,    soaHR);
+            plot(soaHR, pffit_yn_pooledML, '-', 'Color', col.indiv{i}, 'LineWidth', lw); hold on
+            Ns(j,i) = 1;
+        end
     end % end j
     % Plot data
     errorbar(StimLevels(i,:), pc_GA_yn_pool(i,:), pc_SE_yn_pool(i,:), pc_SE_yn_pool(i,:), 'Color', 'k', 'LineWidth', 1.5); hold on
@@ -166,21 +184,26 @@ for i = 1:ni % condition
     set(gca,'TickDir','out')
     set(gca,'TickLength',[0.02, 0.02])
 end % i
+Ns
 
 
 % Plot 2IFC psychometric functions
 id = 4:6;
+Ns = nan(20,3);
 for i = 1:ni % condition
     axes(ha(id(i)));
     
     for j = 1:nj % subj
-        soa  = pffit_2ifc{j}{i}.soa;
-        soal = round((soa*1000))/1000; % round for plotting to two decimal places
-        
-        % Plot PFs (individual subject)
-        soaHR = min(soa):max(soa)/1000:max(soa);
-        pffit_2ifcML = PF(pffit_2ifc{j}{i}.par,    soaHR);
-        plot(soaHR, pffit_2ifcML, '-', 'Color', col.indiv{i}, 'LineWidth', lw); hold on
+        if ~reject_2ifc(j,i)
+            soa  = pffit_2ifc{j}{i}.soa;
+            soal = round((soa*1000))/1000; % round for plotting to two decimal places
+
+            % Plot PFs (individual subject)
+            soaHR = min(soa):max(soa)/1000:max(soa);
+            pffit_2ifcML = PF(pffit_2ifc{j}{i}.par,    soaHR);
+            plot(soaHR, pffit_2ifcML, '-', 'Color', col.indiv{i}, 'LineWidth', lw); hold on
+            Ns(j,i) = 1;
+        end
     end % end j
     % Plot data
     errorbar(StimLevels(i,:), pc_GA_2ifc(i,:), pc_SE_2ifc(i,:), pc_SE_2ifc(i,:), 'Color', 'k', 'LineWidth', 1.5); hold on
@@ -197,6 +220,7 @@ for i = 1:ni % condition
     set(gca,'TickDir','out')
     set(gca,'TickLength',[0.02, 0.02])
 end % i
+Ns
 
 fh3.Renderer = 'painters'; 
 mkdir(save_dir);
