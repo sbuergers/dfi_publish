@@ -60,7 +60,6 @@ close all
 addpath(genpath('dfi'));
 dfi_startup
 data_dir = fullfile('dfi_experiment_data', 'data', 'experiment');
-fig_dir  = fullfile('dfi_experiment_figures', 'group_figures', 'beh', '2ifc');
 load(fullfile(data_dir, 'd701to727_2ifc.mat'))
 
 
@@ -233,7 +232,6 @@ close all
 
 
 % Paths, and data
-fig_dir  = fullfile('dfi_experiment_figures', 'group_figures', 'beh', 'yn');
 load(fullfile(data_dir, 'd701to727_yn.mat'))
 
 
