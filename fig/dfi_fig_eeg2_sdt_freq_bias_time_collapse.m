@@ -356,7 +356,7 @@ fh1 = figure('color', [1 1 1], 'Position', [0, 0, 427, 705]);
 ha = tight_subplot(6, 4,[0.02 0.02],[0.02],[0.02]);
 
 
-%% Row 1 (yn_intermsoas, sensor)
+%% Column 1 (yn_intermsoas, sensor)
 
 load(fullfile(main_dir, 'sd_params_d_c_yesno_tcollapse.mat'));
 
@@ -390,11 +390,79 @@ for icond = 1:3
 end % condition loop
 
 
-%% Row 4 (ynt sensor)
+%% Column 2 (ynt sensor)
 
 load(fullfile(main_dir, 'sd_params_d_c_tcollapse.mat'));
 
 axes(ha(2));
+
+xl = [0.5 3.5];
+yl = [-1.25, 1.25];
+
+for icond = 1:3
+    
+    errorbar((icond-1)+0.9, mean(c_mat(:,icond,1)), c_within_SE(icond,1), c_within_SE(icond,1), ...
+        'Color', col1{icond}, 'LineWidth', 1.5); hold on
+    errorbar((icond-1)+1.1, mean(c_mat(:,icond,3)), c_within_SE(icond,3), c_within_SE(icond,3), ...
+        'Color', col2{icond}, 'LineWidth', 1.5);
+    plot((icond-1)+0.9, mean(c_mat(:,icond,1)), ...
+        'ko', 'MarkerSize', 3, 'MarkerFaceColor', col1{icond});
+    plot((icond-1)+1.1, mean(c_mat(:,icond,3)), ...
+        'ko', 'MarkerSize', 3, 'MarkerFaceColor', col2{icond});
+    
+    xlim(xl)
+    ylim(yl)
+    yticks = -100:0.5:100;;  set(gca, 'YTick', yticks);
+    set(gca, 'xticklabel', [])
+    set(gca, 'yticklabel', [])
+    
+    box off
+    set(gca,'TickDir','out')
+    set(gca,'TickLength',[0.02, 0.02])
+    set(gca,'XColor','k','YColor','k')
+    
+end % condition loop
+
+
+%% Column 3 (yn_intermsoas, sensor)
+
+load(fullfile(src_dir, 'sd_params_d_c_yesno_tcollapse.mat'));
+
+axes(ha(3));
+
+xl = [0.5 3.5];
+yl = [-1.25, 1.25];
+
+for icond = 1:3
+
+    errorbar((icond-1)+0.9, mean(c_mat(:,icond,1)), c_within_SE(icond,1), c_within_SE(icond,1), ...
+        'Color', col1{icond}, 'LineWidth', 1.5); hold on
+    errorbar((icond-1)+1.1, mean(c_mat(:,icond,3)), c_within_SE(icond,3), c_within_SE(icond,3), ...
+        'Color', col2{icond}, 'LineWidth', 1.5);
+    plot((icond-1)+0.9, mean(c_mat(:,icond,1)), ...
+        'ko', 'MarkerSize', 3, 'MarkerFaceColor', col1{icond});
+    plot((icond-1)+1.1, mean(c_mat(:,icond,3)), ...
+        'ko', 'MarkerSize', 3, 'MarkerFaceColor', col2{icond});
+    
+    xlim(xl)
+    ylim(yl)
+    yticks = -100:0.5:100;  set(gca, 'YTick', yticks);
+    set(gca, 'xticklabel', [])
+    set(gca, 'yticklabel', [])
+    
+    box off
+    set(gca,'TickDir','out')
+    set(gca,'TickLength',[0.02, 0.02])
+    set(gca,'XColor','k','YColor','k')
+    
+end % condition loop
+
+
+%% Column 4 (ynt sensor)
+
+load(fullfile(src_dir, 'sd_params_d_c_tcollapse.mat'));
+
+axes(ha(4));
 
 xl = [0.5 3.5];
 yl = [-1.25, 1.25];
@@ -434,7 +502,8 @@ fh2 = figure('color', [1 1 1], 'Position', [0, 0, 427, 400]);
 ha = tight_subplot(6, 4,[0.02 0.02],[0.02],[0.02]);
 
 
-%% Row 1 (yn_intermsoas, sensor)
+%% Column 1 (yn_intermsoas, sensor)
+
 axes(ha(1));
 
 load(fullfile(main_dir, 'sd_params_d_c_yesno_tcollapse.mat'));
@@ -464,10 +533,74 @@ set(gca,'TickLength',[0.02, 0.02])
 set(gca,'XColor','k','YColor','k')
 
 
-%% Row 4 (ynt sensor)
+%% Column 2 (ynt sensor)
+
 axes(ha(2));
 
 load(fullfile(main_dir, 'sd_params_d_c_tcollapse.mat'));
+
+xl = [0.5 3.5];
+yl = [-1, 1];
+
+bfs = nan(3,1);
+for icond = 1:3
+    
+    [~, ~, ~, stats] = ttest(c_mat(:,icond,1) - c_mat(:,icond,3));
+    t = stats.tstat;
+    df = stats.df;
+    bfs(icond) = t1smpbf(t, df+1);
+end
+
+bar(log10(bfs)); hold on 
+
+xlim(xl)
+ylim(yl)
+set(gca, 'xticklabel', [])
+set(gca, 'yticklabel', [])
+
+box off
+set(gca,'TickDir','out')
+set(gca,'TickLength',[0.02, 0.02])
+set(gca,'XColor','k','YColor','k')
+xl = [-0.6 -0.1];
+
+
+%% Column 3 (yn_intermsoas, sensor)
+
+axes(ha(3));
+
+load(fullfile(src_dir, 'sd_params_d_c_yesno_tcollapse.mat'));
+
+xl = [0.5 3.5];
+yl = [-1, 1];
+
+bfs = nan(3,1);
+for icond = 1:3
+    
+    [~, ~, ~, stats] = ttest(c_mat(:,icond,1) - c_mat(:,icond,3));
+    t = stats.tstat;
+    df = stats.df;
+    bfs(icond) = t1smpbf(t, df+1);
+end
+
+bar(log10(bfs)); hold on 
+
+xlim(xl)
+ylim(yl)
+set(gca, 'xticklabel', [])
+set(gca, 'yticklabel', [])
+
+box off
+set(gca,'TickDir','out')
+set(gca,'TickLength',[0.02, 0.02])
+set(gca,'XColor','k','YColor','k')
+
+
+%% Column 4 (ynt sensor)
+
+axes(ha(4));
+
+load(fullfile(src_dir, 'sd_params_d_c_tcollapse.mat'));
 
 xl = [0.5 3.5];
 yl = [-1, 1];
