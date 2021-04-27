@@ -140,7 +140,7 @@ for icond = 1:length(condvect)
     statistic= 'depsamplesT_bf';
     a        = 0.05;
     clustera = 0.05; % the two-side correction is done by cfg.correcttail (0.05 means 0.05 for two-tails)
-    numperm  = 50;
+    numperm  = 5000;
     method   = 'timelockanalysis';
 
     % show specs
