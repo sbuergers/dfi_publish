@@ -78,6 +78,7 @@ end
 % experiment data folder
 data_dir = fullfile('dfi_experiment_data', 'eeg_data', 'experiment');
 save_dir = fullfile(data_dir, 'sdt', 'freq_slide');
+supp_save_dir = fullfile(data_dir, 'freq_slide');
 
 % add fieldtrip folder to search path
 try
@@ -288,6 +289,19 @@ end
 
 close all
 
+%% Save frequency sliding for see1 and see2 flash outcomes
+% v1_1, v1_2, v2_1, v2_2, v1s1_1, v1s1_2, v2s1_1, v2s1_2, v1s2_1, v1s2_2, v2s2_1, v2s2_2
+tid = toi > -0.602 & toi < -0.102;
+tif = toi(tid);
+fslide_tmp = permute(fslide_subj, [3, 2, 1]);
+fslide_tmp(:,:,[1,2,5,6]) = [];
+fslide_for_stats = reshape(fslide_tmp, [size(fslide_tmp,1), ...
+                                        size(fslide_tmp,2), ...
+                                        size(fslide_tmp,3)/2, 2]);
+fslide_for_stats = fslide_for_stats(tid,:,:,:);
+mkdir(supp_save_dir);
+save(fullfile(supp_save_dir, 'fslide_see1_v_see2.mat'), ...
+    'fslide_for_stats', 'tif', 'tid', '-v7.3')
 
 
 %% Plot fslide over time
