@@ -59,9 +59,9 @@ dfi_startup
 
 % experiment data folder
 data_dir = fullfile('dfi_experiment_data', 'eeg_data', 'experiment');
-load_dir = fullfile(data_dir, 'sdt', 'freq_slide');
+load_dir = fullfile(data_dir, 'freq_slide');
 fig_dir  = 'dfi_experiment_figures';
-save_dir = fullfile(fig_dir, 'Paper_figures', 'iAF', 'fslide', 'ynt', 'criterion');
+save_dir = fullfile(fig_dir, 'Paper_figures', 'iAF', 'fslide', 'ynt', 'fslide');
 
 % add fieldtrip folder to search path
 try
@@ -89,34 +89,35 @@ end
 %% *** PREPARE DATA ***
 
 % load data for d-prime
-load(fullfile(load_dir, 'sd_params_d_c.mat'));
+load(fullfile(load_dir, 'fslide_see1_v_see2.mat'));
 
 
 
 %% *** STATISTICS ***
 
-condvect = {'v2', 'fus', 'fis'};
+condvect = {'v2', 'fus', 'fis', 'av2'};
 
-for icond = 1:3
+for icond = 1:length(condvect)
 
     % create fake fieldtrip structure
+    tvect = tif;
     d_q1 = cell(20,1);
     d_q2 = cell(20,1);
     for isubj = 1:20
-        if ~any(isnan(c_mat_cont(:,isubj,icond,1)))
+        if ~any(isnan(fslide_for_stats(:,isubj,icond,1)))
             d_q1{isubj}.time = tvect;
-            d_q1{isubj}.criterion = c_mat_cont(:,isubj,icond,1)';
+            d_q1{isubj}.fslide = fslide_for_stats(:,isubj,icond,1)';
         end
-        if ~any(isnan(c_mat_cont(:,isubj,icond,3)))
+        if ~any(isnan(fslide_for_stats(:,isubj,icond,2)))
             d_q2{isubj}.time = tvect;
-            d_q2{isubj}.criterion = c_mat_cont(:,isubj,icond,3)';
+            d_q2{isubj}.fslide = fslide_for_stats(:,isubj,icond,2)';
         end
     end
     
     % check if we have proper data for each subject
     missing_ID = [];
     for i = 1:length(d_q1)
-        if ~isfield(d_q1{i}, 'criterion') || ~isfield(d_q2{i}, 'criterion')
+        if ~isfield(d_q1{i}, 'fslide') || ~isfield(d_q2{i}, 'fslide')
             missing_ID = [missing_ID, i];
         end
     end
@@ -134,12 +135,12 @@ for icond = 1:3
     
     % set up
     trltype  = 'all'; 
-    param    = 'criterion'; % field to do the cluster permutation over ( e.g. powspctrm ) 
+    param    = 'fslide'; % field to do the cluster permutation over ( e.g. powspctrm ) 
     chan     = 'PO4_O2_PO8';
     statistic= 'depsamplesT_bf';
     a        = 0.05;
     clustera = 0.05; % the two-side correction is done by cfg.correcttail (0.05 means 0.05 for two-tails)
-    numperm  = 5000;
+    numperm  = 50;
     method   = 'timelockanalysis';
 
     % show specs
@@ -218,7 +219,7 @@ for icond = 1:3
     cfg = [];
     cfg.channel   = 'PO4_O2_PO8';
     cfg.latency   = [-0.6  -0.1];
-    cfg.parameter = 'criterion';
+    cfg.parameter = 'fslide';
     GA_q1         = ft_timelockgrandaverage(cfg, d_q1{:});  
     GA_q2         = ft_timelockgrandaverage(cfg, d_q2{:});
 
@@ -236,8 +237,8 @@ for icond = 1:3
     ha = tight_subplot(2, 1,[0.01 0.01],[0.15],[0.15]);
     % Instantaneous frequency
     axes(ha(1));
-    sem_f1_w = c_within_SE(:,icond,1);
-    sem_f2_w = c_within_SE(:,icond,3);
+    sem_f1_w = fslide_se(:,icond,1);
+    sem_f2_w = fslide_se(:,icond,2);
     ylabel('Instantaneous frequency (Hz)');
     plot(tif, fslide_GA(:,2),  'color', col1{icond}, 'linewidth', 3); hold on; % correct
     plot(tif, fslide_GA(:,1),  'color', col2{icond}, 'linewidth', 3);          % incorrect   
@@ -253,6 +254,7 @@ for icond = 1:3
     xlim([-0.6 -0.1])
     
     % Save data to remake figures later (for paper)
+    mkdir(save_dir)
     save(fullfile(save_dir, sprintf('Bayes_factors_PO4_O2_PO8_%s.mat', condvect{icond})), ...
         'bf');
     
@@ -264,7 +266,6 @@ for icond = 1:3
     if ~exist(fullfile(fig_dir, an_fold, foldername, fold_data, task), 'dir')
         mkdir(fullfile(fig_dir, an_fold, foldername, fold_data, task))
     end
-    %export_fig(fh, fullfile(fig_dir, an_fold, foldername, fold_data, task, sprintf('criterion_fslide_w_BF_PO4_O2_PO8_%s_%s', condvect{icond}, chan)), '-eps', '-tiff', '-m2.5')
     close all
     
 end
