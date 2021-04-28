@@ -61,7 +61,7 @@ dfi_startup
 data_dir = fullfile('dfi_experiment_data', 'eeg_data', 'experiment');
 load_dir = fullfile(data_dir, 'freq_slide');
 fig_dir  = 'dfi_experiment_figures';
-save_dir = fullfile(fig_dir, 'Paper_figures', 'iAF', 'fslide', 'ynt', 'fslide');
+save_dir = fullfile(fig_dir, 'Paper_figures', 'iAF', 'fslide', 'yesno', 'fslide');
 
 % add fieldtrip folder to search path
 try
@@ -74,7 +74,7 @@ end
 subjvect = {'701', '702', '703', '704', '705', '706', '708', '709', '712', '714', ...
             '715', '716', '717', '718', '719', '720', '722', '725', '726', '727'};
 N        = 20;
-task     = 'yn_threshold';
+task     = 'yesno';
 foldercell = {'all_yn_sessions'};
 ifold = 1;
 fold_data  = foldercell{ifold};
@@ -89,7 +89,7 @@ end
 %% *** PREPARE DATA ***
 
 % load data for d-prime
-load(fullfile(load_dir, 'fslide_see1_v_see2.mat'));
+load(fullfile(load_dir, 'fslide_see1_v_see2_yesno.mat'));
 
 
 
@@ -266,7 +266,6 @@ for icond = 1:length(condvect)
     if ~exist(fullfile(fig_dir, an_fold, foldername, fold_data, task), 'dir')
         mkdir(fullfile(fig_dir, an_fold, foldername, fold_data, task))
     end
-    close all
     
 end
 
