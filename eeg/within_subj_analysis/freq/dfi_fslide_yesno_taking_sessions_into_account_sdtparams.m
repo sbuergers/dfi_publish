@@ -78,6 +78,7 @@ end
 % experiment data folder
 data_dir = fullfile('dfi_experiment_data', 'eeg_data', 'experiment');
 save_dir = fullfile(data_dir, 'sdt', 'freq_slide');
+supp_save_dir = fullfile(data_dir, 'freq_slide');
 
 % add fieldtrip folder to search path
 try
@@ -240,8 +241,43 @@ for icond = 1:12
 end
 
 
+%% Save frequency sliding for see1 and see2 flash outcomes
+% v1_1, v1_2, v2_1, v2_2, v1s1_1, v1s1_2, v2s1_1, v2s1_2, v1s2_1, v1s2_2, v2s2_1, v2s2_2
+tid = toi > -0.602 & toi < -0.102;
+tif = toi(tid);
 
-%% Plot fslide over time
+fslide_tmp = permute(fslide_subj, [3, 2, 1]);
+fslide_tmp(:,:,[1,2,5,6]) = [];
+fslide_for_stats = nan([size(fslide_tmp,1), size(fslide_tmp,2), 4, 2]);
+fslide_for_stats(:,:,1,1) = fslide_tmp(:,:,1);
+fslide_for_stats(:,:,1,2) = fslide_tmp(:,:,2);
+fslide_for_stats(:,:,2,1) = fslide_tmp(:,:,3);
+fslide_for_stats(:,:,2,2) = fslide_tmp(:,:,4);
+fslide_for_stats(:,:,3,1) = fslide_tmp(:,:,5);
+fslide_for_stats(:,:,3,2) = fslide_tmp(:,:,6);
+fslide_for_stats(:,:,4,1) = fslide_tmp(:,:,7);
+fslide_for_stats(:,:,4,2) = fslide_tmp(:,:,8);
+fslide_for_stats = fslide_for_stats(tid,:,:,:);
+
+se_tmp = permute(fslide_SE, [2, 1]);
+se_tmp(:, [1,2,5,6]) = [];
+se_tmp = se_tmp(tid, :);
+fslide_se = nan([size(se_tmp, 1), 4, 2]);
+fslide_se(:,1,1) = se_tmp(:,1);
+fslide_se(:,1,2) = se_tmp(:,2);
+fslide_se(:,2,1) = se_tmp(:,3);
+fslide_se(:,2,2) = se_tmp(:,4);
+fslide_se(:,3,1) = se_tmp(:,5);
+fslide_se(:,3,2) = se_tmp(:,6);
+fslide_se(:,4,1) = se_tmp(:,7);
+fslide_se(:,4,2) = se_tmp(:,8);
+
+mkdir(supp_save_dir);
+save(fullfile(supp_save_dir, 'fslide_see1_v_see2_yesno.mat'), ...
+    'fslide_for_stats', 'fslide_se', 'tif', 'tid', '-v7.3')
+
+
+%% Alpha frequency variability over time
 % compute variability in alpha frequency within subjects over the course of
 % a session and between sessions
 sessions = unique(btable.sess);
