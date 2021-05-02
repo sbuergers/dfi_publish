@@ -391,7 +391,7 @@ shapiro_output
 % Save data for SPSS
 oldwd = cd;
 C_mat = C_avg' + dP_avg'./2;
-cd(data_dir, 'twoIFC_beh_stats'));
+cd(fullfile(data_dir, 'twoIFC_beh_stats'));
 dlmwrite('Cnoise_mat_stats.txt', C_mat, 'delimiter', '\t');
 cd(oldwd)
 
@@ -872,39 +872,16 @@ shapiro_output
 
 %% -------Yes-no threshold-------
 
-% Name of directory to save things to
-an_fold = 'erps_ynt';
+load(fullfile('dfi_experiment_data', 'data', 'experiment', 'd701to727_ynt.mat'))
+clear d7*
 
-% experiment data folder
-data_dir = fullfile('dfi_experiment_data', 'eeg_data', 'experiment');
-fig_dir  = 'dfi_experiment_figures';
-
-% useful variables
-subjvect = {'701', '702', '703', '704', '705', '706', '708', '709', '712', '714', ...
-    '715', '716', '717', '718', '719', '720', '722', '725', '726', '727'};
-N        = 20;
-task     = 'yn_threshold';
-
-condvect = [3,6,8];
-cond_labels = {'2F', 'Fus', 'Fis'};
-
-
-% Load in trial indices to keep
-load(fullfile(data_dir, 'eeg_stim_lock', 'ynt_trial_indeces_hands_matched_rt500.mat'))
-
-
-% SOA distribution
-tabulate(dall_stim.soa)
-soavect = nan(20,3);
-trlids = [3,6,8];
-partvect = unique(dall_stim.partid);
-for isubj = 1:20
-    for icond = 1:3
-        soavect(isubj,icond) = nanmean(unique(dall_stim.soa(dall_stim.partid == partvect(isubj) & dall_stim.trlid == trlids(icond))));
-    end
-end
-
-
+% delete no response and bad response trials
+draw_ynt  = dall;
+dynt = draw_ynt;
+dynt(dynt.resp  == 0, :) = [];
+dynt(dynt.RT < 0.1,:)    = [];
+dynt(dynt.trlid == 1, :) = [];
+dynt(dynt.badRT ~= 0,:)  = [];
 
 
 %% Yes-no threshold: d', C
@@ -913,9 +890,10 @@ dP_mat = nan(20,3);
 C_mat = nan(20,3);
 pC_mat = nan(20,3);
 actualC = nan(20,3);
+partvect = unique(dynt.partid);
 for isubj = 1:20
-    
-    beh = dall_stim(dall_stim.partid == partvect(isubj),:);
+
+    beh = dynt(dynt.partid == partvect(isubj),:);
     % 3.1) Type 1 signal detection parameters
     %S %N
     [~,sdm23] = dfi_SDM(beh,  3, 2, 0);
