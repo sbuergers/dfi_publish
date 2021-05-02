@@ -253,8 +253,7 @@ ids = 1:3;
 for icond = 1:3
     axes(ha(ids(icond)));
 
-    load(fullfile(main_dir, ...
-        'fslide', 'yesno', 'dprime', ...
+    load(fullfile(load_dir, 'yesno', 'fslide', ...
         sprintf('Bayes_factors_PO4_O2_PO8_%s.mat', condvect{icond})), 'bf');
 
     tif = linspace(-0.6016, -0.1211, length(bf));
@@ -290,8 +289,7 @@ for icond = 1:3
     axes(ha(ids(icond)));
     
     % Save data to remake figures later (for paper)
-    load(fullfile(main_dir, ...
-        'fslide', 'ynt', 'dPrime', ...
+    load(fullfile(load_dir, 'ynt', 'fslide', ...
         sprintf('Bayes_factors_PO4_O2_PO8_%s.mat', condvect{icond})), 'bf');
     
     tif = linspace(-0.6016, -0.1211, length(bf));
