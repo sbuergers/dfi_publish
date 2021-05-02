@@ -98,8 +98,62 @@ yn_beta_eta = eta_matrix;
 
 %% Parameter consistency over tasks
 
-fh = plot_correlation(ifc_beta_threshold, yn_beta_threshold, ...
-                      '2IFC' ,'yesno');            
+% Some settings
+col_vect = [[0 0.6 0]; [0 0 1]; [1 0 0]; [0 0 0]];
+col_lines = [[0 0.8 0]; [0 0 1]; [1 0 0]; [0 0 0]];
+opacity = 0.5; % transparency (alpha)
+lw = 0.6;
+ls = '-';
+
+xl = [-0.6 0.4]; 
+yl = xl;
+    
+% Scatter plot: Collapse over time, check yesno versus ynt
+fh0 = figure('color', [1 1 1], 'Position', [0, 0, 427, 350]);
+ha = tight_subplot(3, 4, [0.01 0.03], [0.02], [0.02]);
+
+x = ifc_beta_threshold;
+y = yn_beta_threshold;
+    
+for ic = 1:3
+    
+    axes(ha(ic));
+
+    xl = [min(min(x(:,ic)))*0.85, max(max(x(:,ic)))*1.15]; xrange = xl(2) - xl(1);
+    xlall(:,ic) = xl;
+    yl = [min(min(y(:,ic)))*0.85, max(max(y(:,ic)))*1.15]; yrange = yl(2) - yl(1);
+    dtsz = [xrange*.0355,yrange*.0355]; 
+    transparentScatter(x(:,ic), y(:,ic), col_vect(ic,:), opacity, dtsz, 25); hold on
+    N(1,ic) = sum(~isnan(x(:,ic)) & ~isnan(y(:,ic)));
+    [spearRho(1,ic), pval(1,ic)] = corr(x(:,ic), y(:,ic), 'type', 'Spearman', 'rows', 'complete');
+    [rx(1,ic), pval_r(1,ic)] = corr(x(:,ic), y(:,ic), 'type', 'Pearson', 'rows', 'complete');
+    [r(1,ic),b1(1,ic),b0(1,ic)] = regression(x(:,ic), y(:,ic), 'one');
+    line([min(min(x))  max(max(x))], [b0(1,ic)+b1(1,ic)*min(min(x)) b0(1,ic)+b1(1,ic)*max(max(x))], 'color', col_lines(ic,:), 'linewidth', lw, 'linestyle', ls);
+    xlim(xl); ylim(yl);
+    xticks = -2:0.4:2; set(gca, 'XTick', xticks)
+    yticks = -2:0.4:2;  set(gca, 'YTick', yticks);
+    line([xl], [0 0], 'color', [0.5 0.5 0.5])
+    line([0 0], [yl], 'color', [0.5 0.5 0.5])
+    box off
+    set(gca,'TickDir','out')
+    set(gca,'TickLength',[0.02, 0.02])
+end
+
+xlall'
+yl
+N
+r
+pval_r
+spearRho
+pval
+r_dp = r;
+n_dp = N;
+
+% save figure
+fh0.Renderer = 'painters'; 
+saveas(fh0, fullfile(figdir, 'Consistency_pf_threshold_svg.svg'))
+close all
+
            
 % eof
 
