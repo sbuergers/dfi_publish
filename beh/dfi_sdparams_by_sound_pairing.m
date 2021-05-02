@@ -256,8 +256,8 @@ for i = 1:size(mat_anova, 2);
     subplot(1,3,i);
     scatter(1:size(residuals,1), residuals(:,i), 'ro', 'filled');
     title(titles{i});
-    if i > 4, xlabel('Subject'); end;
-    if ismember(i, [1,5,9,13]), ylabel('Residual value'); end;
+    if i > 4, xlabel('Subject'); end
+    if ismember(i, [1,5,9,13]), ylabel('Residual value'); end
 end
 suptitle('Residual plots');
 
@@ -268,8 +268,8 @@ for i = 1:size(mat_anova, 2);
     subplot(1,3,i);
     qqplot(residuals(:,i));
     title(titles{i});
-    if i <= 4, xlabel(''); end;
-    if ~ismember(i, [1,5,9,13]), ylabel(''); end;
+    if i <= 4, xlabel(''); end
+    if ~ismember(i, [1,5,9,13]), ylabel(''); end
 end
 suptitle('Residual plots');
 
@@ -359,8 +359,8 @@ for i = 1:size(mat_anova, 2);
     subplot(1,3,i);
     scatter(1:size(residuals,1), residuals(:,i), 'ro', 'filled');
     title(titles{i});
-    if i > 4, xlabel('Subject'); end;
-    if ismember(i, [1,5,9,13]), ylabel('Residual value'); end;
+    if i > 4, xlabel('Subject'); end
+    if ismember(i, [1,5,9,13]), ylabel('Residual value'); end
 end
 suptitle('Residual plots');
 
@@ -371,8 +371,8 @@ for i = 1:size(mat_anova, 2);
     subplot(1,3,i);
     qqplot(residuals(:,i));
     title(titles{i});
-    if i <= 4, xlabel(''); end;
-    if ~ismember(i, [1,5,9,13]), ylabel(''); end;
+    if i <= 4, xlabel(''); end
+    if ~ismember(i, [1,5,9,13]), ylabel(''); end
 end
 suptitle('Residual plots');
 
@@ -446,8 +446,8 @@ for i = 1:size(mat_anova, 2);
     subplot(1,3,i);
     scatter(1:size(residuals,1), residuals(:,i), 'ro', 'filled');
     title(titles{i});
-    if i > 4, xlabel('Subject'); end;
-    if ismember(i, [1,5,9,13]), ylabel('Residual value'); end;
+    if i > 4, xlabel('Subject'); end
+    if ismember(i, [1,5,9,13]), ylabel('Residual value'); end
 end
 suptitle('Residual plots');
 
@@ -458,8 +458,8 @@ for i = 1:size(mat_anova, 2);
     subplot(1,3,i);
     qqplot(residuals(:,i));
     title(titles{i});
-    if i <= 4, xlabel(''); end;
-    if ~ismember(i, [1,5,9,13]), ylabel(''); end;
+    if i <= 4, xlabel(''); end
+    if ~ismember(i, [1,5,9,13]), ylabel(''); end
 end
 suptitle('Residual plots');
 
@@ -666,8 +666,8 @@ for i = 1:size(mat_anova, 2);
     subplot(1,3,i);
     scatter(1:size(residuals,1), residuals(:,i), 'ro', 'filled');
     title(titles{i});
-    if i > 4, xlabel('Subject'); end;
-    if ismember(i, [1,5,9,13]), ylabel('Residual value'); end;
+    if i > 4, xlabel('Subject'); end
+    if ismember(i, [1,5,9,13]), ylabel('Residual value'); end
 end
 suptitle('Residual plots');
 
@@ -678,8 +678,8 @@ for i = 1:size(mat_anova, 2);
     subplot(1,3,i);
     qqplot(residuals(:,i));
     title(titles{i});
-    if i <= 4, xlabel(''); end;
-    if ~ismember(i, [1,5,9,13]), ylabel(''); end;
+    if i <= 4, xlabel(''); end
+    if ~ismember(i, [1,5,9,13]), ylabel(''); end
 end
 suptitle('Residual plots');
 
@@ -754,8 +754,8 @@ for i = 1:size(mat_anova, 2);
     subplot(1,3,i);
     scatter(1:size(residuals,1), residuals(:,i), 'ro', 'filled');
     title(titles{i});
-    if i > 4, xlabel('Subject'); end;
-    if ismember(i, [1,5,9,13]), ylabel('Residual value'); end;
+    if i > 4, xlabel('Subject'); end
+    if ismember(i, [1,5,9,13]), ylabel('Residual value'); end
 end
 suptitle('Residual plots');
 
@@ -766,8 +766,8 @@ for i = 1:size(mat_anova, 2);
     subplot(1,3,i);
     qqplot(residuals(:,i));
     title(titles{i});
-    if i <= 4, xlabel(''); end;
-    if ~ismember(i, [1,5,9,13]), ylabel(''); end;
+    if i <= 4, xlabel(''); end
+    if ~ismember(i, [1,5,9,13]), ylabel(''); end
 end
 suptitle('Residual plots');
 
@@ -843,8 +843,8 @@ for i = 1:size(mat_anova, 2);
     subplot(1,3,i);
     scatter(1:size(residuals,1), residuals(:,i), 'ro', 'filled');
     title(titles{i});
-    if i > 4, xlabel('Subject'); end;
-    if ismember(i, [1,5,9,13]), ylabel('Residual value'); end;
+    if i > 4, xlabel('Subject'); end
+    if ismember(i, [1,5,9,13]), ylabel('Residual value'); end
 end
 suptitle('Residual plots');
 
@@ -855,8 +855,8 @@ for i = 1:size(mat_anova, 2);
     subplot(1,3,i);
     qqplot(residuals(:,i));
     title(titles{i});
-    if i <= 4, xlabel(''); end;
-    if ~ismember(i, [1,5,9,13]), ylabel(''); end;
+    if i <= 4, xlabel(''); end
+    if ~ismember(i, [1,5,9,13]), ylabel(''); end
 end
 suptitle('Residual plots');
 
@@ -1085,30 +1085,30 @@ cohens_d
 figure('color', 'w')
 residuals = mat_anova - repmat(nanmean(mat_anova,1),[size(mat_anova,1),1]);
 titles = {'Flash_fusion'; 'Fusion_illusion'; 'Fission_illusion'};
-for i = 1:size(mat_anova, 2);
+for i = 1:size(mat_anova, 2)
     subplot(1,3,i);
     scatter(1:size(residuals,1), residuals(:,i), 'ro', 'filled');
     title(titles{i});
-    if i > 4, xlabel('Subject'); end;
-    if ismember(i, [1,5,9,13]), ylabel('Residual value'); end;
+    if i > 4, xlabel('Subject'); end
+    if ismember(i, [1,5,9,13]), ylabel('Residual value'); end
 end
 suptitle('Residual plots');
 
 % Plot residual quantiles versus normal distribution
 % 2.) Normality
 figure('color', 'w');
-for i = 1:size(mat_anova, 2);
+for i = 1:size(mat_anova, 2)
     subplot(1,3,i);
     qqplot(residuals(:,i));
     title(titles{i});
-    if i <= 4, xlabel(''); end;
-    if ~ismember(i, [1,5,9,13]), ylabel(''); end;
+    if i <= 4, xlabel(''); end
+    if ~ismember(i, [1,5,9,13]), ylabel(''); end
 end
 suptitle('Residual plots');
 
 % Test normality with shapiro wilk test (very conservative test!)
 [H, pValue, SWstatistic] = deal(nan(size(residuals,2),1));
-for i = 1:size(mat_anova, 2);
+for i = 1:size(mat_anova, 2)
     alpha = 0.001; %as it's conservative let this be quite small
     [H(i), pValue(i), SWstatistic(i)] = swtest(residuals(:,i), alpha);
 end
@@ -1165,30 +1165,30 @@ cohens_d
 figure('color', 'w')
 residuals = mat_anova - repmat(nanmean(mat_anova,1),[size(mat_anova,1),1]);
 titles = {'Flash_fusion'; 'Fusion_illusion'; 'Fission_illusion'};
-for i = 1:size(mat_anova, 2);
+for i = 1:size(mat_anova, 2)
     subplot(1,3,i);
     scatter(1:size(residuals,1), residuals(:,i), 'ro', 'filled');
     title(titles{i});
-    if i > 4, xlabel('Subject'); end;
-    if ismember(i, [1,5,9,13]), ylabel('Residual value'); end;
+    if i > 4, xlabel('Subject'); end
+    if ismember(i, [1,5,9,13]), ylabel('Residual value'); end
 end
 suptitle('Residual plots');
 
 % Plot residual quantiles versus normal distribution
 % 2.) Normality
 figure('color', 'w');
-for i = 1:size(mat_anova, 2);
+for i = 1:size(mat_anova, 2)
     subplot(1,3,i);
     qqplot(residuals(:,i));
     title(titles{i});
-    if i <= 4, xlabel(''); end;
-    if ~ismember(i, [1,5,9,13]), ylabel(''); end;
+    if i <= 4, xlabel(''); end
+    if ~ismember(i, [1,5,9,13]), ylabel(''); end
 end
 suptitle('Residual plots');
 
 % Test normality with shapiro wilk test (very conservative test!)
 [H, pValue, SWstatistic] = deal(nan(size(residuals,2),1));
-for i = 1:size(mat_anova, 2);
+for i = 1:size(mat_anova, 2)
     alpha = 0.001; %as it's conservative let this be quite small
     [H(i), pValue(i), SWstatistic(i)] = swtest(residuals(:,i), alpha);
 end
@@ -1249,26 +1249,26 @@ for i = 1:size(mat_anova, 2);
     subplot(1,3,i);
     scatter(1:size(residuals,1), residuals(:,i), 'ro', 'filled');
     title(titles{i});
-    if i > 4, xlabel('Subject'); end;
-    if ismember(i, [1,5,9,13]), ylabel('Residual value'); end;
+    if i > 4, xlabel('Subject'); end
+    if ismember(i, [1,5,9,13]), ylabel('Residual value'); end
 end
 suptitle('Residual plots');
 
 % Plot residual quantiles versus normal distribution
 % 2.) Normality
 figure('color', 'w');
-for i = 1:size(mat_anova, 2);
+for i = 1:size(mat_anova, 2)
     subplot(1,3,i);
     qqplot(residuals(:,i));
     title(titles{i});
-    if i <= 4, xlabel(''); end;
-    if ~ismember(i, [1,5,9,13]), ylabel(''); end;
+    if i <= 4, xlabel(''); end
+    if ~ismember(i, [1,5,9,13]), ylabel(''); end
 end
 suptitle('Residual plots');
 
 % Test normality with shapiro wilk test (very conservative test!)
 [H, pValue, SWstatistic] = deal(nan(size(residuals,2),1));
-for i = 1:size(mat_anova, 2);
+for i = 1:size(mat_anova, 2)
     alpha = 0.001; %as it's conservative let this be quite small
     [H(i), pValue(i), SWstatistic(i)] = swtest(residuals(:,i), alpha);
 end
