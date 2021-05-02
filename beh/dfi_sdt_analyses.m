@@ -134,6 +134,7 @@ dP_adj = nan(nsoa, 3, length(subjvect));
 C_adj  = nan(nsoa, 3, length(subjvect));
 pC_adj = nan(nsoa, 3, length(subjvect));
 dP_unbiased = nan(nsoa, 3, length(subjvect));
+N_trls = nan(nsoa, 6, length(subjvect));
 
 % loop over participants
 for isubj = 1:length(subjvect)
@@ -178,6 +179,17 @@ for isubj = 1:length(subjvect)
         C_adj(soavect, 2, isubj) = sdm56_adj.C_adj;
         C_adj(soavect, 3, isubj) = sdm89_adj.C_adj;
         
+        soas = unique(dall.soa);
+        for isoa = 1:length(soas)
+            cond_idx = [2,3,5,6,8,9];
+            for icond = 1:length(cond_idx)
+                N_trls(isoa, icond, isubj) = ...
+                    sum(dall.soa==soas(isoa) & ...
+                    dall.partid==subjvect(isubj) & ...
+                    dall.trlid==cond_idx(icond));
+            end
+        end
+        
         % plot
         axes(ha(isubj))
         soa= unique(d.soa);
@@ -216,10 +228,23 @@ end % sessions loop
 
 suptitle(sprintf('Sensitivity, all sessions'))
 
+% Show number of trials by flash-beep pairing, when considering
+% the intermediate 4 SOAs:
+cond_labels = {'1F0B', '2F0B', '1F1B', '2F1B', '1F2B', '2F2B'};
+Nmat = squeeze(sum(N_trls(3:6,:,:)));
+Nmat_avg = mean(Nmat,2);
+Nmat_se = std(Nmat') ./ sqrt(size(Nmat,2));
+for icond = 1:6
+    fprintf('\nNumber of trials for %s = %f +- %f', ...
+        cond_labels{icond}, Nmat_avg(icond), Nmat_se(icond))
+end
+disp(' ')
+        
+
 % save signal detection paramters
 mkdir(fullfile(data_dir, '2IFC'))
 save(fullfile( data_dir, '2IFC', 'SD_params.mat' ), ...
-    'dP_mat', 'C_mat', 'dP_adj', 'C_adj', 'pC_mat', 'pC_adj', 'soaAll');
+    'dP_mat', 'C_mat', 'dP_adj', 'C_adj', 'pC_mat', 'pC_adj', 'soaAll', 'N_trls');
 close all
 
 
@@ -290,6 +315,8 @@ dP_mat = nan(nsoa, 3, length(subjvect));
 C_mat  = nan(nsoa, 3, length(subjvect));
 numPos = nan(nsoa, 3, length(subjvect));
 numTot = nan(nsoa, 3, length(subjvect));
+N_trls = nan(nsoa, 6, length(subjvect));
+
 
 % loop over participants
 for isubj = 1:length(subjvect)
@@ -333,6 +360,17 @@ for isubj = 1:length(subjvect)
         C_adj(soavect, 2, isubj) = sdm56_adj.C_adj;
         C_adj(soavect, 3, isubj) = sdm89_adj.C_adj;
         
+        soas = unique(dall.soa);
+        for isoa = 1:length(soas)
+            cond_idx = [2,3,5,6,8,9];
+            for icond = 1:length(cond_idx)
+                N_trls(isoa, icond, isubj) = ...
+                    sum(dall.soa==soas(isoa) & ...
+                    dall.partid==subjvect(isubj) & ...
+                    dall.trlid==cond_idx(icond));
+            end
+        end
+        
         % plot
         axes(ha(isubj))
         soa= unique(d.soa);
@@ -372,10 +410,22 @@ end % sessions loop
 
 suptitle(sprintf('Sensitivity, all sessions'))
 
+% Show number of trials by flash-beep pairing, when considering
+% the intermediate 4 SOAs:
+cond_labels = {'1F0B', '2F0B', '1F1B', '2F1B', '1F2B', '2F2B'};
+Nmat = squeeze(sum(N_trls(3:6,:,:)));
+Nmat_avg = mean(Nmat,2);
+Nmat_se = std(Nmat') ./ sqrt(size(Nmat,2));
+for icond = 1:6
+    fprintf('\nNumber of trials for %s = %f +- %f', ...
+        cond_labels{icond}, Nmat_avg(icond), Nmat_se(icond))
+end
+disp(' ')
+
 % save signal detection paramters
 mkdir(fullfile( data_dir, 'yesno'))
 save(fullfile( data_dir, 'yesno', 'SD_params.mat'), ...
-    'dP_mat', 'C_mat', 'dP_adj', 'C_adj', 'pC_mat', 'pC_adj', 'soaAll');
+    'dP_mat', 'C_mat', 'dP_adj', 'C_adj', 'pC_mat', 'pC_adj', 'soaAll', 'N_trls');
 
 
 % eof
