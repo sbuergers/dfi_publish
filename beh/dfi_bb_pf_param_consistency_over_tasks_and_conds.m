@@ -8,7 +8,7 @@
 %   None
 %
 % Sibling script(s):
-%   None
+%   dfi_bb_pf_threshold_consistency.m (figure script)
 %
 % ===========================================================================
 %
