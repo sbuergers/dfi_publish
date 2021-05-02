@@ -310,9 +310,7 @@ fslide_for_stats(:,:,4,1) = fslide_tmp(:,:,7);
 fslide_for_stats(:,:,4,2) = fslide_tmp(:,:,8);
 fslide_for_stats = fslide_for_stats(tid,:,:,:);
 
-se_tmp = permute(fslide_SE, [2, 1]);
-se_tmp(:, [1,2,5,6]) = [];
-se_tmp = se_tmp(tid, :);
+se_tmp = permute(fslide_SE_within, [2, 1]);
 fslide_se = nan([size(se_tmp, 1), 4, 2]);
 fslide_se(:,1,1) = se_tmp(:,1);
 fslide_se(:,1,2) = se_tmp(:,2);
@@ -325,7 +323,7 @@ fslide_se(:,4,2) = se_tmp(:,8);
 
 mkdir(supp_save_dir);
 save(fullfile(supp_save_dir, 'fslide_see1_v_see2.mat'), ...
-    'fslide_for_stats', 'fslide_se', 'fslide_SE_within', 'tif', 'tid', ...
+    'fslide_for_stats', 'fslide_se', 'tif', 'tid', ...
     '-v7.3')
 
 
