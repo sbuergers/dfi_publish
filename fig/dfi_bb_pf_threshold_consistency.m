@@ -154,6 +154,35 @@ fh0.Renderer = 'painters';
 saveas(fh0, fullfile(figdir, 'Consistency_pf_threshold_svg.svg'))
 close all
 
+
+%% Bayes factor figures
+
+BFs = nan(3,1);
+for i = 1:3
+    BFs(i) = corrbf(r(i), N(i));
+end
+
+fh1 = figure('color', [1 1 1], 'Position', [0, 0, 427, 350]);
+ha = tight_subplot(3, 4,[0.01 0.03],[0.02],[0.02]);
+
+xl = [0, 1];
+yl = [-1, +1];
+
+axes(ha(1));
+
+line([xl], [0 0])
+line([xl], [0.5, 0.5])
+line([xl], [-0.5, -0.5])
+line([0.25, 0.25], [0, log10(BFs(1))])
+line([0.5, 0.5], [0, log10(BFs(2))])
+line([0.75, 0.75], [0, log10(BFs(3))])
+box off
+
+% save figure
+fh1.Renderer = 'painters'; 
+saveas(fh1, fullfile(figdir, 'Consistency_pf_threshold_BFs_svg.svg'))
+close all
+
            
 % eof
 
