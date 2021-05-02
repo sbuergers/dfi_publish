@@ -250,7 +250,7 @@ cohens_d
 figure('color', 'w')
 residuals = mat_anova - repmat(nanmean(mat_anova,1),[size(mat_anova,1),1]);
 titles = {'Flash_fusion'; 'Fusion_illusion'; 'Fission_illusion'};
-for i = 1:size(mat_anova, 2);
+for i = 1:size(mat_anova, 2)
     subplot(1,3,i);
     scatter(1:size(residuals,1), residuals(:,i), 'ro', 'filled');
     title(titles{i});
@@ -262,7 +262,7 @@ suptitle('Residual plots');
 % Plot residual quantiles versus normal distribution
 % 2.) Normality
 figure('color', 'w');
-for i = 1:size(mat_anova, 2);
+for i = 1:size(mat_anova, 2)
     subplot(1,3,i);
     qqplot(residuals(:,i));
     title(titles{i});
@@ -353,7 +353,7 @@ cohens_d
 figure('color', 'w')
 residuals = mat_anova - repmat(nanmean(mat_anova,1),[size(mat_anova,1),1]);
 titles = {'Flash_fusion'; 'Fusion_illusion'; 'Fission_illusion'};
-for i = 1:size(mat_anova, 2);
+for i = 1:size(mat_anova, 2)
     subplot(1,3,i);
     scatter(1:size(residuals,1), residuals(:,i), 'ro', 'filled');
     title(titles{i});
@@ -365,7 +365,7 @@ suptitle('Residual plots');
 % Plot residual quantiles versus normal distribution
 % 2.) Normality
 figure('color', 'w');
-for i = 1:size(mat_anova, 2);
+for i = 1:size(mat_anova, 2)
     subplot(1,3,i);
     qqplot(residuals(:,i));
     title(titles{i});
@@ -440,7 +440,7 @@ cohens_d
 figure('color', 'w')
 residuals = mat_anova - repmat(nanmean(mat_anova,1),[size(mat_anova,1),1]);
 titles = {'Flash_fusion'; 'Fusion_illusion'; 'Fission_illusion'};
-for i = 1:size(mat_anova, 2);
+for i = 1:size(mat_anova, 2)
     subplot(1,3,i);
     scatter(1:size(residuals,1), residuals(:,i), 'ro', 'filled');
     title(titles{i});
@@ -452,7 +452,7 @@ suptitle('Residual plots');
 % Plot residual quantiles versus normal distribution
 % 2.) Normality
 figure('color', 'w');
-for i = 1:size(mat_anova, 2);
+for i = 1:size(mat_anova, 2)
     subplot(1,3,i);
     qqplot(residuals(:,i));
     title(titles{i});
@@ -463,7 +463,7 @@ suptitle('Residual plots');
 
 % Test normality with shapiro wilk test (very conservative test!)
 [H, pValue, SWstatistic] = deal(nan(size(residuals,2),1));
-for i = 1:size(mat_anova, 2);
+for i = 1:size(mat_anova, 2)
     alpha = 0.001; %as it's conservative let this be quite small
     [H(i), pValue(i), SWstatistic(i)] = swtest(residuals(:,i), alpha);
 end
@@ -659,7 +659,7 @@ cohens_d
 figure('color', 'w')
 residuals = mat_anova - repmat(nanmean(mat_anova,1),[size(mat_anova,1),1]);
 titles = {'Flash_fusion'; 'Fusion_illusion'; 'Fission_illusion'};
-for i = 1:size(mat_anova, 2);
+for i = 1:size(mat_anova, 2)
     subplot(1,3,i);
     scatter(1:size(residuals,1), residuals(:,i), 'ro', 'filled');
     title(titles{i});
@@ -671,7 +671,7 @@ suptitle('Residual plots');
 % Plot residual quantiles versus normal distribution
 % 2.) Normality
 figure('color', 'w');
-for i = 1:size(mat_anova, 2);
+for i = 1:size(mat_anova, 2)
     subplot(1,3,i);
     qqplot(residuals(:,i));
     title(titles{i});
@@ -682,7 +682,7 @@ suptitle('Residual plots');
 
 % Test normality with shapiro wilk test (very conservative test!)
 [H, pValue, SWstatistic] = deal(nan(size(residuals,2),1));
-for i = 1:size(mat_anova, 2);
+for i = 1:size(mat_anova, 2)
     alpha = 0.001; %as it's conservative let this be quite small
     [H(i), pValue(i), SWstatistic(i)] = swtest(residuals(:,i), alpha);
 end
@@ -770,7 +770,7 @@ suptitle('Residual plots');
 
 % Test normality with shapiro wilk test (very conservative test!)
 [H, pValue, SWstatistic] = deal(nan(size(residuals,2),1));
-for i = 1:size(mat_anova, 2);
+for i = 1:size(mat_anova, 2)
     alpha = 0.001; %as it's conservative let this be quite small
     [H(i), pValue(i), SWstatistic(i)] = swtest(residuals(:,i), alpha);
 end
@@ -836,7 +836,7 @@ cohens_d
 figure('color', 'w')
 residuals = mat_anova - repmat(nanmean(mat_anova,1),[size(mat_anova,1),1]);
 titles = {'Flash_fusion'; 'Fusion_illusion'; 'Fission_illusion'};
-for i = 1:size(mat_anova, 2);
+for i = 1:size(mat_anova, 2)
     subplot(1,3,i);
     scatter(1:size(residuals,1), residuals(:,i), 'ro', 'filled');
     title(titles{i});
@@ -848,7 +848,7 @@ suptitle('Residual plots');
 % Plot residual quantiles versus normal distribution
 % 2.) Normality
 figure('color', 'w');
-for i = 1:size(mat_anova, 2);
+for i = 1:size(mat_anova, 2)
     subplot(1,3,i);
     qqplot(residuals(:,i));
     title(titles{i});
@@ -859,7 +859,7 @@ suptitle('Residual plots');
 
 % Test normality with shapiro wilk test (very conservative test!)
 [H, pValue, SWstatistic] = deal(nan(size(residuals,2),1));
-for i = 1:size(mat_anova, 2);
+for i = 1:size(mat_anova, 2)
     alpha = 0.001; %as it's conservative let this be quite small
     [H(i), pValue(i), SWstatistic(i)] = swtest(residuals(:,i), alpha);
 end
@@ -1277,7 +1277,7 @@ cohens_d
 figure('color', 'w')
 residuals = mat_anova - repmat(nanmean(mat_anova,1),[size(mat_anova,1),1]);
 titles = {'Flash_fusion'; 'Fusion_illusion'; 'Fission_illusion'};
-for i = 1:size(mat_anova, 2);
+for i = 1:size(mat_anova, 2)
     subplot(1,3,i);
     scatter(1:size(residuals,1), residuals(:,i), 'ro', 'filled');
     title(titles{i});
