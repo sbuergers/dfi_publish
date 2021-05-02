@@ -79,6 +79,7 @@ for icond = 1:4
     % Load in figure data
     load(fullfile(load_dir, 'yesno', 'fslide', ...
         sprintf('figure_data_PO4_O2_PO8_%s.mat', condvect{icond})));
+    fprintf('\nCondition %i, N=%i', icond, length(missing_IDs));
     
     % Which clusters are reliable?
     % Make a vector of all p-values associated with the clusters from ft_freqstatistics.
@@ -163,6 +164,7 @@ for icond = 1:4
     % Load in figure data
     load(fullfile(load_dir, 'ynt', 'fslide', ...
         sprintf('figure_data_PO4_O2_PO8_%s.mat', condvect{icond})));
+    fprintf('\nCondition %i, N=%i', icond, length(missing_IDs));
     
     % Which clusters are reliable?
     % Make a vector of all p-values associated with the clusters from ft_freqstatistics.
