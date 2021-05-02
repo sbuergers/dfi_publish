@@ -323,8 +323,7 @@ fslide_se(:,4,2) = se_tmp(:,8);
 
 mkdir(supp_save_dir);
 save(fullfile(supp_save_dir, 'fslide_see1_v_see2.mat'), ...
-    'fslide_for_stats', 'fslide_se', 'tif', 'tid', ...
-    '-v7.3')
+    'fslide_for_stats', 'fslide_se', 'tif', 'tid', '-v7.3')
 
 
 %% Plot fslide over time

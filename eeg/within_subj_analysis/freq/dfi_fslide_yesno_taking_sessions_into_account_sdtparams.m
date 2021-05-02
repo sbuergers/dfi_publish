@@ -239,6 +239,9 @@ for icond = 1:12
     fslide_GA_uncorr(icond,:) = nanmean(fslide_subj_uncorr(icond,:,:),2);
     fslide_SE_uncorr(icond,:) = nanstd(fslide_subj_uncorr(icond,:,:)) ./ sqrt(20);
 end
+fslide_SE_within = squeeze(cousineau_within_subject_se( ...
+    permute(fslide_subj([3,4,7:12], :, :), [2, 1, 3]) ...
+));
 
 
 %% Save frequency sliding for see1 and see2 flash outcomes
@@ -259,7 +262,7 @@ fslide_for_stats(:,:,4,1) = fslide_tmp(:,:,7);
 fslide_for_stats(:,:,4,2) = fslide_tmp(:,:,8);
 fslide_for_stats = fslide_for_stats(tid,:,:,:);
 
-se_tmp = permute(fslide_SE, [2, 1]);
+se_tmp = permute(fslide_SE_within, [2, 1]);
 se_tmp(:, [1,2,5,6]) = [];
 se_tmp = se_tmp(tid, :);
 fslide_se = nan([size(se_tmp, 1), 4, 2]);
