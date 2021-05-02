@@ -260,7 +260,7 @@ for icond = 1:length(condvect)
     
     % Save data to remake figures later (for paper)
     save(fullfile(save_dir, sprintf('figure_data_PO4_O2_PO8_%s.mat', condvect{icond})), ...
-        'fslide_GA', 'tif', 'stat', 'sem_f1_w', 'sem_f2_w');
+        'fslide_GA', 'tif', 'stat', 'sem_f1_w', 'sem_f2_w', 'missing_ID');
     
     % Save figures
     if ~exist(fullfile(fig_dir, an_fold, foldername, fold_data, task), 'dir')
