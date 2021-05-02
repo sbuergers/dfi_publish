@@ -246,6 +246,9 @@ for icond = 1:12
     fslide_GA_uncorr(icond,:) = nanmean(fslide_subj_uncorr(icond,:,:),2);
     fslide_SE_uncorr(icond,:) = nanstd(fslide_subj_uncorr(icond,:,:)) ./ sqrt(20);
 end
+fslide_SE_within = squeeze(cousineau_within_subject_se( ...
+    permute(fslide_subj([3,4,7:12], :, :), [2, 1, 3]) ...
+));
 
 % Plotting colours
 col1 = {[1 0 0], [1 0 0], [1 0 0], [1 0 0], [1 0 0], [1 0 0]}; % see1
@@ -322,7 +325,8 @@ fslide_se(:,4,2) = se_tmp(:,8);
 
 mkdir(supp_save_dir);
 save(fullfile(supp_save_dir, 'fslide_see1_v_see2.mat'), ...
-    'fslide_for_stats', 'fslide_se', 'tif', 'tid', '-v7.3')
+    'fslide_for_stats', 'fslide_se', 'fslide_SE_within', 'tif', 'tid', ...
+    '-v7.3')
 
 
 %% Plot fslide over time
