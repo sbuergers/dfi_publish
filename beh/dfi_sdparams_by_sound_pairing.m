@@ -82,8 +82,6 @@ acc_mat = dP_avg';
 fh = figure('color', [1 1 1], 'Position', [0, 0, 140, 140]);
 
 % get Cousineau within subject SE for plotting:
-
- 
 data = acc_mat;
 subj_mean = nanmean(data,2);
 grand_mean = nanmean(subj_mean,1);

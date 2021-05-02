@@ -249,8 +249,8 @@ clear fslide_GA tif sem_f1 sem_f2 stat
 xl = [-0.6 -0.1];
 yl = [-1.25 1.75];
 
-ids = 1:3;
-for icond = 1:3
+ids = 1:4;
+for icond = 1:4
     axes(ha(ids(icond)));
 
     load(fullfile(load_dir, 'yesno', 'fslide', ...
@@ -285,7 +285,7 @@ clear fslide_GA tif sem_f1 sem_f2 stat
 xl = [-0.6 -0.1];
 
 ids = 13:16;
-for icond = 1:3
+for icond = 1:4
     axes(ha(ids(icond)));
     
     % Save data to remake figures later (for paper)
