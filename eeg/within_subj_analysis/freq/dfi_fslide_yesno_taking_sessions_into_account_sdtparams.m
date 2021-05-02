@@ -263,7 +263,6 @@ fslide_for_stats(:,:,4,2) = fslide_tmp(:,:,8);
 fslide_for_stats = fslide_for_stats(tid,:,:,:);
 
 se_tmp = permute(fslide_SE_within, [2, 1]);
-se_tmp(:, [1,2,5,6]) = [];
 se_tmp = se_tmp(tid, :);
 fslide_se = nan([size(se_tmp, 1), 4, 2]);
 fslide_se(:,1,1) = se_tmp(:,1);
