@@ -130,8 +130,8 @@ for ic = 1:3
     [r(1,ic),b1(1,ic),b0(1,ic)] = regression(x(:,ic), y(:,ic), 'one');
     line([min(min(x))  max(max(x))], [b0(1,ic)+b1(1,ic)*min(min(x)) b0(1,ic)+b1(1,ic)*max(max(x))], 'color', col_lines(ic,:), 'linewidth', lw, 'linestyle', ls);
     xlim(xl); ylim(yl);
-    xticks = -2:0.4:2; set(gca, 'XTick', xticks)
-    yticks = -2:0.4:2;  set(gca, 'YTick', yticks);
+    xticks = [0.025, 0.042, 0.05, 0.058, 0.075, 0.108, 0.158, 0.225]; set(gca, 'XTick', xticks)
+    yticks = xticks;  set(gca, 'YTick', yticks);
     line([xl], [0 0], 'color', [0.5 0.5 0.5])
     line([0 0], [yl], 'color', [0.5 0.5 0.5])
     box off
