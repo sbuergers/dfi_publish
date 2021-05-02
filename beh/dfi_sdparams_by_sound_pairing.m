@@ -116,7 +116,6 @@ fh.Renderer = 'painters'; saveas(fh,  fullfile(fig_dir, [fname, '_svg.svg']))
 close all
 
 
-
 % Create figure and save for inkscape: Criterion
 yl = [-1.25, 1.25];
 cond_labels = {'2F', 'Fus', 'Fis'};
@@ -154,7 +153,6 @@ fname = 'beh_C_adj_2ifc';
 fh.Renderer = 'painters'; saveas(fh,  fullfile(fig_dir, [fname, '_svg.svg']))
 
 close all
-
 
 
 % Create figure and save for inkscape: actual Criterion (before was bias_centre)
@@ -283,7 +281,7 @@ shapiro_output = [H, pValue, SWstatistic];
 shapiro_output
 
 
-%% stats C (disregard SOA, disregard Context):
+%% stats C (disregard SOA):
 % i.e. simply check if the average Interval bias for a given sensory
 % context is significantly different from zero
 for icond = 1:3
@@ -378,7 +376,7 @@ suptitle('Residual plots');
 
 % Test normality with shapiro wilk test (very conservative test!)
 [H, pValue, SWstatistic] = deal(nan(size(residuals,2),1));
-for i = 1:size(mat_anova, 2);
+for i = 1:size(mat_anova, 2)
     alpha = 0.001; %as it's conservative let this be quite small
     [H(i), pValue(i), SWstatistic(i)] = swtest(residuals(:,i), alpha);
 end
@@ -484,7 +482,6 @@ C_yesno = C_adj;
 
 dP_avg = squeeze(nanmean(dP_yesno(3:6,:,:)));
 C_avg = squeeze(nanmean(C_yesno(3:6,:,:)));
-
 
 % Create figure and save for inkscape: dPrime
 yl = [0.9, 2.4];
@@ -750,7 +747,7 @@ cohens_d
 figure('color', 'w')
 residuals = mat_anova - repmat(nanmean(mat_anova,1),[size(mat_anova,1),1]);
 titles = {'Flash_fusion'; 'Fusion_illusion'; 'Fission_illusion'};
-for i = 1:size(mat_anova, 2);
+for i = 1:size(mat_anova, 2)
     subplot(1,3,i);
     scatter(1:size(residuals,1), residuals(:,i), 'ro', 'filled');
     title(titles{i});
@@ -762,7 +759,7 @@ suptitle('Residual plots');
 % Plot residual quantiles versus normal distribution
 % 2.) Normality
 figure('color', 'w');
-for i = 1:size(mat_anova, 2);
+for i = 1:size(mat_anova, 2)
     subplot(1,3,i);
     qqplot(residuals(:,i));
     title(titles{i});
@@ -961,6 +958,44 @@ yl = [-1.25, 1.25];
 cond_labels = {'2F', 'Fus', 'Fis'};
 col_vect = [0 0.6 0; 0 0 1; 1 0 0]';
 acc_mat = C_mat;
+fh = figure('color', [1 1 1], 'Position', [0, 0, 140, 140]);
+
+% get Cousineau within subject SE for plotting:
+data = acc_mat;
+subj_mean = nanmean(data,2);
+grand_mean = nanmean(subj_mean,1);
+data_corr = data - repmat(subj_mean, [1,3]) + repmat(grand_mean, [size(data,1),size(data,2)]);
+SE_w = nanstd(data_corr,0,1)./sqrt(sum(~isnan(data_corr),1));
+SE_b = nanstd(data,0,1)./sqrt(sum(~isnan(data),1));
+
+plot(1, nanmean(acc_mat(:,1)), 'ko', 'MarkerSize', 5, 'MarkerFaceColor', col_vect(:,1)); hold on
+plot(2, nanmean(acc_mat(:,2)), 'ko', 'MarkerSize', 5, 'MarkerFaceColor', col_vect(:,2)); hold on
+plot(3, nanmean(acc_mat(:,3)), 'ko', 'MarkerSize', 5, 'MarkerFaceColor', col_vect(:,3)); hold on
+errorbar(1, nanmean(acc_mat(:,1)), SE_w(1), SE_w(1), 'Color', col_vect(:,1), 'LineWidth', 1.5);
+errorbar(2, nanmean(acc_mat(:,2)), SE_w(2), SE_w(2), 'Color', col_vect(:,2), 'LineWidth', 1.5);
+errorbar(3, nanmean(acc_mat(:,3)), SE_w(3), SE_w(3), 'Color', col_vect(:,3), 'LineWidth', 1.5);
+set(gca, 'xticklabel', [])
+%set(gca, 'yticklabel', [])
+box off
+set(gca,'TickDir','out')
+set(gca,'TickLength',[0.02, 0.02])
+set(gca,'XColor','k','YColor','k')
+xlim([0.5 3.5])
+ylim(yl)
+
+% Export figures
+fname = 'C_adj_ynt';
+%export_fig(fh, fullfile(fig_dir, fname), '-tiff', '-m2.5');
+fh.Renderer = 'painters'; saveas(fh,  fullfile(fig_dir, [fname, '_svg.svg']))
+
+close all
+
+
+% Create figure and save for inkscape: Criterion (bias centre)
+yl = [-1.25, 1.25];
+cond_labels = {'2F', 'Fus', 'Fis'};
+col_vect = [0 0.6 0; 0 0 1; 1 0 0]';
+acc_mat = C_mat;
 acc_mat(:,3) = -acc_mat(:,3);
 fh = figure('color', [1 1 1], 'Position', [0, 0, 140, 140]);
 
@@ -1032,9 +1067,6 @@ fname = 'actualC_adj_ynt_2f2s_as_noise';
 fh.Renderer = 'painters'; saveas(fh,  fullfile(fig_dir, [fname, '_svg.svg']))
 
 close all
-
-
-
 
 
 %% stats dP:
