@@ -1,5 +1,5 @@
 % Compute dprime and bias for different beep contexts
-% in yes-no and yes-no threshold task. 
+% in 2IFC, yes-no and yes-no threshold task. 
 % Creates Figure 1c (and corresponding statistics).
 %
 % Parent script(s): 
