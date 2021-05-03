@@ -1,12 +1,11 @@
 % Prepares signal detection parameters (no PFs) for yes-no
 % and 2IFC data for the analyses and figure script
-% "dfi_fig_beh1.m". 
 %
 % Parent script(s): 
 %   None
 %   
 % Children script(s): 
-%   dfi_fig_beh1.m
+%   dfi_sdparams_by_sound_pairing.m
 %
 % Sibling script(s):
 %   None
@@ -46,7 +45,7 @@
 %
 % ---
 % Steffen Buergers, sbuergers@gmail.com,
-% Last modified 30/03/2021
+% Last modified 02/05/2021
 
 
 restoredefaultpath
