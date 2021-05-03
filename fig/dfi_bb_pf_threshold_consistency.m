@@ -152,6 +152,86 @@ for icond = 1:3
 end
 fprintf('\n\n')
 
+
+%% Scatter plots 2: 2ifc versus ynt staircase estimate
+
+x = ifc_beta_threshold;
+y = ynt_staircase_estimate;
+    
+for ic = 1:3
+    
+    axes(ha(4+ic));
+
+    xl = [min(min(x(:,ic)))*0.85, max(max(x(:,ic)))*1.15]; xrange = xl(2) - xl(1);
+    xlall(:,ic) = xl;
+    yl = [min(min(y(:,ic)))*0.85, max(max(y(:,ic)))*1.15]; yrange = yl(2) - yl(1);
+    dtsz = [xrange*.0355,yrange*.0355]; 
+    transparentScatter(x(:,ic), y(:,ic), col_vect(ic,:), opacity, dtsz, 25); hold on
+    N(1,ic) = sum(~isnan(x(:,ic)) & ~isnan(y(:,ic)));
+    [spearRho(1,ic), pval(1,ic)] = corr(x(:,ic), y(:,ic), 'type', 'Spearman', 'rows', 'complete');
+    [rx(1,ic), pval_r(1,ic)] = corr(x(:,ic), y(:,ic), 'type', 'Pearson', 'rows', 'complete');
+    [r(1,ic),b1(1,ic),b0(1,ic)] = regression(x(:,ic), y(:,ic), 'one');
+    line([min(min(x))  max(max(x))], [b0(1,ic)+b1(1,ic)*min(min(x)) b0(1,ic)+b1(1,ic)*max(max(x))], 'color', col_lines(ic,:), 'linewidth', lw, 'linestyle', ls);
+    xlim(xl); ylim(yl);
+    xticks = [0.025, 0.042, 0.05, 0.058, 0.075, 0.108, 0.158, 0.225]; set(gca, 'XTick', xticks)
+    yticks = xticks;  set(gca, 'YTick', yticks);
+    line([xl], [0 0], 'color', [0.5 0.5 0.5])
+    line([0 0], [yl], 'color', [0.5 0.5 0.5])
+    box off
+    set(gca,'TickDir','out')
+    set(gca,'TickLength',[0.02, 0.02])
+end
+
+fprintf('\n\n---- Scatter plots 1: yesno versus 2ifc ----')
+for icond = 1:3
+    fprintf('\n\nCondition %i\n', icond)
+    fprintf('\nN = %i', N(icond))
+    fprintf('\nr = %f', pval_r(icond))
+    fprintf('\nrho = %f', spearRho(icond))
+    fprintf('\np = %f', pval(icond))
+end
+fprintf('\n\n')
+
+
+%% Scatter plots 3: yesno versus ynt staircase estimate
+
+x = yn_beta_threshold;
+y = ynt_staircase_estimate;
+    
+for ic = 1:3
+    
+    axes(ha(8+ic));
+
+    xl = [min(min(x(:,ic)))*0.85, max(max(x(:,ic)))*1.15]; xrange = xl(2) - xl(1);
+    xlall(:,ic) = xl;
+    yl = [min(min(y(:,ic)))*0.85, max(max(y(:,ic)))*1.15]; yrange = yl(2) - yl(1);
+    dtsz = [xrange*.0355,yrange*.0355]; 
+    transparentScatter(x(:,ic), y(:,ic), col_vect(ic,:), opacity, dtsz, 25); hold on
+    N(1,ic) = sum(~isnan(x(:,ic)) & ~isnan(y(:,ic)));
+    [spearRho(1,ic), pval(1,ic)] = corr(x(:,ic), y(:,ic), 'type', 'Spearman', 'rows', 'complete');
+    [rx(1,ic), pval_r(1,ic)] = corr(x(:,ic), y(:,ic), 'type', 'Pearson', 'rows', 'complete');
+    [r(1,ic),b1(1,ic),b0(1,ic)] = regression(x(:,ic), y(:,ic), 'one');
+    line([min(min(x))  max(max(x))], [b0(1,ic)+b1(1,ic)*min(min(x)) b0(1,ic)+b1(1,ic)*max(max(x))], 'color', col_lines(ic,:), 'linewidth', lw, 'linestyle', ls);
+    xlim(xl); ylim(yl);
+    xticks = [0.025, 0.042, 0.05, 0.058, 0.075, 0.108, 0.158, 0.225]; set(gca, 'XTick', xticks)
+    yticks = xticks;  set(gca, 'YTick', yticks);
+    line([xl], [0 0], 'color', [0.5 0.5 0.5])
+    line([0 0], [yl], 'color', [0.5 0.5 0.5])
+    box off
+    set(gca,'TickDir','out')
+    set(gca,'TickLength',[0.02, 0.02])
+end
+
+fprintf('\n\n---- Scatter plots 1: yesno versus 2ifc ----')
+for icond = 1:3
+    fprintf('\n\nCondition %i\n', icond)
+    fprintf('\nN = %i', N(icond))
+    fprintf('\nr = %f', pval_r(icond))
+    fprintf('\nrho = %f', spearRho(icond))
+    fprintf('\np = %f', pval(icond))
+end
+fprintf('\n\n')
+
 % save figure
 fh0.Renderer = 'painters'; 
 saveas(fh0, fullfile(figdir, 'Consistency_pf_threshold_svg.svg'))
@@ -185,12 +265,6 @@ fh1.Renderer = 'painters';
 saveas(fh1, fullfile(figdir, 'Consistency_pf_threshold_BFs_svg.svg'))
 close all
 
-
-%% Scatter plots 2: 2ifc versus ynt staircase estimate
-
-
-%% Scatter plots 3: yesno versus ynt staircase estimate
-
-           
+ 
 % eof
 
