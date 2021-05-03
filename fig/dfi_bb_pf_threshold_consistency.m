@@ -1,5 +1,8 @@
 % Make correlation plots to assess consistency of PF threshold
-% between yes-no and 2IFC task for each sound condition.
+% between yes-no and 2IFC task for each sound condition. In addition,
+% compare each task's threshold estimate with the staircase estimate
+% of the yes-no threshold task (yielding 3 (task) x 3 (# beeps)
+% comparisons)
 %
 % Parent script(s): 
 %   dfi_beta_binom_combine_joined_and_sep_fits.m
@@ -108,7 +111,7 @@ ls = '-';
 xl = [-0.6 0.4]; 
 yl = xl;
     
-% Scatter plot: Collapse over time, check yesno versus ynt
+%% Scatter plots 1: yesno versus 2ifc
 fh0 = figure('color', [1 1 1], 'Position', [0, 0, 427, 350]);
 ha = tight_subplot(3, 4, [0.01 0.03], [0.02], [0.02]);
 
@@ -139,15 +142,15 @@ for ic = 1:3
     set(gca,'TickLength',[0.02, 0.02])
 end
 
-xlall'
-yl
-N
-r
-pval_r
-spearRho
-pval
-r_dp = r;
-n_dp = N;
+fprintf('\n\n---- Scatter plots 1: yesno versus 2ifc ----')
+for icond = 1:3
+    fprintf('\n\nCondition %i\n', icond)
+    fprintf('\nN = %i', N(icond))
+    fprintf('\nr = %f', pval_r(icond))
+    fprintf('\nrho = %f', spearRho(icond))
+    fprintf('\np = %f', pval(icond))
+end
+fprintf('\n\n')
 
 % save figure
 fh0.Renderer = 'painters'; 
@@ -155,8 +158,7 @@ saveas(fh0, fullfile(figdir, 'Consistency_pf_threshold_svg.svg'))
 close all
 
 
-%% Bayes factor figures
-
+%% Bayes factors
 BFs = nan(3,1);
 for i = 1:3
     BFs(i) = corrbf(r(i), N(i));
@@ -184,7 +186,10 @@ saveas(fh1, fullfile(figdir, 'Consistency_pf_threshold_BFs_svg.svg'))
 close all
 
 
-%% TODO: Add correlations between 2IFC and Yes-no and staircase
+%% Scatter plots 2: 2ifc versus ynt staircase estimate
+
+
+%% Scatter plots 3: yesno versus ynt staircase estimate
 
            
 % eof
