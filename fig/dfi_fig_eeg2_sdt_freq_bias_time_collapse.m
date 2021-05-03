@@ -68,7 +68,7 @@ condvect = {'v2', 'Fus', 'Fis'};
 %% Figure 1 (Instantaneous freq at iAF - dprime)
 
 fh1 = figure('color', [1 1 1], 'Position', [0, 0, 427, 705]);
-ha = tight_subplot(6, 4,[0.02 0.02],[0.02],[0.02]);
+ha = tight_subplot(6, 4, [0.02 0.02], [0.02], [0.02]);
 
 
 %% Column 1 (yn_intermsoas, sensor)
@@ -230,13 +230,20 @@ axes(ha(1));
 xl = [0.5 3.5];
 yl = [-1, 1];
 
-bfs = nan(3,1);
+[bfs, tvals, pvals, nobs] = deal(nan(3,1));
+fprintf('\n\n----- yn_intermsoas, LCMV ------\n')
 for icond = 1:3
-    
-    [~, ~, ~, stats] = ttest(dp_mat(:,icond,1) - dp_mat(:,icond,3));
+    [~, p, ~, stats] = ttest(dp_mat(:,icond,1) - dp_mat(:,icond,3));
     t = stats.tstat;
     df = stats.df;
     bfs(icond) = t1smpbf(t, df+1);
+    tvals(icond) = t;
+    pvals(icond) = p;
+    nobs = df+1;
+    
+    fprintf('\nCondition %i\n\nt = %f\np = %f\nN = %i\nbf = %f', ...
+        icond, t, p, df+1, bfs(icond))
+    disp(' ')
 end
 
 bar(log10(bfs)); hold on 
@@ -261,13 +268,20 @@ axes(ha(2));
 xl = [0.5 3.5];
 yl = [-1, 1];
 
-bfs = nan(3,1);
+[bfs, tvals, pvals, nobs] = deal(nan(3,1));
+fprintf('\n\n----- yn_intermsoas, LCMV ------\n')
 for icond = 1:3
-    
-    [~, ~, ~, stats] = ttest(dp_mat(:,icond,1) - dp_mat(:,icond,3));
+    [~, p, ~, stats] = ttest(dp_mat(:,icond,1) - dp_mat(:,icond,3));
     t = stats.tstat;
     df = stats.df;
     bfs(icond) = t1smpbf(t, df+1);
+    tvals(icond) = t;
+    pvals(icond) = p;
+    nobs = df+1;
+    
+    fprintf('\nCondition %i\n\nt = %f\np = %f\nN = %i\nbf = %f', ...
+        icond, t, p, df+1, bfs(icond))
+    disp(' ')
 end
 
 bar(log10(bfs)); hold on 
@@ -292,14 +306,22 @@ axes(ha(3));
 xl = [0.5 3.5];
 yl = [-1, 1];
 
-bfs = nan(3,1);
+[bfs, tvals, pvals, nobs] = deal(nan(3,1));
+fprintf('\n\n----- yn_intermsoas, LCMV ------\n')
 for icond = 1:3
-    
-    [~, ~, ~, stats] = ttest(dp_mat(:,icond,1) - dp_mat(:,icond,3));
+    [~, p, ~, stats] = ttest(dp_mat(:,icond,1) - dp_mat(:,icond,3));
     t = stats.tstat;
     df = stats.df;
     bfs(icond) = t1smpbf(t, df+1);
+    tvals(icond) = t;
+    pvals(icond) = p;
+    nobs = df+1;
+    
+    fprintf('\nCondition %i\n\nt = %f\np = %f\nN = %i\nbf = %f', ...
+        icond, t, p, df+1, bfs(icond))
+    disp(' ')
 end
+
 
 bar(log10(bfs)); hold on 
 
@@ -323,13 +345,20 @@ axes(ha(4));
 xl = [0.5 3.5];
 yl = [-1, 1];
 
-bfs = nan(3,1);
+[bfs, tvals, pvals, nobs] = deal(nan(3,1));
+fprintf('\n\n----- yn_intermsoas, LCMV ------\n')
 for icond = 1:3
-    
-    [~, ~, ~, stats] = ttest(dp_mat(:,icond,1) - dp_mat(:,icond,3));
+    [~, p, ~, stats] = ttest(dp_mat(:,icond,1) - dp_mat(:,icond,3));
     t = stats.tstat;
     df = stats.df;
     bfs(icond) = t1smpbf(t, df+1);
+    tvals(icond) = t;
+    pvals(icond) = p;
+    nobs = df+1;
+    
+    fprintf('\nCondition %i\n\nt = %f\np = %f\nN = %i\nbf = %f', ...
+        icond, t, p, df+1, bfs(icond))
+    disp(' ')
 end
 
 bar(log10(bfs)); hold on 
