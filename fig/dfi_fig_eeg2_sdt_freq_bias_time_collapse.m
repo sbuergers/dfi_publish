@@ -220,6 +220,8 @@ close all
 fh2 = figure('color', [1 1 1], 'Position', [0, 0, 427, 400]);
 ha = tight_subplot(6, 4,[0.02 0.02],[0.02],[0.02]);
 
+fprintf('\n+++++ STATISTICS DPRIME +++++\n')
+
 
 %% Column 1 (yn_intermsoas, sensor)
 
@@ -231,7 +233,7 @@ xl = [0.5 3.5];
 yl = [-1, 1];
 
 [bfs, tvals, pvals, nobs] = deal(nan(3,1));
-fprintf('\n\n----- yn_intermsoas, LCMV ------\n')
+fprintf('\n\n----- yn_intermsoas, sensor ------\n')
 for icond = 1:3
     [~, p, ~, stats] = ttest(dp_mat(:,icond,1) - dp_mat(:,icond,3));
     t = stats.tstat;
@@ -269,7 +271,7 @@ xl = [0.5 3.5];
 yl = [-1, 1];
 
 [bfs, tvals, pvals, nobs] = deal(nan(3,1));
-fprintf('\n\n----- yn_intermsoas, LCMV ------\n')
+fprintf('\n\n----- ynt sensor ------\n')
 for icond = 1:3
     [~, p, ~, stats] = ttest(dp_mat(:,icond,1) - dp_mat(:,icond,3));
     t = stats.tstat;
@@ -322,7 +324,6 @@ for icond = 1:3
     disp(' ')
 end
 
-
 bar(log10(bfs)); hold on 
 
 xlim(xl)
@@ -346,7 +347,7 @@ xl = [0.5 3.5];
 yl = [-1, 1];
 
 [bfs, tvals, pvals, nobs] = deal(nan(3,1));
-fprintf('\n\n----- yn_intermsoas, LCMV ------\n')
+fprintf('\n\n----- ynt LCMV ------\n')
 for icond = 1:3
     [~, p, ~, stats] = ttest(dp_mat(:,icond,1) - dp_mat(:,icond,3));
     t = stats.tstat;
@@ -530,6 +531,8 @@ close all
 fh2 = figure('color', [1 1 1], 'Position', [0, 0, 427, 400]);
 ha = tight_subplot(6, 4,[0.02 0.02],[0.02],[0.02]);
 
+fprintf('\n+++++ STATISTICS CRITERION +++++\n')
+
 
 %% Column 1 (yn_intermsoas, sensor)
 
@@ -541,7 +544,7 @@ xl = [0.5 3.5];
 yl = [-1, 1];
 
 [bfs, tvals, pvals, nobs] = deal(nan(3,1));
-fprintf('\n\n----- yn_intermsoas, LCMV ------\n')
+fprintf('\n\n----- yn_intermsoas, sensor ------\n')
 for icond = 1:3
     [~, p, ~, stats] = ttest(c_mat(:,icond,1) - c_mat(:,icond,3));
     t = stats.tstat;
@@ -579,7 +582,7 @@ xl = [0.5 3.5];
 yl = [-1, 1];
 
 [bfs, tvals, pvals, nobs] = deal(nan(3,1));
-fprintf('\n\n----- yn_intermsoas, LCMV ------\n')
+fprintf('\n\n----- ynt sensor ------\n')
 for icond = 1:3
     [~, p, ~, stats] = ttest(c_mat(:,icond,1) - c_mat(:,icond,3));
     t = stats.tstat;
@@ -656,7 +659,7 @@ xl = [0.5 3.5];
 yl = [-1, 1];
 
 [bfs, tvals, pvals, nobs] = deal(nan(3,1));
-fprintf('\n\n----- yn_intermsoas, LCMV ------\n')
+fprintf('\n\n----- ynt sensor ------\n')
 for icond = 1:3
     [~, p, ~, stats] = ttest(c_mat(:,icond,1) - c_mat(:,icond,3));
     t = stats.tstat;
