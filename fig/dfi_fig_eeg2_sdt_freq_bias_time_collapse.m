@@ -540,13 +540,20 @@ load(fullfile(main_dir, 'sd_params_d_c_yesno_tcollapse.mat'));
 xl = [0.5 3.5];
 yl = [-1, 1];
 
-bfs = nan(3,1);
+[bfs, tvals, pvals, nobs] = deal(nan(3,1));
+fprintf('\n\n----- yn_intermsoas, LCMV ------\n')
 for icond = 1:3
-    
-    [~, ~, ~, stats] = ttest(c_mat(:,icond,1) - c_mat(:,icond,3));
+    [~, p, ~, stats] = ttest(c_mat(:,icond,1) - c_mat(:,icond,3));
     t = stats.tstat;
     df = stats.df;
     bfs(icond) = t1smpbf(t, df+1);
+    tvals(icond) = t;
+    pvals(icond) = p;
+    nobs = df+1;
+    
+    fprintf('\nCondition %i\n\nt = %f\np = %f\nN = %i\nbf = %f', ...
+        icond, t, p, df+1, bfs(icond))
+    disp(' ')
 end
 
 bar(log10(bfs)); hold on 
@@ -571,13 +578,20 @@ load(fullfile(main_dir, 'sd_params_d_c_tcollapse.mat'));
 xl = [0.5 3.5];
 yl = [-1, 1];
 
-bfs = nan(3,1);
+[bfs, tvals, pvals, nobs] = deal(nan(3,1));
+fprintf('\n\n----- yn_intermsoas, LCMV ------\n')
 for icond = 1:3
-    
-    [~, ~, ~, stats] = ttest(c_mat(:,icond,1) - c_mat(:,icond,3));
+    [~, p, ~, stats] = ttest(c_mat(:,icond,1) - c_mat(:,icond,3));
     t = stats.tstat;
     df = stats.df;
     bfs(icond) = t1smpbf(t, df+1);
+    tvals(icond) = t;
+    pvals(icond) = p;
+    nobs = df+1;
+    
+    fprintf('\nCondition %i\n\nt = %f\np = %f\nN = %i\nbf = %f', ...
+        icond, t, p, df+1, bfs(icond))
+    disp(' ')
 end
 
 bar(log10(bfs)); hold on 
@@ -603,13 +617,20 @@ load(fullfile(src_dir, 'sd_params_d_c_yesno_tcollapse.mat'));
 xl = [0.5 3.5];
 yl = [-1, 1];
 
-bfs = nan(3,1);
+[bfs, tvals, pvals, nobs] = deal(nan(3,1));
+fprintf('\n\n----- yn_intermsoas, LCMV ------\n')
 for icond = 1:3
-    
-    [~, ~, ~, stats] = ttest(c_mat(:,icond,1) - c_mat(:,icond,3));
+    [~, p, ~, stats] = ttest(c_mat(:,icond,1) - c_mat(:,icond,3));
     t = stats.tstat;
     df = stats.df;
     bfs(icond) = t1smpbf(t, df+1);
+    tvals(icond) = t;
+    pvals(icond) = p;
+    nobs = df+1;
+    
+    fprintf('\nCondition %i\n\nt = %f\np = %f\nN = %i\nbf = %f', ...
+        icond, t, p, df+1, bfs(icond))
+    disp(' ')
 end
 
 bar(log10(bfs)); hold on 
@@ -634,13 +655,20 @@ load(fullfile(src_dir, 'sd_params_d_c_tcollapse.mat'));
 xl = [0.5 3.5];
 yl = [-1, 1];
 
-bfs = nan(3,1);
+[bfs, tvals, pvals, nobs] = deal(nan(3,1));
+fprintf('\n\n----- yn_intermsoas, LCMV ------\n')
 for icond = 1:3
-    
-    [~, ~, ~, stats] = ttest(c_mat(:,icond,1) - c_mat(:,icond,3));
+    [~, p, ~, stats] = ttest(c_mat(:,icond,1) - c_mat(:,icond,3));
     t = stats.tstat;
     df = stats.df;
     bfs(icond) = t1smpbf(t, df+1);
+    tvals(icond) = t;
+    pvals(icond) = p;
+    nobs = df+1;
+    
+    fprintf('\nCondition %i\n\nt = %f\np = %f\nN = %i\nbf = %f', ...
+        icond, t, p, df+1, bfs(icond))
+    disp(' ')
 end
 
 bar(log10(bfs)); hold on 
