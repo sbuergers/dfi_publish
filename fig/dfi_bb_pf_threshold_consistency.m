@@ -183,6 +183,9 @@ fh1.Renderer = 'painters';
 saveas(fh1, fullfile(figdir, 'Consistency_pf_threshold_BFs_svg.svg'))
 close all
 
+
+%% TODO: Add correlations between 2IFC and Yes-no and staircase
+
            
 % eof
 
