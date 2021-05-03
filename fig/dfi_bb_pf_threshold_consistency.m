@@ -99,6 +99,22 @@ yn_beta_lapse = lapse_matrix;
 yn_beta_eta = eta_matrix;
 
 
+% Yes-no threshold
+% Import yes-no threshold data and get individual SOAs
+load(fullfile('dfi_experiment_data', 'data', 'experiment', 'd701to727_ynt.mat'))
+clear d7*
+
+subjects = unique(dall.partid);
+trialtypes = [3, 6, 8, 9];
+soamat = nan(20,4);
+for isubj = 1:N
+    for itrl = 1:length(trialtypes)
+        soamat(isubj,itrl) = unique(dall.soa(dall.partid == subjects(isubj) & dall.trlid == trialtypes(itrl)) );
+    end
+end
+ynt_staircase_estimate = soamat;
+
+
 %% Parameter consistency over tasks
 
 % Some settings
