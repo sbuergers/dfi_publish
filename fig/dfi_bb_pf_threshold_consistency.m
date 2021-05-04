@@ -1,7 +1,7 @@
 % Make correlation plots to assess consistency of PF threshold
 % between yes-no and 2IFC task for each sound condition. In addition,
 % compare each task's threshold estimate with the staircase estimate
-% of the yes-no threshold task (yielding 3 (task) x 3 (# beeps)
+% of the yes-no thresh. task (3 (task comparison) x 3 (# beeps)
 % comparisons)
 %
 % Parent script(s): 
@@ -126,7 +126,11 @@ ls = '-';
 
 xl = [-0.6 0.4]; 
 yl = xl;
+
+% Initialize 3 (task comparison) x 3 (condition) Bayes factor matrix
+BFs = nan(3,3);
     
+
 %% Scatter plots 1: yesno versus 2ifc
 fh0 = figure('color', [1 1 1], 'Position', [0, 0, 427, 350]);
 ha = tight_subplot(3, 4, [0.01 0.03], [0.02], [0.02]);
@@ -168,6 +172,10 @@ for icond = 1:3
 end
 fprintf('\n\n')
 
+for i = 1:3
+    BFs(1, i) = corrbf(r(i), N(i));
+end
+
 
 %% Scatter plots 2: 2ifc versus ynt staircase estimate
 
@@ -207,6 +215,10 @@ for icond = 1:3
     fprintf('\np = %f', pval(icond))
 end
 fprintf('\n\n')
+
+for i = 1:3
+    BFs(2, i) = corrbf(r(i), N(i));
+end
 
 
 %% Scatter plots 3: yesno versus ynt staircase estimate
@@ -248,17 +260,17 @@ for icond = 1:3
 end
 fprintf('\n\n')
 
+for i = 1:3
+    BFs(3, i) = corrbf(r(i), N(i));
+end
+
 % save figure
 fh0.Renderer = 'painters'; 
 saveas(fh0, fullfile(figdir, 'Consistency_pf_threshold_svg.svg'))
 close all
 
 
-%% Bayes factors
-BFs = nan(3,1);
-for i = 1:3
-    BFs(i) = corrbf(r(i), N(i));
-end
+%% Plot bayes factors
 
 fh1 = figure('color', [1 1 1], 'Position', [0, 0, 427, 350]);
 ha = tight_subplot(3, 4,[0.01 0.03],[0.02],[0.02]);
@@ -266,15 +278,17 @@ ha = tight_subplot(3, 4,[0.01 0.03],[0.02],[0.02]);
 xl = [0, 1];
 yl = [-1, +1];
 
-axes(ha(1));
+for itask = 1:3
+    axes(ha(itask));
 
-line([xl], [0 0])
-line([xl], [0.5, 0.5])
-line([xl], [-0.5, -0.5])
-line([0.25, 0.25], [0, log10(BFs(1))])
-line([0.5, 0.5], [0, log10(BFs(2))])
-line([0.75, 0.75], [0, log10(BFs(3))])
-box off
+    line([xl], [0 0])
+    line([xl], [0.5, 0.5])
+    line([xl], [-0.5, -0.5])
+    line([0.25, 0.25], [0, log10(BFs(itask, 1))])
+    line([0.5, 0.5], [0, log10(BFs(itask, 2))])
+    line([0.75, 0.75], [0, log10(BFs(itask, 3))])
+    box off
+end
 
 % save figure
 fh1.Renderer = 'painters'; 
