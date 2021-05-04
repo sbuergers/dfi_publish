@@ -162,6 +162,10 @@ for ic = 1:3
     set(gca,'TickLength',[0.02, 0.02])
 end
 
+for i = 1:3
+    BFs(1, i) = corrbf(r(i), N(i));
+end
+
 fprintf('\n\n---- Scatter plots 1: yesno versus 2ifc ----')
 for icond = 1:3
     fprintf('\n\nCondition %i\n', icond)
@@ -169,12 +173,9 @@ for icond = 1:3
     fprintf('\nr = %f', pval_r(icond))
     fprintf('\nrho = %f', spearRho(icond))
     fprintf('\np = %f', pval(icond))
+    fprintf('\nbf = %f', BFs(1, icond))
 end
 fprintf('\n\n')
-
-for i = 1:3
-    BFs(1, i) = corrbf(r(i), N(i));
-end
 
 
 %% Scatter plots 2: 2ifc versus ynt staircase estimate
@@ -206,19 +207,20 @@ for ic = 1:3
     set(gca,'TickLength',[0.02, 0.02])
 end
 
-fprintf('\n\n---- Scatter plots 1: yesno versus 2ifc ----')
+for i = 1:3
+    BFs(2, i) = corrbf(r(i), N(i));
+end
+
+fprintf('\n\n---- Scatter plots 1: 2ifc vs yesno threshold ----')
 for icond = 1:3
     fprintf('\n\nCondition %i\n', icond)
     fprintf('\nN = %i', N(icond))
     fprintf('\nr = %f', pval_r(icond))
     fprintf('\nrho = %f', spearRho(icond))
     fprintf('\np = %f', pval(icond))
+    fprintf('\nbf = %f', BFs(2, icond))
 end
 fprintf('\n\n')
-
-for i = 1:3
-    BFs(2, i) = corrbf(r(i), N(i));
-end
 
 
 %% Scatter plots 3: yesno versus ynt staircase estimate
@@ -250,19 +252,20 @@ for ic = 1:3
     set(gca,'TickLength',[0.02, 0.02])
 end
 
-fprintf('\n\n---- Scatter plots 1: yesno versus 2ifc ----')
+for i = 1:3
+    BFs(3, i) = corrbf(r(i), N(i));
+end
+
+fprintf('\n\n---- Scatter plots 3: yesno versus yesno threshold ----')
 for icond = 1:3
     fprintf('\n\nCondition %i\n', icond)
     fprintf('\nN = %i', N(icond))
     fprintf('\nr = %f', pval_r(icond))
     fprintf('\nrho = %f', spearRho(icond))
     fprintf('\np = %f', pval(icond))
+    fprintf('\nbf = %f', BFs(3, icond))
 end
 fprintf('\n\n')
-
-for i = 1:3
-    BFs(3, i) = corrbf(r(i), N(i));
-end
 
 % save figure
 fh0.Renderer = 'painters'; 
