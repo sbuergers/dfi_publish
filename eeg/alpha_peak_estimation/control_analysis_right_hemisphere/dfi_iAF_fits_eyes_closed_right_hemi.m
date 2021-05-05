@@ -19,8 +19,8 @@
 %
 % DETAILS
 %
-% Leverages all posterior channels to obtain a good alpha peak
-% frequency estimate in an objective manner.
+% Leverages only right hemispheric posterior channels to obtain a good 
+% alpha peak frequency estimate in an objective manner.
 % 
 % ===========================================================================
 %
