@@ -275,10 +275,10 @@ for isubj = 1:N
         cfg.overlap      = 0;
         ps_trls          = ft_redefinetrial(cfg, eeg_stim);
         
-        % select all occipito-parietal sensors
+        % select all right-hemispheric occipito-parietal sensors
         cfg = [];
-        cfg.channel = {'O1', 'O2', 'Oz', 'PO9', 'PO7', 'PO3', 'POz', 'PO4', 'PO8', ...
-                       'PO10', 'P7', 'P5', 'P3', 'P1', 'Pz', 'P2', 'P4', 'P6', 'P8'}; 
+        cfg.channel = {'O2', 'Oz', 'POz', 'PO4', 'PO8', ...
+                       'PO10', 'Pz', 'P2', 'P4', 'P6', 'P8'}; 
         ps_trls = ft_selectdata(cfg, ps_trls);
         
         channel_vect = ps_trls.label;
