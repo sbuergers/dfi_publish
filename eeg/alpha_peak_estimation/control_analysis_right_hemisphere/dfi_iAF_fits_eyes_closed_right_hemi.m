@@ -54,7 +54,7 @@ clear all
 warning('off','all')
 
 % Name of directory to save things to
-an_fold = 'iAF_fits_corcoran_zeropadded';
+an_fold = 'iAF_fits_corcoran_zeropadded_right_hemi';
 
 % save figures?
 save_figures = true;
@@ -182,8 +182,6 @@ for isubj = 1:N
     
     sessionmat(isubj,sum((~isnan(sessionmat(isubj,:))),2)+1: ...
                      sum((~isnan(sessionmat(isubj,:))),2)+length(sessions2)) = sessions2;
-    
-    
 
 
     %% 1.) --- PREPROCESSING ---
@@ -218,7 +216,6 @@ for isubj = 1:N
     end % file loop
 
     clear eeg_cell 
-    
     
     
     for ifile = 1:length(sessions2)
@@ -256,7 +253,6 @@ for isubj = 1:N
     runs = [runs, runs2];
 
 
-    
     %% 3.) --- ALPHA PEAK FREQUENCY (Corcoran, 2017) ---
     
     nchan = nan(1, length(sessions));
@@ -350,7 +346,6 @@ end
 suptitle(sprintf('Channel %s', selected_channel))
 
 
-
 % Single run iAF and periodograms for all subjects
 selected_channel = 'PO4'; %'O2'
 kx = strcmp(channel_vect, selected_channel);
@@ -370,8 +365,6 @@ for isubj = 1:N
     plotspecs
 end
 suptitle(sprintf('Channel %s', selected_channel))
-
-
 
 
 % Single run iAF and periodograms for all subjects (log scale)
@@ -408,8 +401,6 @@ end
 suptitle(sprintf('Channel %s', selected_channel))
 
 
-
-
 %% 4.) --- SAVE DATA ---
 
 if ~exist(fullfile(fig_dir, an_fold), 'dir')
@@ -428,21 +419,5 @@ warning('on','all')
 close all
 
 
-% // eof
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+% eof
 

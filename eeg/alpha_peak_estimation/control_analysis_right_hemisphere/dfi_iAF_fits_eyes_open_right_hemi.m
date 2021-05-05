@@ -51,7 +51,7 @@ close all
 clear all
 
 % Name of directory to save things to
-an_fold = 'iAF_fits_corcoran_zeropadded';
+an_fold = 'iAF_fits_corcoran_zeropadded_right_hemi';
 
 % save figures?
 save_figures = false;
