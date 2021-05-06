@@ -50,7 +50,7 @@
 clear all
 
 % Name of directory to save things to
-an_fold = 'iAF_percwin_all_session_fit_beta_binom';
+an_fold = 'iAF_fits_corcoran_zeropadded_right_hemi';
 
 % save figures?
 save_figures = true;
@@ -91,7 +91,8 @@ foldercell = {'all_yn_post_sessions', 'all_yn_pre_sessions', ...
               'all_yn_sessions'};
           
 % Load iAF peak fits (using the toolbox written by Corcoran, 2017)
-load(fullfile(fig_dir, 'iAF_fits_corcoran_zeropadded', 'eyes_closed_pkinfo_yn_plus_ynt.mat'));
+load(fullfile(fig_dir, 'iAF_fits_corcoran_zeropadded_right_hemi', ...
+    'eyes_closed_pkinfo_yn_plus_ynt.mat'));
 
 % We might look at only pre-session, post-session or all data together
 for ifold = 1:3
