@@ -611,7 +611,7 @@ set(gca,'XColor','k','YColor','k')
 xl = [-0.6 -0.1];
 
 
-%% Column 3 (yn_intermsoas, sensor)
+%% Column 3 (yn_intermsoas, source)
 
 axes(ha(3));
 
@@ -649,7 +649,7 @@ set(gca,'TickLength',[0.02, 0.02])
 set(gca,'XColor','k','YColor','k')
 
 
-%% Column 4 (ynt sensor)
+%% Column 4 (ynt source)
 
 axes(ha(4));
 
@@ -659,7 +659,7 @@ xl = [0.5 3.5];
 yl = [-1, 1];
 
 [bfs, tvals, pvals, nobs] = deal(nan(3,1));
-fprintf('\n\n----- ynt sensor ------\n')
+fprintf('\n\n----- ynt LCMV ------\n')
 for icond = 1:3
     [~, p, ~, stats] = ttest(c_mat(:,icond,1) - c_mat(:,icond,3));
     t = stats.tstat;
