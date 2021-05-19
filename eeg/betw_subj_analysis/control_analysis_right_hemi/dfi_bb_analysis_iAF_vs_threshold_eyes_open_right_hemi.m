@@ -11,7 +11,7 @@
 %   ?
 %
 % Sibling script(s):
-%   dfi_bb_fig_eeg1_betw_frequency.m
+%   dfi_bb_analysis_iAF_vs_threshold_eyes_closed_right_hemi.m
 %
 % DETAILS
 %
