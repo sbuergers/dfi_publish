@@ -84,7 +84,10 @@ ft_defaults
 addpath(fullfile('spm12', 'spm12'))  % for atlas in sourceplots
 
 data_dir = fullfile('dfi_experiment_data', 'eeg_data', 'experiment');
+fig_dir = fullfile('dfi_experiment_figures', 'Paper_figures');
 src_dir = fullfile(data_dir, 'source_analysis');
+fig_save_dir = fullfile(fig_dir, 'iAF', 'src'); 
+mkdir(fig_save_dir);
 
 % Colin27 anatomical
 mri = ft_read_mri(fullfile(ft_path, 'template', 'headmodel', 'standard_mri.mat'));
@@ -254,6 +257,7 @@ cfg.funcolorlim = [min(dummy.effect) max(dummy.effect)];
 ft_sourceplot(cfg, interp);
 colormap('hot')
 colormap('viridis')
+saveas(gcf, fullfile(fig_save_dir, 'right_hemi_contrast_in_atlas_slices.svg'))
 
 
 % Determine the 100*x% top percentile contrast values within the ROI
@@ -289,6 +293,7 @@ cfg.funcolorlim   = [min(dummy.effect) max(dummy.effect)];
 cfg.atlas = vtpm;
 ft_sourceplot(cfg, interp);
 colormap('viridis')
+saveas(gcf, fullfile(fig_save_dir, 'roi_ortho_slices.svg'))
 
 
 % Which anatomical regions are included here?
@@ -364,7 +369,7 @@ end
 
 
 % Visualize ROI for fslide source analysis
-% TODO ...
+
 
 
 
