@@ -369,12 +369,13 @@ end
 
 
 % Visualize ROI for fslide source analysis
+collim = max(abs(min(dummy.effect)), abs(max(dummy.effect)));
 cfg = [];
 cfg.location      = centroids;
 cfg.method        = 'ortho';
 cfg.funparameter  = 'effect';
-cfg.maskparameter = 'mask_effect';
-cfg.funcolorlim   = [min(dummy.effect) max(dummy.effect)];
+%cfg.maskparameter = 'mask_effect';
+cfg.funcolorlim   = [-collim, collim];
 cfg.atlas = vtpm;
 ft_sourceplot(cfg, interp);
 colormap('viridis')
