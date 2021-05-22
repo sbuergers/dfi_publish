@@ -369,9 +369,16 @@ end
 
 
 % Visualize ROI for fslide source analysis
-
-
-
+cfg = [];
+cfg.location      = centroids;
+cfg.method        = 'ortho';
+cfg.funparameter  = 'effect';
+cfg.maskparameter = 'mask_effect';
+cfg.funcolorlim   = [min(dummy.effect) max(dummy.effect)];
+cfg.atlas = vtpm;
+ft_sourceplot(cfg, interp);
+colormap('viridis')
+saveas(gcf, fullfile(fig_save_dir, 'ortho_slices_at_centroid_of_roi.svg'))
 
 
 %% Save
