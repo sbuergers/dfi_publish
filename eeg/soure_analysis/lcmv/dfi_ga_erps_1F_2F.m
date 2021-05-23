@@ -100,6 +100,22 @@ for isubj = 1:N
 end % subj loop
 
 
+% In order to obtain components over which it makes sense to average we
+% need to deal with the fact that the orientation in source space (i.e. the
+% sign of the ERP) is arbitrary.
+% To do so, 
+% 1. we will perform an eigenvalue decomposition over voxels and
+% consider the first eigenvector for further analysis.
+% 2. next, we will flip the sign of eigenvectors with negative eigenvalues
+% for each session
+% 3. then, we will average over sessions.
+% 4. Finally, we can average over participants.
+%
+% Note that this method, due to sign-flipping, will amplify noise, but
+% there is no reason so assume this noise would be ERP shaped. And we are
+% interested in visually comparing the source and scalp ERPs.
+% TODO ...
+
 fh = figure;
 time = eeg_1f_trls_avg.time;
 subplot(211)
