@@ -391,7 +391,7 @@ for icond = 1:3
     xlim(xl)
     xticks = -0.6:0.1:0;  set(gca, 'XTick', xticks);
     ylim(yl)
-    yticks = -100:0.5:100;;  set(gca, 'YTick', yticks);
+    yticks = -100:0.5:100;  set(gca, 'YTick', yticks);
     set(gca, 'xticklabel', [])
     set(gca, 'yticklabel', [])
     
