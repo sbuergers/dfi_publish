@@ -368,7 +368,24 @@ for icen = 1:CC.NumObjects
 end
 
 
-% Visualize ROI for fslide source analysis
+% Visualize ROI for fslide source analysis (low quality)
+collim = max(abs(min(dummy.effect)), abs(max(dummy.effect)));
+cfg = [];
+cfg.location      = centroids;
+cfg.method        = 'ortho';
+cfg.funparameter  = 'effect';
+%cfg.maskparameter = 'mask_effect';
+cfg.funcolorlim   = [-collim, collim];
+cfg.atlas = vtpm;
+ft_sourceplot(cfg, interp);
+colormap('viridis')
+saveas(gcf, fullfile(fig_save_dir, 'ortho_slices_at_centroid_of_roi_low_qual.svg'))
+
+
+% Visualize ROI for fslide source analysis (high quality)
+useopengl = false;
+set(0, 'defaultFigureRenderer', 'painters')
+
 collim = max(abs(min(dummy.effect)), abs(max(dummy.effect)));
 cfg = [];
 cfg.location      = centroids;
