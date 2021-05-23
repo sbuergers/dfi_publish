@@ -50,6 +50,8 @@ ft_defaults
 
 data_dir = fullfile('dfi_experiment_data', 'eeg_data', 'experiment');
 src_dir = fullfile(data_dir, 'source_analysis');
+fig_dir = fullfile('dfi_experiment_figures', 'Paper_figures');
+fig_save_dir = fullfile(fig_dir, 'iAF', 'src'); 
 
 subjvect = {'701', '702', '703', '704', '705', '706', '708', '709', '712', '714', ...
             '715', '716', '717', '718', '719', '720', '722', '725', '726', '727'};
@@ -63,9 +65,12 @@ tasks    = {'yesno', 'yn_threshold'};
 % Initialize erp matrices: Nsubj x Nsess x Ntime
 % Note we only saved scalp ERPs for channel O2 and source ERPs for the ROI
 % (lf_vox_for_centroid{1})
-load(fullfile(src_dir, partid, sess, 'erps_min600to300ms_1F2F.mat'), ...
+load(fullfile(src_dir, '701', 'sess3', 'erps_min600to300ms_1F2F.mat'), ...
     'eeg_1f_trls_avg');
-[erps_src, erps_scalp] = nan(N, 10, length(eeg_1f_src_avg)); 
+[erps_src, erps_scalp] = deal( nan(N, 10, size(eeg_1f_trls_avg.avg,2)) ); 
+choi = ismember(eeg_1f_trls_avg.label, 'O2') | ...
+       ismember(eeg_1f_trls_avg.label, 'PO4') | ...
+       ismember(eeg_1f_trls_avg.label, 'PO8');
 
 for isubj = 1:N
     
@@ -87,15 +92,15 @@ for isubj = 1:N
             'erps_min600to300ms_1F2F.mat'), ...
             'eeg_1f_src_avg', 'eeg_1f_trls_avg');
         
-        erps_src(isubj, isess, :) = eeg_1f_trls_avg;
-        erps_scalp(isubj, isess, :) = eeg_1f_trls_avg;
+        erps_scalp(isubj, isess, :) = squeeze(nanmean(eeg_1f_trls_avg.avg(choi,:)));
+        erps_src(isubj, isess, :) = eeg_1f_src_avg;
         
     end % sess loop
 
 end % subj loop
 
 
-figure;
+fh = figure;
 time = eeg_1f_trls_avg.time;
 subplot(211)
 plot(time, squeeze(nanmean(nanmean(erps_scalp,2),1)));
@@ -107,10 +112,14 @@ plot(time, squeeze(nanmean(nanmean(erps_src,2),1)));
 ylabel('Amplitude (a.u.)')
 title('Source level')
 xlabel('Time (s)')
-% TODO save figure
+saveas(fh, fullfile(fig_save_dir, 'ERP_sensor_and_src.svg'))
+
+close all
 
 % enable warnings again
 warning('on','all')
 
 
 % eof
+
+
