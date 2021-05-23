@@ -257,7 +257,7 @@ cfg.funcolorlim = [min(dummy.effect) max(dummy.effect)];
 ft_sourceplot(cfg, interp);
 colormap('hot')
 colormap('viridis')
-saveas(gcf, fullfile(fig_save_dir, 'right_hemi_contrast_in_atlas_slices.svg'))
+saveas(gcf, fullfile(fig_save_dir, 'right_hemi_contrast_in_atlas_slices.png'))
 
 
 % Determine the 100*x% top percentile contrast values within the ROI
@@ -293,7 +293,7 @@ cfg.funcolorlim   = [min(dummy.effect) max(dummy.effect)];
 cfg.atlas = vtpm;
 ft_sourceplot(cfg, interp);
 colormap('viridis')
-saveas(gcf, fullfile(fig_save_dir, 'roi_ortho_slices.svg'))
+saveas(gcf, fullfile(fig_save_dir, 'roi_ortho_slices.png'))
 
 
 % Which anatomical regions are included here?
@@ -379,7 +379,7 @@ cfg.funcolorlim   = [-collim, collim];
 cfg.atlas = vtpm;
 ft_sourceplot(cfg, interp);
 colormap('viridis')
-saveas(gcf, fullfile(fig_save_dir, 'ortho_slices_at_centroid_of_roi_low_qual.svg'))
+saveas(gcf, fullfile(fig_save_dir, 'ortho_slices_at_centroid_of_roi_low_qual.png'))
 
 
 % Visualize ROI for fslide source analysis (high quality)
