@@ -1,0 +1,119 @@
+% Plot grand average scalp and source ERPs for 1F and 2F trials.
+%
+% Parent script(s): 
+%   dfi_erps_1F_2F.m
+%
+% Children script(s): 
+%   None
+%
+% Sibling script(s):
+%   None
+% 
+% ===========================================================================
+%
+%     dfi (double flash illusion) codebase accompanying the manuscript ...
+%     Copyright (C) 2021  Steffen Buergers
+% 
+%     This program is free software: you can redistribute it and/or modify
+%     it under the terms of the GNU General Public License as published by
+%     the Free Software Foundation, either version 3 of the License, or
+%     (at your option) any later version.
+% 
+%     This program is distributed in the hope that it will be useful,
+%     but WITHOUT ANY WARRANTY; without even the implied warranty of
+%     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+%     GNU General Public License for more details.
+% 
+%     You should have received a copy of the GNU General Public License
+%     along with this program.  If not, see <https://www.gnu.org/licenses/>.
+%
+% ---
+% Steffen Buergers, sbuergers@gmail.com,
+% Last modified Feb. 2021
+
+
+restoredefaultpath; clc; close all; clear all
+
+% disable warnings for speed sake:
+warning('off','all')
+
+% Initialization
+try
+    addpath(genpath('dfi'))
+    dfi_startup
+catch
+    warning('Cannot find dfi folder')
+end
+ft_path = fullfile('fieldtrip20200906', 'fieldtrip-master'); 
+addpath(ft_path);
+ft_defaults
+
+data_dir = fullfile('dfi_experiment_data', 'eeg_data', 'experiment');
+src_dir = fullfile(data_dir, 'source_analysis');
+
+subjvect = {'701', '702', '703', '704', '705', '706', '708', '709', '712', '714', ...
+            '715', '716', '717', '718', '719', '720', '722', '725', '726', '727'};
+N        = length(subjvect);
+Fs       = 64;  % Downsample to this frequency
+tasks    = {'yesno', 'yn_threshold'};
+
+
+%% Main loop
+
+% Initialize erp matrices: Nsubj x Nsess x Ntime
+% Note we only saved scalp ERPs for channel O2 and source ERPs for the ROI
+% (lf_vox_for_centroid{1})
+load(fullfile(src_dir, partid, sess, 'erps_min600to300ms_1F2F.mat'), ...
+    'eeg_1f_trls_avg');
+[erps_src, erps_scalp] = nan(N, 10, length(eeg_1f_src_avg)); 
+
+for isubj = 1:N
+    
+    partid = subjvect{isubj};
+    
+    fprintf('\n-----------------------------------')
+    fprintf('\nParticipant %s\n', partid)
+    fprintf('\n         Available sessions \n')
+    ls(fullfile(src_dir, sprintf('%s\\sess*',partid)))
+    fprintf('-----------------------------------\n')
+    
+    sessions = ls(fullfile(src_dir, sprintf('%s\\sess*',partid)));
+        
+    for isess = 1:size(sessions,1)
+        
+        sess = sessions(isess,1:5);
+        
+        load(fullfile(src_dir, partid, sess, ...
+            'erps_min600to300ms_1F2F.mat'), ...
+            'eeg_1f_src_avg', 'eeg_1f_trls_avg');
+        
+        erps_src(isubj, isess, :) = eeg_1f_trls_avg;
+        erps_scalp(isubj, isess, :) = eeg_1f_trls_avg;
+        
+    end % sess loop
+
+end % subj loop
+
+
+figure;
+time = eeg_1f.time{1};
+choi = find(ismember(eeg_1f.label, 'O2'));
+eeg_1f_src_avg = squeeze(nanmean(nanmean(eeg_1f_src(voxoi,:,:)), 3));
+eeg_2f_src_avg = squeeze(nanmean(nanmean(eeg_2f_src(voxoi,:,:)), 3));
+subplot(211)
+plot(time, squeeze(nanmean(nanmean(erps_scalp,2),1)));
+ylabel('Amplitude (uV)')
+title('Sensor level')
+subplot(212)
+plot(time, eeg_2f_trls_avg.avg(choi, :));
+ylabel('Amplitude (a.u.)')
+title('Source level')
+
+
+
+
+% enable warnings again
+warning('on','all')
+
+
+% eof
