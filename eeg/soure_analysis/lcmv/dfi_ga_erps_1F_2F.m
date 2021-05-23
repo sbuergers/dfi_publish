@@ -96,21 +96,18 @@ end % subj loop
 
 
 figure;
-time = eeg_1f.time{1};
-choi = find(ismember(eeg_1f.label, 'O2'));
-eeg_1f_src_avg = squeeze(nanmean(nanmean(eeg_1f_src(voxoi,:,:)), 3));
-eeg_2f_src_avg = squeeze(nanmean(nanmean(eeg_2f_src(voxoi,:,:)), 3));
+time = eeg_1f_trls_avg.time;
 subplot(211)
 plot(time, squeeze(nanmean(nanmean(erps_scalp,2),1)));
 ylabel('Amplitude (uV)')
+xlabel('Time (s)')
 title('Sensor level')
 subplot(212)
-plot(time, eeg_2f_trls_avg.avg(choi, :));
+plot(time, squeeze(nanmean(nanmean(erps_src,2),1)));
 ylabel('Amplitude (a.u.)')
 title('Source level')
-
-
-
+xlabel('Time (s)')
+% TODO save figure
 
 % enable warnings again
 warning('on','all')
