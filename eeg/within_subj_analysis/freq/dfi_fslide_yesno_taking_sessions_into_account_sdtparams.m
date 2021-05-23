@@ -120,9 +120,6 @@ for isubj = 1:N
         % Accumulate data
         fslide_cell{isubj, isess} = eeg_fslide.fslide_med(ch_indeces,:,:);
         
-        % Add additional session column, referring to ordinal number
-        beh_stim.sessid = repmat(isess, [size(beh_stim,1),1]);
-        
         % I also have to obtain the full behavioral data as a table
         btable = [btable; beh_stim];
         
@@ -177,6 +174,17 @@ choi = {'O2', 'PO4', 'PO8'};
 % Fit to average frequency in pre-stim window
 tid = toi > -0.602 & toi < -0.102;
 btable.avgfslide = squeeze(nanmean(mean(fslide_mat(chid,tid,:),2),1));
+
+% Add sessid (ordinal sess number) to btable
+for isubj = 1:length(partvect)
+    
+    sessvect = unique(btable.sess(btable.partid == partvect(isubj)));
+    for isess = 1:length(sessvect)
+        
+        btable.sessid(btable.partid == partvect(isubj) & ...
+                      btable.sess == sessvect(isess)) = isess;
+    end
+end
 
 % Make participant and sessid categorical variables
 btable.sesscat = categorical(btable.sessid);
