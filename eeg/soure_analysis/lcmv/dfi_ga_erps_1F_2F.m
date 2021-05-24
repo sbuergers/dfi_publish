@@ -193,11 +193,14 @@ plot(time, squeeze(nanmean(nanmean(erps_scalp,2),1)));
 ylabel('Amplitude (uV)')
 xlabel('Time (s)')
 title('Sensor level')
+ylim([-2, 2]);
+
 subplot(212)
 plot(time, eigenvar_ga);
 ylabel('Amplitude (a.u.)')
 title('Source level')
 xlabel('Time (s)')
+ylim([-0.2, 0.2]);
 fh.Renderer = 'painters'; 
 mkdir(fig_save_dir)
 saveas(fh, fullfile(fig_save_dir, 'ERP_sensor_and_src.svg'))
