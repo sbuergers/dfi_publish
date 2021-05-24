@@ -93,70 +93,44 @@ end
 
 eeg_roi = squeeze(nanmean(eeg_1f_src(voxoi, :, :), 3));
 
-img = imread('E:\dfi_experiment_figures\Paper_figures\iAF\src\ortho_slices_at_centroid_of_roi_low_qual.png');
-gray = rgb2gray(img);
-[U,S,V] = svd(im2double(gray));
-r=10;
-approx_img = U(:,1:r)*S(1:r,1:r)*V(:,1:r).';
-figure; 
-subplot(221); image(approx_img)
-subplot(222); image(gray)
-subplot(223); image(img)
-
-% perform svd over voxels
-[U,S,V] = svd(eeg_roi)
-
+% perform svd over voxels and keep first eigenvariate
 X = eeg_roi;
-[U,S,V] = svd(X)
+[U,S,V] = svd(X);  % Think of V as time-to-concept matrix
+SV = S*V;  % Pick the concept that explains the most
 
-figure
-plot(S(1,:)); hold on
-plot(X(1,:), '-r');
-US = U*S;
-plot(US(:,1));
-
-
-% plot
-figure
-SV = S*V;
-plot(SV(1, :)); hold on
-plot(X(1, :), '-k', 'linewidth', 2);
-
-% compare to PCA using eigenvalue decomposition
-X_norm = X';
-X_norm = (X_norm - mean(X_norm))./std(X_norm);
-correlMat = corr(X_norm);
-[Ve, E] = eig(correlMat);
-[coeff, ~, latent] = pca(X_norm);
-[sort(diag(E)), sort(testlatent)]
-
-VeX = X'*Ve;
-SV = S*V;
-USV = U*S*V;
-
-figure;
-subplot(221)
-title('PC1 and PC2 using eig');
-plot(VeX(:,1), 'b'); hold on
-plot(VeX(:,2), 'r');
-subplot(222)
-title('PC2 and PC2 using svd');
-plot(SV(1,:), 'b'); hold on
-plot(SV(2,:), 'r');
-subplot(223)
-plot(USV(1,:), 'b'); hold on
-plot(USV(2,:), 'r');
-subplot(224)
-plot(X(1,:), 'b'); hold on
-plot(X(2,:), 'r');
+% % plot
+% figure
+% plot(SV(1, :)); hold on
+% plot(X(1, :), '-k', 'linewidth', 2);
 
 
-
-
-
-
-
-
+% % Show that doing SVD on multiple channels with similar signals and random
+% % noise, with half the signal having opposite sign, makes sense:
+% T=1;
+% Fs = 100;
+% N = T*Fs;
+% t = 0 : 1/Fs : T;
+% Fn = 5;
+% y = sin(Fn*2*pi*t);
+% Y = nan(8, 101);
+% for i = 1:8
+%     noise = randn(size(y)) / 5;
+%     if i > 4
+%         Y(i, :) = -y + noise;
+%     else
+%         Y(i, :) = y + noise;
+%     end
+% end
+% 
+% [U,S,V] = svd(Y);  % Think of V as time-to-concept matrix
+% SV = S*V;  % The first row of SV is the concept that explains most variance
+% 
+% figure
+% plot(SV(1, :)); hold on
+% plot(SV(2, :));
+% plot(SV(3, :));
+% plot(Y(1, :), '-k', 'linewidth', 2);
+% legend('eigenvariate1', 'eigenvariate2', 'eigenvariate3', 'signal1');
 
 
 load(fullfile(src_dir, '701', 'sess3', 'erps_min600to300ms_1F2F.mat'), ...
