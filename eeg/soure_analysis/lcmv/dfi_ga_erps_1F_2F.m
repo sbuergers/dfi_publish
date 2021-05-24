@@ -66,14 +66,12 @@ tasks    = {'yesno', 'yn_threshold'};
 % To do so, 
 % 1. we will perform a singular value decomposition over voxels and
 % consider the first eigenvariate for further analysis.
-% 2. next, we will perform another svd over sessions,
-% 3. then, we will perform another svd over participants, following the
+% 2. next, we will perform another svd over sessions, following the
 % same principle. 
-% 4. Finally, we obtain SVD eigenvariates over participants
-%
-% Note that this method, due to sign-flipping, will amplify noise, but
-% there is no reason so assume this noise would be ERP shaped. And we are
-% interested in visually comparing the source and scalp ERPs.
+% 3. Finally, we will flip the orientation of the first eigenvariate of
+% each participant if the MSE of it vs the scalp ERP is smaler than the MSE
+% of scalp ERP and unflipped eigenvariate (this biases the results somewhat
+% toward `fitting` the ERP's shape).
 
 % Get voxels of interest
 load(fullfile(src_dir,  '701', 'sess3', ...
