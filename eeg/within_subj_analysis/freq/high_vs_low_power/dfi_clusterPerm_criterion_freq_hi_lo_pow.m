@@ -50,10 +50,10 @@ clear all
 
 %% SELECT: hi_pow, lo_pow
 
-pow_cond = 'hi_pow';
+pow_cond = 'lo_pow';
 
-% Ran hi_pow on 03.03.2021, 21:16h
-% Ran lo_pow on 08.03.2021, 21:05h
+% Ran hi_pow on 23.05.2021, 19:48h
+% Ran lo_pow on 23.05.2021, 20:04h
 
 
 % Name of directory to save things to

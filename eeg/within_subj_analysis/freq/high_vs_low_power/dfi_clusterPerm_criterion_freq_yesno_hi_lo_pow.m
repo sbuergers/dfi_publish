@@ -48,10 +48,11 @@ clear all
 
 
 %% SELECT: hi_pow, lo_pow
-pow_cond = 'lo_pow';
 
-% Ran hi_pow on 09.03.2021h, 18:13h
-% Ran lo_pow on 09.03.2021h, 18:31h
+pow_cond = 'hi_pow';
+
+% Ran hi_pow on 23.05.2021h, 20:26h
+% Ran lo_pow on 23.05.2021h, 20:20h
 
 % Name of directory to save things to
 an_fold = 'sdt_params';

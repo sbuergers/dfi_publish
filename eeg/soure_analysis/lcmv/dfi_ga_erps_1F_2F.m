@@ -62,9 +62,103 @@ tasks    = {'yesno', 'yn_threshold'};
 
 %% Main loop
 
-% Initialize erp matrices: Nsubj x Nsess x Ntime
-% Note we only saved scalp ERPs for channel O2 and source ERPs for the ROI
-% (lf_vox_for_centroid{1})
+% In order to obtain components over which it makes sense to average we
+% need to deal with the fact that the orientation in source space (i.e. the
+% sign of the ERP) is arbitrary.
+% To do so, 
+% 1. we will perform a singular value decomposition over voxels and
+% consider the first eigenvariate for further analysis.
+% 2. next, we will perform another svd over sessions,
+% 3. then, we will perform another svd over participants, following the
+% same principle. 
+% 4. Finally, we obtain SVD eigenvariates over participants
+%
+% Note that this method, due to sign-flipping, will amplify noise, but
+% there is no reason so assume this noise would be ERP shaped. And we are
+% interested in visually comparing the source and scalp ERPs.
+% TODO ...
+% t x nvox
+% svd()
+% take first eigenvariate
+load(fullfile(src_dir,  '701', 'sess3', ...
+    'inv_sols_lcmv_c27_100to300ms_600to100msBl_1F2F.mat'), ...
+    'W', 'leadfield');
+load(fullfile(src_dir, 'ROI_1f2f_vs_all_noise_in_coi.mat'), ...
+    'lf_vox_for_centroid', 'centroids');
+voxoi = nan(size(lf_vox_for_centroid{1}, 1), 1);
+for ivox = 1:size(lf_vox_for_centroid{1}, 1)
+    voxoi(ivox) = find(ismember(leadfield.pos, ...
+        lf_vox_for_centroid{1}(ivox, :),'rows'));
+end
+
+eeg_roi = squeeze(nanmean(eeg_1f_src(voxoi, :, :), 3));
+
+img = imread('E:\dfi_experiment_figures\Paper_figures\iAF\src\ortho_slices_at_centroid_of_roi_low_qual.png');
+gray = rgb2gray(img);
+[U,S,V] = svd(im2double(gray));
+r=10;
+approx_img = U(:,1:r)*S(1:r,1:r)*V(:,1:r).';
+figure; 
+subplot(221); image(approx_img)
+subplot(222); image(gray)
+subplot(223); image(img)
+
+% perform svd over voxels
+[U,S,V] = svd(eeg_roi)
+
+X = eeg_roi;
+[U,S,V] = svd(X)
+
+figure
+plot(S(1,:)); hold on
+plot(X(1,:), '-r');
+US = U*S;
+plot(US(:,1));
+
+
+% plot
+figure
+SV = S*V;
+plot(SV(1, :)); hold on
+plot(X(1, :), '-k', 'linewidth', 2);
+
+% compare to PCA using eigenvalue decomposition
+X_norm = X';
+X_norm = (X_norm - mean(X_norm))./std(X_norm);
+correlMat = corr(X_norm);
+[Ve, E] = eig(correlMat);
+[coeff, ~, latent] = pca(X_norm);
+[sort(diag(E)), sort(testlatent)]
+
+VeX = X'*Ve;
+SV = S*V;
+USV = U*S*V;
+
+figure;
+subplot(221)
+title('PC1 and PC2 using eig');
+plot(VeX(:,1), 'b'); hold on
+plot(VeX(:,2), 'r');
+subplot(222)
+title('PC2 and PC2 using svd');
+plot(SV(1,:), 'b'); hold on
+plot(SV(2,:), 'r');
+subplot(223)
+plot(USV(1,:), 'b'); hold on
+plot(USV(2,:), 'r');
+subplot(224)
+plot(X(1,:), 'b'); hold on
+plot(X(2,:), 'r');
+
+
+
+
+
+
+
+
+
+
 load(fullfile(src_dir, '701', 'sess3', 'erps_min600to300ms_1F2F.mat'), ...
     'eeg_1f_trls_avg');
 [erps_src, erps_scalp] = deal( nan(N, 10, size(eeg_1f_trls_avg.avg,2)) ); 
@@ -100,22 +194,7 @@ for isubj = 1:N
 end % subj loop
 
 
-% In order to obtain components over which it makes sense to average we
-% need to deal with the fact that the orientation in source space (i.e. the
-% sign of the ERP) is arbitrary.
-% To do so, 
-% 1. we will perform an eigenvalue decomposition over voxels and
-% consider the first eigenvector for further analysis.
-% 2. next, we will flip the sign of eigenvectors with negative eigenvalues
-% for each session
-% 3. then, we will average over sessions.
-% 4. Finally, we can average over participants.
-%
-% Note that this method, due to sign-flipping, will amplify noise, but
-% there is no reason so assume this noise would be ERP shaped. And we are
-% interested in visually comparing the source and scalp ERPs.
-% TODO ...
-
+% Figure of scalp and source evoked response
 fh = figure;
 time = eeg_1f_trls_avg.time;
 subplot(211)

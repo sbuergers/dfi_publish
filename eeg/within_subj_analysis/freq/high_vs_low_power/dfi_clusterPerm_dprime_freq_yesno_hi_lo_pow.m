@@ -52,8 +52,8 @@ clear all
 
 pow_cond = 'lo_pow';
 
-% Ran hi_pow on 09.03.2021, 19:41h
-% Ran lo_pow on 09.03.2021, 19:54h
+% Ran hi_pow on 23.05.2021, 20:54h
+% Ran lo_pow on 23.05.2021, 21:00h
 
 % Name of directory to save things to
 an_fold = 'sdt_params';

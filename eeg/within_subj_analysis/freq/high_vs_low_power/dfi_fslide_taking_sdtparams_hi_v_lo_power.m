@@ -53,10 +53,10 @@ clear all
 
 % Do we use high or low alpha power?
 
-% 08.03.2021; 20:40h: Last run hi_pow
-% 08.03.2021; 20:30h: Last run lo_pow
+% 23.05.2021; 19:12h: Last run hi_pow
+% 23.05.2021; 19:16h: Last run lo_pow
 
-pow_cond = 'hi_pow';  % lo_pow, hi_pow
+pow_cond = 'lo_pow';  % lo_pow, hi_pow
 
 
 %% 0.) --- SETUP ---

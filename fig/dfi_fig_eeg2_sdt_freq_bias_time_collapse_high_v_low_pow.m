@@ -38,8 +38,8 @@ clear all
 
 pow_cond = 'lo_pow';
 
-% Ran hi_pow on 16.05.2021, 11:31h
-% Ran lo_pow on 16.05.2021, 11:30h
+% Ran hi_pow on 23.05.2021, 21:10h
+% Ran lo_pow on 23.05.2021, 21:11h
 
 
 % experiment script folder
