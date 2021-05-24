@@ -60,8 +60,6 @@ Fs       = 64;  % Downsample to this frequency
 tasks    = {'yesno', 'yn_threshold'};
 
 
-%% Main loop
-
 % In order to obtain components over which it makes sense to average we
 % need to deal with the fact that the orientation in source space (i.e. the
 % sign of the ERP) is arbitrary.
@@ -76,10 +74,8 @@ tasks    = {'yesno', 'yn_threshold'};
 % Note that this method, due to sign-flipping, will amplify noise, but
 % there is no reason so assume this noise would be ERP shaped. And we are
 % interested in visually comparing the source and scalp ERPs.
-% TODO ...
-% t x nvox
-% svd()
-% take first eigenvariate
+
+% Get voxels of interest
 load(fullfile(src_dir,  '701', 'sess3', ...
     'inv_sols_lcmv_c27_100to300ms_600to100msBl_1F2F.mat'), ...
     'W', 'leadfield');
@@ -90,56 +86,20 @@ for ivox = 1:size(lf_vox_for_centroid{1}, 1)
     voxoi(ivox) = find(ismember(leadfield.pos, ...
         lf_vox_for_centroid{1}(ivox, :),'rows'));
 end
+Nvox = length(voxoi);
 
-eeg_roi = squeeze(nanmean(eeg_1f_src(voxoi, :, :), 3));
-
-% perform svd over voxels and keep first eigenvariate
-X = eeg_roi;
-[U,S,V] = svd(X);  % Think of V as time-to-concept matrix
-SV = S*V;  % Pick the concept that explains the most
-
-% % plot
-% figure
-% plot(SV(1, :)); hold on
-% plot(X(1, :), '-k', 'linewidth', 2);
-
-
-% % Show that doing SVD on multiple channels with similar signals and random
-% % noise, with half the signal having opposite sign, makes sense:
-% T=1;
-% Fs = 100;
-% N = T*Fs;
-% t = 0 : 1/Fs : T;
-% Fn = 5;
-% y = sin(Fn*2*pi*t);
-% Y = nan(8, 101);
-% for i = 1:8
-%     noise = randn(size(y)) / 5;
-%     if i > 4
-%         Y(i, :) = -y + noise;
-%     else
-%         Y(i, :) = y + noise;
-%     end
-% end
-% 
-% [U,S,V] = svd(Y);  % Think of V as time-to-concept matrix
-% SV = S*V;  % The first row of SV is the concept that explains most variance
-% 
-% figure
-% plot(SV(1, :)); hold on
-% plot(SV(2, :));
-% plot(SV(3, :));
-% plot(Y(1, :), '-k', 'linewidth', 2);
-% legend('eigenvariate1', 'eigenvariate2', 'eigenvariate3', 'signal1');
-
-
+% Initialize variables
 load(fullfile(src_dir, '701', 'sess3', 'erps_min600to300ms_1F2F.mat'), ...
     'eeg_1f_trls_avg');
-[erps_src, erps_scalp] = deal( nan(N, 10, size(eeg_1f_trls_avg.avg,2)) ); 
+Nt = size(eeg_1f_trls_avg.avg,2);
+[erps_src, erps_scalp] = deal( nan(N, 10, Nt) ); 
 choi = ismember(eeg_1f_trls_avg.label, 'O2') | ...
        ismember(eeg_1f_trls_avg.label, 'PO4') | ...
        ismember(eeg_1f_trls_avg.label, 'PO8');
+eigenvar_subj = nan(N, Nt);
+singval_subj = nan(N, 1);
 
+% Main loop
 for isubj = 1:N
     
     partid = subjvect{isubj};
@@ -151,22 +111,81 @@ for isubj = 1:N
     fprintf('-----------------------------------\n')
     
     sessions = ls(fullfile(src_dir, sprintf('%s\\sess*',partid)));
+    Nsess = size(sessions,1);
         
-    for isess = 1:size(sessions,1)
+    eigenvar_sess = nan(Nsess, Nt); 
+    singval_sess = nan(Nsess, 1);
+    for isess = 1:Nsess
         
         sess = sessions(isess,1:5);
         
         load(fullfile(src_dir, partid, sess, ...
             'erps_min600to300ms_1F2F.mat'), ...
-            'eeg_1f_src_avg', 'eeg_1f_trls_avg');
+            'eeg_1f_src', 'eeg_1f_trls_avg');
         
-        erps_scalp(isubj, isess, :) = squeeze(nanmean(eeg_1f_trls_avg.avg(choi,:)));
-        erps_src(isubj, isess, :) = eeg_1f_src_avg;
+        erps_scalp(isubj, isess, :) = mean(eeg_1f_trls_avg.avg(choi,:));
+        
+        eeg_roi = squeeze(nanmean(eeg_1f_src(voxoi, :, :), 3));
+
+        % SVD 1: Over voxels
+        X = eeg_roi;
+        [U,S,V] = svd(X);
+        eigenvar_sess(isess,:) = V(:,1);
+        singval_sess(isess) = S(1);
+        
+%         % Visually compare first eigenvariate and first voxel's signal
+%         subplot(3,3,isess)
+%         plot(V(:,isess)./max(V(:,isess))); hold on
+%         plot(X(isess,:)./max(X(isess,:)));
         
     end % sess loop
-
+    
+    % SVD 2: Over sessions
+    X = eigenvar_sess;
+    [U,S,V] = svd(X);
+    eigenvar_subj(isubj,:) = V(:,1);
+    singval_subj(isubj) = S(1);
+    
+%     % Plot
+%     subplot(3,3,6)
+%     plot(V(:,1)./max(V(:,1))); hold on
+%     plot(X(1,:)./max(X(1,:)));
+    
 end % subj loop
 
+% scalp ERP for each subj
+erps_subj = squeeze(nanmean(erps_scalp, 2));
+
+% SVD 3: Over participants
+X = eigenvar_subj;
+[U,S,V] = svd(X);
+
+% Compute mean squared error between scalp ERPs and
+% each participant's first eigenvariate over sessions either flipped
+% or not. Choose the one that minimizes the MSE. This way we should get
+% consistent orientations over participants and should be able to average.
+% Of course, this somewhat biases the results toward fitting with the ERP.
+eigenvar_subj_adj = eigenvar_subj;
+erp_twin = time >= -0.7;
+for isubj = 1:N
+    mse_pos = mean((erps_subj(isubj,erp_twin) - eigenvar_subj(isubj,erp_twin)).^2);
+    mse_neg = mean((erps_subj(isubj,erp_twin) + eigenvar_subj(isubj,erp_twin)).^2);
+    if mse_neg < mse_pos
+        eigenvar_subj_adj(isubj,:) = -eigenvar_subj(isubj,:);
+    end
+end
+
+% Plot individual eigenvariates for participants vs their scalp ERPs
+figure
+for isubj = 1:20
+    subplot(4,5,isubj)
+    plot(erps_subj(isubj,:) ./ max(abs(erps_subj(isubj,:)))); hold on
+    plot(eigenvar_subj(isubj,:) ./ max(abs(eigenvar_subj(isubj,:))));
+    plot(eigenvar_subj_adj(isubj,:) ./ max(abs(eigenvar_subj_adj(isubj,:))));
+end
+
+% Compute grand average over eigenvariates
+eigenvar_ga = nanmean(eigenvar_subj_adj);
 
 % Figure of scalp and source evoked response
 fh = figure;
@@ -177,10 +196,12 @@ ylabel('Amplitude (uV)')
 xlabel('Time (s)')
 title('Sensor level')
 subplot(212)
-plot(time, squeeze(nanmean(nanmean(erps_src,2),1)));
+plot(time, eigenvar_ga);
 ylabel('Amplitude (a.u.)')
 title('Source level')
 xlabel('Time (s)')
+fh.Renderer = 'painters'; 
+mkdir(fig_save_dir)
 saveas(fh, fullfile(fig_save_dir, 'ERP_sensor_and_src.svg'))
 
 close all
