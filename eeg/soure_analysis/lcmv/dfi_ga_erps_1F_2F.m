@@ -164,6 +164,7 @@ X = eigenvar_subj;
 % consistent orientations over participants and should be able to average.
 % Of course, this somewhat biases the results toward fitting with the ERP.
 eigenvar_subj_adj = eigenvar_subj;
+time = eeg_1f_trls_avg.time;
 erp_twin = time >= -0.7;
 for isubj = 1:N
     mse_pos = mean((erps_subj(isubj,erp_twin) - eigenvar_subj(isubj,erp_twin)).^2);
@@ -187,7 +188,6 @@ eigenvar_ga = nanmean(eigenvar_subj_adj);
 
 % Figure of scalp and source evoked response
 fh = figure;
-time = eeg_1f_trls_avg.time;
 subplot(211)
 plot(time, squeeze(nanmean(nanmean(erps_scalp,2),1)));
 ylabel('Amplitude (uV)')
