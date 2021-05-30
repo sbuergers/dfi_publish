@@ -59,6 +59,10 @@ src_dir = fullfile(data_dir, 'source_analysis');
 fig_dir  = fullfile('dfi_experiment_figures');
 save_dir = fullfile(fig_dir, 'Paper_figures', 'iAF', 'iAF_betw_betabinom');
 beh_figdir = fullfile('dfi_experiment_figures', 'PFs', 'beta_binom_weibull');
+R_dir = fullfile(save_dir, 'R'); 
+mkdir(R_dir); 
+mkdir(fullfile(R_dir, 'eyes_closed')); 
+mkdir(fullfile(R_dir, 'lcmv'));
 
 
 % add fieldtrip folder to search path
@@ -245,6 +249,12 @@ for icond = 1:3
             plot(xvals, Y+DELTA./1000, '--', 'color', col_vect_ci(ic,:)); hold on
             plot(xvals, Y-DELTA./1000, '--', 'color', col_vect_ci(ic,:))
         end
+        
+        % Save data for R to compute non-parametric Bayes factors
+        task = '2ifc';
+        t = table(1./percwin(good_fit(:,ic),1), ip(good_fit(:,ic),ic));
+        writetable(t, fullfile(R_dir, sprintf('%s_%i.csv', task, icond))) 
+        
     end
     box off
     set(gca,'TickDir','out')
@@ -272,7 +282,6 @@ line([-0.5 1.5], [0.5 0.5], 'color', [0.75 0.25 0.75])
 line([-0.5 1.5], [-0.5 -0.5], 'color', [0.75 0.25 0.75])
 xlim([-0.5 2.5])
 ylim([-1.2 1.2])
-
 
 
 % 2.) yes-no pooled threshold vs iAF
@@ -320,6 +329,12 @@ for icond = 1:3
             plot(xvals, Y+DELTA./1000, '--', 'color', col_vect_ci(ic,:)); hold on
             plot(xvals, Y-DELTA./1000, '--', 'color', col_vect_ci(ic,:))
         end
+        
+        % Save data for R to compute non-parametric Bayes factors
+        task = 'yesno';
+        t = table(1./percwin(good_fit(:,ic),1), ip(good_fit(:,ic),ic));
+        writetable(t, fullfile(R_dir, sprintf('%s_%i.csv', task, icond))) 
+        
     end
     box off
     set(gca,'TickDir','out')
@@ -403,6 +418,12 @@ for icond = 1:3
             plot(xvals, Y+DELTA./1000, '--', 'color', col_vect_ci(ic,:)); hold on
             plot(xvals, Y-DELTA./1000, '--', 'color', col_vect_ci(ic,:))
         end
+        
+        % Save data for R to compute non-parametric Bayes factors
+        task = 'yn_threshold';
+        t = table(1./percwin(good_fit(:,ic),1), ip(good_fit(:,ic),ic));
+        writetable(t, fullfile(R_dir, sprintf('%s_%i.csv', task, icond))) 
+        
     end
     box off
     set(gca,'TickDir','out')
@@ -499,6 +520,12 @@ for icond = 1:3
             plot(xvals, Y+DELTA./1000, '--', 'color', col_vect_ci(ic,:)); hold on
             plot(xvals, Y-DELTA./1000, '--', 'color', col_vect_ci(ic,:))
         end
+        
+        % Save data for R to compute non-parametric Bayes factors
+        task = '2ifc';
+        t = table(1./percwin(good_fit(:,ic),1), ip(good_fit(:,ic),ic));
+        writetable(t, fullfile(R_dir, 'eyes_closed', sprintf('%s_%i.csv', task, icond))) 
+        
     end
     box off
     set(gca,'TickDir','out')
@@ -577,6 +604,12 @@ for icond = 1:3
             plot(xvals, Y+DELTA./1000, '--', 'color', col_vect_ci(ic,:)); hold on
             plot(xvals, Y-DELTA./1000, '--', 'color', col_vect_ci(ic,:))
         end
+        
+        % Save data for R to compute non-parametric Bayes factors
+        task = 'yesno';
+        t = table(1./percwin(good_fit(:,ic),1), ip(good_fit(:,ic),ic));
+        writetable(t, fullfile(R_dir, 'eyes_closed', sprintf('%s_%i.csv', task, icond)))
+        
     end
     box off
     set(gca,'TickDir','out')
@@ -663,6 +696,12 @@ for icond = 1:3
             plot(xvals, Y+DELTA./1000, '--', 'color', col_vect_ci(ic,:)); hold on
             plot(xvals, Y-DELTA./1000, '--', 'color', col_vect_ci(ic,:))
         end
+        
+        % Save data for R to compute non-parametric Bayes factors
+        task = 'yn_threshold';
+        t = table(1./percwin(good_fit(:,ic),1), ip(good_fit(:,ic),ic));
+        writetable(t, fullfile(R_dir, 'eyes_closed', sprintf('%s_%i.csv', task, icond)))
+        
     end
     box off
     set(gca,'TickDir','out')
@@ -757,6 +796,12 @@ for icond = 1:3
             plot(xvals, Y+DELTA./1000, '--', 'color', col_vect_ci(ic,:)); hold on
             plot(xvals, Y-DELTA./1000, '--', 'color', col_vect_ci(ic,:))
         end
+        
+        % Save data for R to compute non-parametric Bayes factors
+        task = '2ifc';
+        t = table(1./percwin(good_fit(:,ic),1), ip(good_fit(:,ic),ic));
+        writetable(t, fullfile(R_dir, 'lcmv', sprintf('%s_%i.csv', task, icond))) 
+        
     end
     box off
     set(gca,'TickDir','out')
@@ -835,6 +880,12 @@ for icond = 1:3
             plot(xvals, Y+DELTA./1000, '--', 'color', col_vect_ci(ic,:)); hold on
             plot(xvals, Y-DELTA./1000, '--', 'color', col_vect_ci(ic,:))
         end
+        
+        % Save data for R to compute non-parametric Bayes factors
+        task = 'yesno';
+        t = table(1./percwin(good_fit(:,ic),1), ip(good_fit(:,ic),ic));
+        writetable(t, fullfile(R_dir, 'lcmv', sprintf('%s_%i.csv', task, icond))) 
+        
     end
     box off
     set(gca,'TickDir','out')
@@ -921,6 +972,12 @@ for icond = 1:3
             plot(xvals, Y+DELTA./1000, '--', 'color', col_vect_ci(ic,:)); hold on
             plot(xvals, Y-DELTA./1000, '--', 'color', col_vect_ci(ic,:))
         end
+        
+        % Save data for R to compute non-parametric Bayes factors
+        task = 'yn_threshold';
+        t = table(1./percwin(good_fit(:,ic),1), ip(good_fit(:,ic),ic));
+        writetable(t, fullfile(R_dir, 'lcmv', sprintf('%s_%i.csv', task, icond))) 
+        
     end
     box off
     set(gca,'TickDir','out')
