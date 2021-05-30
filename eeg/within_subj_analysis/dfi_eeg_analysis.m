@@ -595,14 +595,14 @@ if s.fslide
 %         
 %         figure('color', 'w')
 %         plot(filtfrqbnds*nyquist,idealrsp,'r'); hold on
-%         hz_filtkern   = linspace(0,nyquist,48);
 %         fft_filtkern  = abs(fft(filtwghts));
 %         fft_filtkern  = fft_filtkern./max(fft_filtkern); % normalized to 1.0 for visual comparison ease
+%         hz_filtkern   = linspace(0,nyquist,ceil(length(fft_filtkern)/2));
 %         plot(hz_filtkern,fft_filtkern(1:ceil(length(fft_filtkern)/2)),'b')
 %         set(gca,'ylim',[-.1 1.1],'xlim',[0 nyquist])
 %         xlabel('Frequency');
 %         legend({'ideal';'best fit'}); plotspecs; xlim([1 35])
-        
+%         
 
         % this part does the actual filtering
         filterdata = zeros(size(eegdata));
