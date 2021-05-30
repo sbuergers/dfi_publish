@@ -262,21 +262,32 @@ for icond = 1:3
 
 end
 
+% Read data from R (if it already exists)
+% --> from bfs_for_spearman_rank_correlation.R
+non_param_bfs_filename = fullfile(R_dir, '2ifc_non_param_bfs.csv');
+if exist(non_param_bfs_filename)
+    t = readtable(non_param_bfs_filename);
+    spearBFs = t.bfs_for_matlab;
+else
+    spearBFs = [nan; nan; nan];
+end
+
 cndttl = {'0S', '1S', '2S'};
 disp('------------------------------------')
 disp('eyes-open --- 2IFC threshold vs iAF:')
 disp('------------------------------------')
 for ic = 1:3
-    fprintf('%s   -->   N = %i,     r = %f,      BF = %f\n', ...
-        cndttl{ic}, nobs(1,ic), r(1,ic), corrbf(r(1,ic), nobs(1,ic)))
+    fprintf('%s -->  N=%i,  r=%f,   rBF=%f,   spear=%f,   spearBF=%f\n', ...
+        cndttl{ic}, nobs(1,ic), r(1,ic), corrbf(r(1,ic), nobs(1, ic)), ...
+        spearRho(1,ic), spearBFs(ic))
 end
 fprintf('\n\n\n')
 
 % add Bayes factors
 axes(ha(4))
-ic=1; line([0 0],[0 log10(corrbf(r(1,ic), nobs(1,ic)))],'color',[0 0.6 0], 'linewidth', 6); hold on
-ic=2; line([0.5 0.5],[0 log10(corrbf(r(1,ic), nobs(1,ic)))],'color',[0 0 1], 'linewidth', 6)
-ic=3; line([1 1],[0 log10(corrbf(r(1,ic), nobs(1,ic)))],'color',[1 0 0], 'linewidth', 6)
+ic=1; line([0 0],[0 log10(spearBFs(ic))],'color',[0 0.6 0], 'linewidth', 6); hold on
+ic=2; line([0.5 0.5],[0 log10(spearBFs(ic))],'color',[0 0 1], 'linewidth', 6)
+ic=3; line([1 1],[0 log10(spearBFs(ic))],'color',[1 0 0], 'linewidth', 6)
 line([-0.5 1.5], [0 0], 'color', 'k')
 line([-0.5 1.5], [0.5 0.5], 'color', [0.75 0.25 0.75])
 line([-0.5 1.5], [-0.5 -0.5], 'color', [0.75 0.25 0.75])
@@ -342,22 +353,32 @@ for icond = 1:3
 
 end
 
+% Read data from R (if it already exists)
+% --> from bfs_for_spearman_rank_correlation.R
+non_param_bfs_filename = fullfile(R_dir, 'yesno_non_param_bfs.csv');
+if exist(non_param_bfs_filename)
+    t = readtable(non_param_bfs_filename);
+    spearBFs = t.bfs_for_matlab;
+else
+    spearBFs = [nan; nan; nan];
+end
+
 cndttl = {'0S', '1S', '2S'};
 disp('---------------------------------------------')
 disp('eyes-open --- yes-no pooled threshold vs iAF:')
 disp('---------------------------------------------')
 for ic = 1:3
-    fprintf('%s   -->   N = %i,     r = %f,      BF = %f\n', ...
-        cndttl{ic}, nobs(1,ic), r(1,ic), corrbf(r(1,ic), nobs(1,ic)))
+    fprintf('%s -->  N=%i,  r=%f,   rBF=%f,   spear=%f,   spearBF=%f\n', ...
+        cndttl{ic}, nobs(1,ic), r(1,ic), corrbf(r(1,ic), nobs(1, ic)), ...
+        spearRho(1,ic), spearBFs(ic))
 end
 fprintf('\n\n\n')
 
-
 % add Bayes factors
 axes(ha(4+4))
-ic=1; line([0 0],[0 log10(corrbf(r(1,ic), nobs(1,ic)))],'color',[0 0.6 0], 'linewidth', 6); hold on
-ic=2; line([0.5 0.5],[0 log10(corrbf(r(1,ic), nobs(1,ic)))],'color',[0 0 1], 'linewidth', 6)
-ic=3; line([1 1],[0 log10(corrbf(r(1,ic), nobs(1,ic)))],'color',[1 0 0], 'linewidth', 6)
+ic=1; line([0 0],[0 log10(spearBFs(ic))],'color',[0 0.6 0], 'linewidth', 6); hold on
+ic=2; line([0.5 0.5],[0 log10(spearBFs(ic))],'color',[0 0 1], 'linewidth', 6)
+ic=3; line([1 1],[0 log10(spearBFs(ic))],'color',[1 0 0], 'linewidth', 6)
 line([-0.5 1.5], [0 0], 'color', 'k')
 line([-0.5 1.5], [0.5 0.5], 'color', [0.75 0.25 0.75])
 line([-0.5 1.5], [-0.5 -0.5], 'color', [0.75 0.25 0.75])
@@ -431,21 +452,32 @@ for icond = 1:3
 
 end
 
+% Read data from R (if it already exists)
+% --> from bfs_for_spearman_rank_correlation.R
+non_param_bfs_filename = fullfile(R_dir, 'yn_threshold_non_param_bfs.csv');
+if exist(non_param_bfs_filename)
+    t = readtable(non_param_bfs_filename);
+    spearBFs = t.bfs_for_matlab;
+else
+    spearBFs = [nan; nan; nan];
+end
+
 cndttl = {'0S', '1S', '2S'};
 disp('------------------------------------------')
 disp('eyes-open --- yn-threshold SOA versus iAF:')
 disp('------------------------------------------')
 for ic = 1:3
-    fprintf('%s   -->   N = %i,     r = %f,      BF = %f\n', ...
-        cndttl{ic}, nobs(1,ic), r(1,ic), corrbf(r(1,ic), nobs(1,ic)))
+    fprintf('%s -->  N=%i,  r=%f,   rBF=%f,   spear=%f,   spearBF=%f\n', ...
+        cndttl{ic}, nobs(1,ic), r(1,ic), corrbf(r(1,ic), nobs(1, ic)), ...
+        spearRho(1,ic), spearBFs(ic))
 end
 fprintf('\n\n\n')
 
 % add Bayes factors
 axes(ha(4+8))
-ic=1; line([0 0],[0 log10(corrbf(r(1,ic), nobs(1,ic)))],'color',[0 0.6 0], 'linewidth', 6); hold on
-ic=2; line([0.5 0.5],[0 log10(corrbf(r(1,ic), nobs(1,ic)))],'color',[0 0 1], 'linewidth', 6)
-ic=3; line([1 1],[0 log10(corrbf(r(1,ic), nobs(1,ic)))],'color',[1 0 0], 'linewidth', 6)
+ic=1; line([0 0],[0 log10(spearBFs(ic))],'color',[0 0.6 0], 'linewidth', 6); hold on
+ic=2; line([0.5 0.5],[0 log10(spearBFs(ic))],'color',[0 0 1], 'linewidth', 6)
+ic=3; line([1 1],[0 log10(spearBFs(ic))],'color',[1 0 0], 'linewidth', 6)
 line([-0.5 1.5], [0 0], 'color', 'k')
 line([-0.5 1.5], [0.5 0.5], 'color', [0.75 0.25 0.75])
 line([-0.5 1.5], [-0.5 -0.5], 'color', [0.75 0.25 0.75])
