@@ -228,7 +228,6 @@ saveas(fh1, fullfile(main_save_dir, 'Consistency_freq_sdparams_svg_BFs.svg'))
 close all
 
 
-
 %% LCMV (same analysis in source space)
 
 % Load yes-no sd params for frequency

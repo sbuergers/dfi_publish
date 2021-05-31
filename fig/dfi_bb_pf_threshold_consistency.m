@@ -137,7 +137,12 @@ ha = tight_subplot(3, 4, [0.01 0.03], [0.02], [0.02]);
 
 x = ifc_beta_threshold;
 y = yn_beta_threshold;
-    
+
+% Outliers are beyond 3 scaled median absolute deviations (MAD)
+% MAD = K * median(|Ai - median(A)|), where
+% i = 1, 2, ..., N; and K ~= 1.4826 (see help isoutlier)
+otl = isoutlier(x) | isoutlier(y);
+
 for ic = 1:3
     
     axes(ha(ic));
@@ -146,11 +151,14 @@ for ic = 1:3
     xlall(:,ic) = xl;
     yl = [min(min(y(:,ic)))*0.85, max(max(y(:,ic)))*1.15]; yrange = yl(2) - yl(1);
     dtsz = [xrange*.0355,yrange*.0355]; 
-    transparentScatter(x(:,ic), y(:,ic), col_vect(ic,:), opacity, dtsz, 25); hold on
-    N(1,ic) = sum(~isnan(x(:,ic)) & ~isnan(y(:,ic)));
-    [spearRho(1,ic), pval(1,ic)] = corr(x(:,ic), y(:,ic), 'type', 'Spearman', 'rows', 'complete');
-    [rx(1,ic), pval_r(1,ic)] = corr(x(:,ic), y(:,ic), 'type', 'Pearson', 'rows', 'complete');
-    [r(1,ic),b1(1,ic),b0(1,ic)] = regression(x(:,ic), y(:,ic), 'one');
+    transparentScatter(x(~otl(:, ic),ic), y(~otl(:, ic),ic), col_vect(ic,:), opacity, dtsz, 25); hold on
+    if any(otl(:, ic))
+        plot(x(otl(:, ic), ic), y(otl(:, ic), ic), '*k', 'markersize', 3)
+    end
+    N(1,ic) = sum(~isnan(x(:,ic)) & ~isnan(y(:,ic)) & ~otl(:, ic));
+    [spearRho(1,ic), pval(1,ic)] = corr(x(~otl(:, ic),ic), y(~otl(:, ic),ic), 'type', 'Spearman', 'rows', 'complete');
+    [rx(1,ic), pval_r(1,ic)] = corr(x(~otl(:, ic),ic), y(~otl(:, ic),ic), 'type', 'Pearson', 'rows', 'complete');
+    [r(1,ic),b1(1,ic),b0(1,ic)] = regression(x(~otl(:, ic),ic), y(~otl(:, ic),ic), 'one');
     line([min(min(x))  max(max(x))], [b0(1,ic)+b1(1,ic)*min(min(x)) b0(1,ic)+b1(1,ic)*max(max(x))], 'color', col_lines(ic,:), 'linewidth', lw, 'linestyle', ls);
     xlim(xl); ylim(yl);
     xticks = [0.025, 0.042, 0.05, 0.058, 0.075, 0.108, 0.158, 0.225]; set(gca, 'XTick', xticks)
@@ -170,7 +178,8 @@ fprintf('\n\n---- Scatter plots 1: yesno versus 2ifc ----')
 for icond = 1:3
     fprintf('\n\nCondition %i\n', icond)
     fprintf('\nN = %i', N(icond))
-    fprintf('\nr = %f', pval_r(icond))
+    fprintf('\nr = %f', r(icond))
+    fprintf('\npr = %f', pval_r(icond))
     fprintf('\nrho = %f', spearRho(icond))
     fprintf('\np = %f', pval(icond))
     fprintf('\nbf = %f', BFs(1, icond))
@@ -182,6 +191,11 @@ fprintf('\n\n')
 
 x = ifc_beta_threshold;
 y = ynt_staircase_estimate;
+
+% Outliers are beyond 3 scaled median absolute deviations (MAD)
+% MAD = K * median(|Ai - median(A)|), where
+% i = 1, 2, ..., N; and K ~= 1.4826 (see help isoutlier)
+otl = isoutlier(x) | isoutlier(y(:, 1:3));
     
 for ic = 1:3
     
@@ -191,11 +205,14 @@ for ic = 1:3
     xlall(:,ic) = xl;
     yl = [min(min(y(:,ic)))*0.85, max(max(y(:,ic)))*1.15]; yrange = yl(2) - yl(1);
     dtsz = [xrange*.0355,yrange*.0355]; 
-    transparentScatter(x(:,ic), y(:,ic), col_vect(ic,:), opacity, dtsz, 25); hold on
-    N(1,ic) = sum(~isnan(x(:,ic)) & ~isnan(y(:,ic)));
-    [spearRho(1,ic), pval(1,ic)] = corr(x(:,ic), y(:,ic), 'type', 'Spearman', 'rows', 'complete');
-    [rx(1,ic), pval_r(1,ic)] = corr(x(:,ic), y(:,ic), 'type', 'Pearson', 'rows', 'complete');
-    [r(1,ic),b1(1,ic),b0(1,ic)] = regression(x(:,ic), y(:,ic), 'one');
+    transparentScatter(x(~otl(:, ic),ic), y(~otl(:, ic),ic), col_vect(ic,:), opacity, dtsz, 25); hold on
+    if any(otl(:, ic))
+        plot(x(otl(:, ic), ic), y(otl(:, ic), ic), '*k', 'markersize', 3)
+    end
+    N(1,ic) = sum(~isnan(x(:,ic)) & ~isnan(y(:,ic)) & ~otl(:, ic));
+    [spearRho(1,ic), pval(1,ic)] = corr(x(~otl(:, ic),ic), y(~otl(:, ic),ic), 'type', 'Spearman', 'rows', 'complete');
+    [rx(1,ic), pval_r(1,ic)] = corr(x(~otl(:, ic),ic), y(~otl(:, ic),ic), 'type', 'Pearson', 'rows', 'complete');
+    [r(1,ic),b1(1,ic),b0(1,ic)] = regression(x(~otl(:, ic),ic), y(~otl(:, ic),ic), 'one');
     line([min(min(x))  max(max(x))], [b0(1,ic)+b1(1,ic)*min(min(x)) b0(1,ic)+b1(1,ic)*max(max(x))], 'color', col_lines(ic,:), 'linewidth', lw, 'linestyle', ls);
     xlim(xl); ylim(yl);
     xticks = [0.025, 0.042, 0.05, 0.058, 0.075, 0.108, 0.158, 0.225]; set(gca, 'XTick', xticks)
@@ -215,7 +232,8 @@ fprintf('\n\n---- Scatter plots 1: 2ifc vs yesno threshold ----')
 for icond = 1:3
     fprintf('\n\nCondition %i\n', icond)
     fprintf('\nN = %i', N(icond))
-    fprintf('\nr = %f', pval_r(icond))
+    fprintf('\nr = %f', r(icond))
+    fprintf('\npr = %f', pval_r(icond))
     fprintf('\nrho = %f', spearRho(icond))
     fprintf('\np = %f', pval(icond))
     fprintf('\nbf = %f', BFs(2, icond))
@@ -227,6 +245,11 @@ fprintf('\n\n')
 
 x = yn_beta_threshold;
 y = ynt_staircase_estimate;
+
+% Outliers are beyond 3 scaled median absolute deviations (MAD)
+% MAD = K * median(|Ai - median(A)|), where
+% i = 1, 2, ..., N; and K ~= 1.4826 (see help isoutlier)
+otl = isoutlier(x) | isoutlier(y(:, 1:3));
     
 for ic = 1:3
     
@@ -236,11 +259,14 @@ for ic = 1:3
     xlall(:,ic) = xl;
     yl = [min(min(y(:,ic)))*0.85, max(max(y(:,ic)))*1.15]; yrange = yl(2) - yl(1);
     dtsz = [xrange*.0355,yrange*.0355]; 
-    transparentScatter(x(:,ic), y(:,ic), col_vect(ic,:), opacity, dtsz, 25); hold on
-    N(1,ic) = sum(~isnan(x(:,ic)) & ~isnan(y(:,ic)));
-    [spearRho(1,ic), pval(1,ic)] = corr(x(:,ic), y(:,ic), 'type', 'Spearman', 'rows', 'complete');
-    [rx(1,ic), pval_r(1,ic)] = corr(x(:,ic), y(:,ic), 'type', 'Pearson', 'rows', 'complete');
-    [r(1,ic),b1(1,ic),b0(1,ic)] = regression(x(:,ic), y(:,ic), 'one');
+    transparentScatter(x(~otl(:, ic),ic), y(~otl(:, ic),ic), col_vect(ic,:), opacity, dtsz, 25); hold on
+    if any(otl(:, ic))
+        plot(x(otl(:, ic), ic), y(otl(:, ic), ic), '*k', 'markersize', 3)
+    end
+    N(1,ic) = sum(~isnan(x(:,ic)) & ~isnan(y(:,ic)) & ~otl(:, ic));
+    [spearRho(1,ic), pval(1,ic)] = corr(x(~otl(:, ic),ic), y(~otl(:, ic),ic), 'type', 'Spearman', 'rows', 'complete');
+    [rx(1,ic), pval_r(1,ic)] = corr(x(~otl(:, ic),ic), y(~otl(:, ic),ic), 'type', 'Pearson', 'rows', 'complete');
+    [r(1,ic),b1(1,ic),b0(1,ic)] = regression(x(~otl(:, ic),ic), y(~otl(:, ic),ic), 'one');
     line([min(min(x))  max(max(x))], [b0(1,ic)+b1(1,ic)*min(min(x)) b0(1,ic)+b1(1,ic)*max(max(x))], 'color', col_lines(ic,:), 'linewidth', lw, 'linestyle', ls);
     xlim(xl); ylim(yl);
     xticks = [0.025, 0.042, 0.05, 0.058, 0.075, 0.108, 0.158, 0.225]; set(gca, 'XTick', xticks)
@@ -260,7 +286,8 @@ fprintf('\n\n---- Scatter plots 3: yesno versus yesno threshold ----')
 for icond = 1:3
     fprintf('\n\nCondition %i\n', icond)
     fprintf('\nN = %i', N(icond))
-    fprintf('\nr = %f', pval_r(icond))
+    fprintf('\nr = %f', r(icond))
+    fprintf('\npr = %f', pval_r(icond))
     fprintf('\nrho = %f', spearRho(icond))
     fprintf('\np = %f', pval(icond))
     fprintf('\nbf = %f', BFs(3, icond))
