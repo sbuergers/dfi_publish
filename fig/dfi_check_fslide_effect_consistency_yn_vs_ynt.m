@@ -84,11 +84,12 @@ for icond = 1:3
     x = squeeze(dp_yn(:,:,1)-dp_yn(:,:,3));
     y = squeeze(dp_ynt(:,:,1)-dp_ynt(:,:,3));
     
-    % Outliers are beyond 3 median absolute deviations (MAD)
-    % MAD = median(|Ai - median(A)|),       i = 1, 2, ..., N
-    otl = isoutlier(x) | isoutlier(y);
-    
     axes(ha(icond));
+    
+    % Outliers are beyond 3 scaled median absolute deviations (MAD)
+    % MAD = K * median(|Ai - median(A)|), where
+    % i = 1, 2, ..., N; and K ~= 1.4826 (see help isoutlier)
+    otl = isoutlier(x) | isoutlier(y);
 
     xl = [min(min(x(:,ic)))*1.15, max(max(x(:,ic)))*1.15]; xrange = xl(2) - xl(1);
     xlall(:,ic) = xl;
@@ -97,20 +98,16 @@ for icond = 1:3
     transparentScatter(x(~otl(:, ic),ic), y(~otl(:, ic),ic), ...
         col_vect(icond,:), opacity, dtsz, 25); hold on
     if any(otl(:, ic))
-        transparentScatter(...
-            x(otl(:, ic), ic), y(otl(:, ic), ic), ...
-            col_vect(icond,:)/4, opacity, dtsz, 3); hold on
+        plot(x(otl(:, ic), ic), y(otl(:, ic), ic), '*k', 'markersize', 3)
     end
-    for ic = icond
-        N(1,ic) = sum(~isnan(x(~otl(:, ic),ic)) & ~isnan(y(~otl(:, ic),ic)));
-        [spearRho(1,ic), pval(1,ic)] = corr(x(~otl(:, ic),ic), y(~otl(:, ic),ic), 'type', 'Spearman', 'rows', 'complete');
-        [rx(1,ic), pval_r(1,ic)] = corr(x(~otl(:, ic),ic), y(~otl(:, ic),ic), 'type', 'Pearson', 'rows', 'complete');
-        [r(1,ic),b1(1,ic),b0(1,ic)] = regression(x(~otl(:, ic),ic), y(~otl(:, ic),ic), 'one');
-        line([min(min(x))  max(max(x))], [b0(1,ic)+b1(1,ic)*min(min(x)) b0(1,ic)+b1(1,ic)*max(max(x))], 'color', col_lines(ic,:), 'linewidth', lw, 'linestyle', ls);
-        xlim(xl); ylim(yl);
-        xticks = -2:0.4:2; set(gca, 'XTick', xticks)
-        yticks = -2:0.4:2;  set(gca, 'YTick', yticks);
-    end
+    N(1,ic) = sum(~isnan(x(~otl(:, ic),ic)) & ~isnan(y(~otl(:, ic),ic)));
+    [spearRho(1,ic), pval(1,ic)] = corr(x(~otl(:, ic),ic), y(~otl(:, ic),ic), 'type', 'Spearman', 'rows', 'complete');
+    [rx(1,ic), pval_r(1,ic)] = corr(x(~otl(:, ic),ic), y(~otl(:, ic),ic), 'type', 'Pearson', 'rows', 'complete');
+    [r(1,ic),b1(1,ic),b0(1,ic)] = regression(x(~otl(:, ic),ic), y(~otl(:, ic),ic), 'one');
+    line([min(min(x))  max(max(x))], [b0(1,ic)+b1(1,ic)*min(min(x)) b0(1,ic)+b1(1,ic)*max(max(x))], 'color', col_lines(ic,:), 'linewidth', lw, 'linestyle', ls);
+    xlim(xl); ylim(yl);
+    xticks = -2:0.4:2; set(gca, 'XTick', xticks)
+    yticks = -2:0.4:2;  set(gca, 'YTick', yticks);
     line([xl], [0 0], 'color', [0.5 0.5 0.5])
     line([0 0], [yl], 'color', [0.5 0.5 0.5])
     box off
@@ -129,29 +126,6 @@ r_dp = r;
 n_dp = N;
 
 
-% Are there outliers in the data? Check at 3std threshold
-x_outlier_ids = find_univariate_outliers(x, 2.5);
-y_outlier_ids = find_univariate_outliers(x, 2.5);
-xy_outlier_ids = find_multivariate_outliers(x, y, 2.5);
-
-function outlier_ids = find_multivariate_outliers(x, y, std_threshold)
-    % Find multivariate outliers given data `x`, `y` and
-    % `std_threshold`. Returns a boolean array (True if observation is an
-    % outlier).
-    outlier_ids = find(data < (mean(data) - std_threshold * std(data)) | ...
-                       data > (mean(data) + std_threshold * std(data)));           
-end
-
-% Outliers are beyond 3 median absolute deviations (MAD)
-% MAD = median(|Ai - median(A)|),       i = 1, 2, ..., N
-x_outlier_ids = isoutlier(x)
-
-
-
-
-
-
-
 %% Row 2: Criterion
 
 for icond = 1:3
@@ -159,23 +133,30 @@ for icond = 1:3
     x = squeeze(c_yn(:,:,1)-c_yn(:,:,3));
     y = squeeze(c_ynt(:,:,1)-c_ynt(:,:,3));
     
+    % Outliers are beyond 3 scaled median absolute deviations (MAD)
+    % MAD = K * median(|Ai - median(A)|), where
+    % i = 1, 2, ..., N; and K ~= 1.4826 (see help isoutlier)
+    otl = isoutlier(x) | isoutlier(y);
+    
     axes(ha(icond+4));
 
     xl = [min(min(x(:,ic)))*1.15, max(max(x(:,ic)))*1.15]; xrange = xl(2) - xl(1);
     xlall(:,ic) = xl;
     yl = [min(min(y))*1.15, max(max(y))*1.15]; yrange = yl(2) - yl(1);
     dtsz = [xrange*.0355,yrange*.0355]; 
-    transparentScatter(x(:,ic), y(:,ic), col_vect(icond,:), opacity, dtsz, 25); hold on
-    for ic = icond
-        N(1,ic) = sum(~isnan(x(:,ic)) & ~isnan(y(:,ic)));
-        [spearRho(1,ic), pval(1,ic)] = corr(x(:,ic), y(:,ic), 'type', 'Spearman', 'rows', 'complete');
-        [rx(1,ic), pval_r(1,ic)] = corr(x(:,ic), y(:,ic), 'type', 'Pearson', 'rows', 'complete');
-        [r(1,ic),b1(1,ic),b0(1,ic)] = regression(x(:,ic), y(:,ic), 'one');
-        line([min(min(x))  max(max(x))], [b0(1,ic)+b1(1,ic)*min(min(x)) b0(1,ic)+b1(1,ic)*max(max(x))], 'color', col_lines(ic,:), 'linewidth', lw, 'linestyle', ls);
-        xlim(xl); ylim(yl);
-        xticks = -2:0.2:2; set(gca, 'XTick', xticks)
-        yticks = -2:0.2:2;  set(gca, 'YTick', yticks);
+    transparentScatter(x(~otl(:, ic),ic), y(~otl(:, ic),ic), ...
+        col_vect(icond,:), opacity, dtsz, 25); hold on
+    if any(otl(:, ic))
+        plot(x(otl(:, ic), ic), y(otl(:, ic), ic), '*k', 'markersize', 3)
     end
+    N(1,ic) = sum(~isnan(x(~otl(:, ic),ic)) & ~isnan(y(~otl(:, ic),ic)));
+    [spearRho(1,ic), pval(1,ic)] = corr(x(~otl(:, ic),ic), y(~otl(:, ic),ic), 'type', 'Spearman', 'rows', 'complete');
+    [rx(1,ic), pval_r(1,ic)] = corr(x(~otl(:, ic),ic), y(~otl(:, ic),ic), 'type', 'Pearson', 'rows', 'complete');
+    [r(1,ic),b1(1,ic),b0(1,ic)] = regression(x(~otl(:, ic),ic), y(~otl(:, ic),ic), 'one');
+    line([min(min(x))  max(max(x))], [b0(1,ic)+b1(1,ic)*min(min(x)) b0(1,ic)+b1(1,ic)*max(max(x))], 'color', col_lines(ic,:), 'linewidth', lw, 'linestyle', ls);
+    xlim(xl); ylim(yl);
+    xticks = -2:0.2:2; set(gca, 'XTick', xticks)
+    yticks = -2:0.2:2;  set(gca, 'YTick', yticks);
     line([xl], [0 0], 'color', [0.5 0.5 0.5])
     line([0 0], [yl], 'color', [0.5 0.5 0.5])
     box off
@@ -285,21 +266,28 @@ for icond = 1:3
     
     axes(ha(icond));
 
+    % Outliers are beyond 3 scaled median absolute deviations (MAD)
+    % MAD = K * median(|Ai - median(A)|), where
+    % i = 1, 2, ..., N; and K ~= 1.4826 (see help isoutlier)
+    otl = isoutlier(x) | isoutlier(y);
+
     xl = [min(min(x(:,ic)))*1.15, max(max(x(:,ic)))*1.15]; xrange = xl(2) - xl(1);
     xlall(:,ic) = xl;
     yl = [min(min(y))*1.15, max(max(y))*1.15]; yrange = yl(2) - yl(1);
     dtsz = [xrange*.0355,yrange*.0355]; 
-    transparentScatter(x(:,ic), y(:,ic), col_vect(icond,:), opacity, dtsz, 25); hold on
-    for ic = icond
-        N(1,ic) = sum(~isnan(x(:,ic)) & ~isnan(y(:,ic)));
-        [spearRho(1,ic), pval(1,ic)] = corr(x(:,ic), y(:,ic), 'type', 'Spearman', 'rows', 'complete');
-        [rx(1,ic), pval_r(1,ic)] = corr(x(:,ic), y(:,ic), 'type', 'Pearson', 'rows', 'complete');
-        [r(1,ic),b1(1,ic),b0(1,ic)] = regression(x(:,ic), y(:,ic), 'one');
-        line([min(min(x))  max(max(x))], [b0(1,ic)+b1(1,ic)*min(min(x)) b0(1,ic)+b1(1,ic)*max(max(x))], 'color', col_lines(ic,:), 'linewidth', lw, 'linestyle', ls);
-        xlim(xl); ylim(yl);
-        xticks = -2:0.4:2; set(gca, 'XTick', xticks)
-        yticks = -2:0.4:2;  set(gca, 'YTick', yticks);
+    transparentScatter(x(~otl(:, ic),ic), y(~otl(:, ic),ic), ...
+        col_vect(icond,:), opacity, dtsz, 25); hold on
+    if any(otl(:, ic))
+        plot(x(otl(:, ic), ic), y(otl(:, ic), ic), '*k', 'markersize', 3)
     end
+    N(1,ic) = sum(~isnan(x(~otl(:, ic),ic)) & ~isnan(y(~otl(:, ic),ic)));
+    [spearRho(1,ic), pval(1,ic)] = corr(x(~otl(:, ic),ic), y(~otl(:, ic),ic), 'type', 'Spearman', 'rows', 'complete');
+    [rx(1,ic), pval_r(1,ic)] = corr(x(~otl(:, ic),ic), y(~otl(:, ic),ic), 'type', 'Pearson', 'rows', 'complete');
+    [r(1,ic),b1(1,ic),b0(1,ic)] = regression(x(~otl(:, ic),ic), y(~otl(:, ic),ic), 'one');
+    line([min(min(x))  max(max(x))], [b0(1,ic)+b1(1,ic)*min(min(x)) b0(1,ic)+b1(1,ic)*max(max(x))], 'color', col_lines(ic,:), 'linewidth', lw, 'linestyle', ls);
+    xlim(xl); ylim(yl);
+    xticks = -2:0.4:2; set(gca, 'XTick', xticks)
+    yticks = -2:0.4:2;  set(gca, 'YTick', yticks);
     line([xl], [0 0], 'color', [0.5 0.5 0.5])
     line([0 0], [yl], 'color', [0.5 0.5 0.5])
     box off
@@ -326,21 +314,28 @@ for icond = 1:3
     
     axes(ha(icond+4));
 
+    % Outliers are beyond 3 scaled median absolute deviations (MAD)
+    % MAD = K * median(|Ai - median(A)|), where
+    % i = 1, 2, ..., N; and K ~= 1.4826 (see help isoutlier)
+    otl = isoutlier(x) | isoutlier(y);
+
     xl = [min(min(x(:,ic)))*1.15, max(max(x(:,ic)))*1.15]; xrange = xl(2) - xl(1);
     xlall(:,ic) = xl;
     yl = [min(min(y))*1.15, max(max(y))*1.15]; yrange = yl(2) - yl(1);
     dtsz = [xrange*.0355,yrange*.0355]; 
-    transparentScatter(x(:,ic), y(:,ic), col_vect(icond,:), opacity, dtsz, 25); hold on
-    for ic = icond
-        N(1,ic) = sum(~isnan(x(:,ic)) & ~isnan(y(:,ic)));
-        [spearRho(1,ic), pval(1,ic)] = corr(x(:,ic), y(:,ic), 'type', 'Spearman', 'rows', 'complete');
-        [rx(1,ic), pval_r(1,ic)] = corr(x(:,ic), y(:,ic), 'type', 'Pearson', 'rows', 'complete');
-        [r(1,ic),b1(1,ic),b0(1,ic)] = regression(x(:,ic), y(:,ic), 'one');
-        line([min(min(x))  max(max(x))], [b0(1,ic)+b1(1,ic)*min(min(x)) b0(1,ic)+b1(1,ic)*max(max(x))], 'color', col_lines(ic,:), 'linewidth', lw, 'linestyle', ls);
-        xlim(xl); ylim(yl);
-        xticks = -2:0.2:2; set(gca, 'XTick', xticks)
-        yticks = -2:0.2:2;  set(gca, 'YTick', yticks);
+    transparentScatter(x(~otl(:, ic),ic), y(~otl(:, ic),ic), ...
+        col_vect(icond,:), opacity, dtsz, 25); hold on
+    if any(otl(:, ic))
+        plot(x(otl(:, ic), ic), y(otl(:, ic), ic), '*k', 'markersize', 3)
     end
+    N(1,ic) = sum(~isnan(x(~otl(:, ic),ic)) & ~isnan(y(~otl(:, ic),ic)));
+    [spearRho(1,ic), pval(1,ic)] = corr(x(~otl(:, ic),ic), y(~otl(:, ic),ic), 'type', 'Spearman', 'rows', 'complete');
+    [rx(1,ic), pval_r(1,ic)] = corr(x(~otl(:, ic),ic), y(~otl(:, ic),ic), 'type', 'Pearson', 'rows', 'complete');
+    [r(1,ic),b1(1,ic),b0(1,ic)] = regression(x(~otl(:, ic),ic), y(~otl(:, ic),ic), 'one');
+    line([min(min(x))  max(max(x))], [b0(1,ic)+b1(1,ic)*min(min(x)) b0(1,ic)+b1(1,ic)*max(max(x))], 'color', col_lines(ic,:), 'linewidth', lw, 'linestyle', ls);
+    xlim(xl); ylim(yl);
+    xticks = -2:0.2:2; set(gca, 'XTick', xticks)
+    yticks = -2:0.2:2;  set(gca, 'YTick', yticks);
     line([xl], [0 0], 'color', [0.5 0.5 0.5])
     line([0 0], [yl], 'color', [0.5 0.5 0.5])
     box off
