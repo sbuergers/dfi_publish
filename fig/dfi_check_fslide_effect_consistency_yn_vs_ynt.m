@@ -133,6 +133,10 @@ for icond = 1:3
     x = squeeze(c_yn(:,:,1)-c_yn(:,:,3));
     y = squeeze(c_ynt(:,:,1)-c_ynt(:,:,3));
     
+    tx = table(x);
+    ty = table(y);
+    writetable(tx
+    
     % Outliers are beyond 3 scaled median absolute deviations (MAD)
     % MAD = K * median(|Ai - median(A)|), where
     % i = 1, 2, ..., N; and K ~= 1.4826 (see help isoutlier)

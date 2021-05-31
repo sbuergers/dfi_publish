@@ -107,7 +107,7 @@ clear d7*
 subjects = unique(dall.partid);
 trialtypes = [3, 6, 8, 9];
 soamat = nan(20,4);
-for isubj = 1:N
+for isubj = 1:20
     for itrl = 1:length(trialtypes)
         soamat(isubj,itrl) = unique(dall.soa(dall.partid == subjects(isubj) & dall.trlid == trialtypes(itrl)) );
     end
@@ -142,6 +142,8 @@ y = yn_beta_threshold;
 % MAD = K * median(|Ai - median(A)|), where
 % i = 1, 2, ..., N; and K ~= 1.4826 (see help isoutlier)
 otl = isoutlier(x) | isoutlier(y);
+otl = isoutlier(x, 'quartiles') | isoutlier(y, 'quartiles');
+
 
 for ic = 1:3
     
@@ -196,7 +198,8 @@ y = ynt_staircase_estimate;
 % MAD = K * median(|Ai - median(A)|), where
 % i = 1, 2, ..., N; and K ~= 1.4826 (see help isoutlier)
 otl = isoutlier(x) | isoutlier(y(:, 1:3));
-    
+otl = isoutlier(x, 'quartiles') | isoutlier(y(:, 1:3), 'quartiles');
+
 for ic = 1:3
     
     axes(ha(4+ic));
@@ -250,7 +253,8 @@ y = ynt_staircase_estimate;
 % MAD = K * median(|Ai - median(A)|), where
 % i = 1, 2, ..., N; and K ~= 1.4826 (see help isoutlier)
 otl = isoutlier(x) | isoutlier(y(:, 1:3));
-    
+otl = isoutlier(x, 'quartiles') | isoutlier(y(:, 1:3), 'quartiles');
+
 for ic = 1:3
     
     axes(ha(8+ic));
