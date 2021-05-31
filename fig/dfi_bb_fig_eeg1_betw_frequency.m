@@ -267,7 +267,7 @@ end
 non_param_bfs_filename = fullfile(R_dir, '2ifc_non_param_bfs.csv');
 if exist(non_param_bfs_filename)
     t = readtable(non_param_bfs_filename);
-    spearBFs = t.bfs_for_matlab;
+    spearBFs = t.colMeans_bfs_mat_;
 else
     spearBFs = [nan; nan; nan];
 end
@@ -358,7 +358,7 @@ end
 non_param_bfs_filename = fullfile(R_dir, 'yesno_non_param_bfs.csv');
 if exist(non_param_bfs_filename)
     t = readtable(non_param_bfs_filename);
-    spearBFs = t.bfs_for_matlab;
+    spearBFs = t.colMeans_bfs_mat_;
 else
     spearBFs = [nan; nan; nan];
 end
@@ -457,7 +457,7 @@ end
 non_param_bfs_filename = fullfile(R_dir, 'yn_threshold_non_param_bfs.csv');
 if exist(non_param_bfs_filename)
     t = readtable(non_param_bfs_filename);
-    spearBFs = t.bfs_for_matlab;
+    spearBFs = t.colMeans_bfs_mat_;
 else
     spearBFs = [nan; nan; nan];
 end
