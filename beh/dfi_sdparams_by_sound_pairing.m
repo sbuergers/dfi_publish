@@ -698,7 +698,7 @@ dlmwrite('C_mat_stats.txt', C_mat, 'delimiter', '\t');
 cd(oldwd)
 
 % RM-Anova
-C_mat(:,3) = -C_mat(:,3);
+%C_mat(:,3) = -C_mat(:,3);
 mat_anova = C_mat;
 table_anova = array2table(mat_anova, 'VariableNames', ...
     {'Flash_fusion', 'Fusion_illusion', 'Fission_illusion'});
