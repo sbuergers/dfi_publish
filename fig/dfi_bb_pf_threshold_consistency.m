@@ -107,7 +107,7 @@ clear d7*
 subjects = unique(dall.partid);
 trialtypes = [3, 6, 8, 9];
 soamat = nan(20,4);
-for isubj = 1:N
+for isubj = 1:20
     for itrl = 1:length(trialtypes)
         soamat(isubj,itrl) = unique(dall.soa(dall.partid == subjects(isubj) & dall.trlid == trialtypes(itrl)) );
     end
