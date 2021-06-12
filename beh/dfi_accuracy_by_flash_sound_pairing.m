@@ -83,7 +83,7 @@ condition_vect = [2,5];
 [per_cor] = nan(20, 2);
 for isubj = 1:20
     for icond = 1:2
-        dtemp = dynt(dynt.partid == subjvect(isubj) & dynt.trlid == condition_vect(icond),:);
+        dtemp = dynt(dynt.partid == partvect(isubj) & dynt.trlid == condition_vect(icond),:);
         per_cor(isubj,icond) = sum(dtemp.acc) / length(dtemp);
     end % condition
 end % subject
@@ -140,7 +140,7 @@ condition_vect = [2,5];
 [per_cor] = nan(20, 2);
 for isubj = 1:20
     for icond = 1:2
-        dtemp = dyn(dyn.partid == subjvect(isubj) & dyn.trlid == condition_vect(icond),:);
+        dtemp = dyn(dyn.partid == partvect(isubj) & dyn.trlid == condition_vect(icond),:);
         per_cor(isubj,icond) = sum(dtemp.acc) / length(dtemp);
     end % condition
 end % subject
