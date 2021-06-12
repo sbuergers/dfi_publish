@@ -219,9 +219,7 @@ fprintf('\n+++++ STATISTICS CRITERION +++++\n')
 
 axes(ha(1));
 
-c_mat = yn_c_mat;
-c_mat(:, :, 1) = sign_ynt .* c_mat(:, :, 1);
-c_mat(:, :, 3) = sign_ynt .* c_mat(:, :, 3);
+c_mat = sign_ynt .* yn_c_mat;
 
 xl = [0.5 3.5];
 yl = [-1, 1];
@@ -259,9 +257,7 @@ set(gca,'XColor','k','YColor','k')
 
 axes(ha(2));
 
-c_mat = ynt_c_mat;
-c_mat(:, :, 1) = sign_yn .* c_mat(:, :, 1);
-c_mat(:, :, 3) = sign_yn .* c_mat(:, :, 3);
+c_mat = sign_yn .* ynt_c_mat;
 
 xl = [0.5 3.5];
 yl = [-1, 1];
