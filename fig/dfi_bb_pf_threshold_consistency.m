@@ -124,7 +124,7 @@ opacity = 0.5; % transparency (alpha)
 lw = 0.6;
 ls = '-';
 
-xl = [-0.6 0.4]; 
+xl = [0 0.25]; 
 yl = xl;
 
 % Initialize 3 (task comparison) x 3 (condition) Bayes factor matrix
@@ -142,9 +142,8 @@ for ic = 1:3
     
     axes(ha(ic));
 
-    xl = [min(min(x(:,ic)))*0.85, max(max(x(:,ic)))*1.15]; xrange = xl(2) - xl(1);
-    xlall(:,ic) = xl;
-    yl = [min(min(y(:,ic)))*0.85, max(max(y(:,ic)))*1.15]; yrange = yl(2) - yl(1);
+    xrange = xl(2) - xl(1);
+    yrange = yl(2) - yl(1);
     dtsz = [xrange*.0355,yrange*.0355]; 
     transparentScatter(x(:,ic), y(:,ic), col_vect(ic,:), opacity, dtsz, 25); hold on
     N(1,ic) = sum(~isnan(x(:,ic)) & ~isnan(y(:,ic)));
@@ -187,9 +186,8 @@ for ic = 1:3
     
     axes(ha(4+ic));
 
-    xl = [min(min(x(:,ic)))*0.85, max(max(x(:,ic)))*1.15]; xrange = xl(2) - xl(1);
-    xlall(:,ic) = xl;
-    yl = [min(min(y(:,ic)))*0.85, max(max(y(:,ic)))*1.15]; yrange = yl(2) - yl(1);
+    xrange = xl(2) - xl(1);
+    yrange = yl(2) - yl(1);
     dtsz = [xrange*.0355,yrange*.0355]; 
     transparentScatter(x(:,ic), y(:,ic), col_vect(ic,:), opacity, dtsz, 25); hold on
     N(1,ic) = sum(~isnan(x(:,ic)) & ~isnan(y(:,ic)));
@@ -232,9 +230,8 @@ for ic = 1:3
     
     axes(ha(8+ic));
 
-    xl = [min(min(x(:,ic)))*0.85, max(max(x(:,ic)))*1.15]; xrange = xl(2) - xl(1);
-    xlall(:,ic) = xl;
-    yl = [min(min(y(:,ic)))*0.85, max(max(y(:,ic)))*1.15]; yrange = yl(2) - yl(1);
+    xrange = xl(2) - xl(1);
+    yrange = yl(2) - yl(1);
     dtsz = [xrange*.0355,yrange*.0355]; 
     transparentScatter(x(:,ic), y(:,ic), col_vect(ic,:), opacity, dtsz, 25); hold on
     N(1,ic) = sum(~isnan(x(:,ic)) & ~isnan(y(:,ic)));
