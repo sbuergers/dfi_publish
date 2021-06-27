@@ -36,7 +36,7 @@ clear all
 
 %% SELECT: hi_pow, lo_pow
 
-pow_cond = 'hi_pow';
+pow_cond = 'lo_pow';
 
 % Ran hi_pow on 23.05.2021, 21:10h
 % Ran lo_pow on 23.05.2021, 21:11h
