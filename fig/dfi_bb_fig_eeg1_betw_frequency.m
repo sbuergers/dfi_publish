@@ -206,7 +206,7 @@ plot_ci = false;
 
 % 1.) 2IFC threshold vs iAF
 
-[spearRho, pval, nobs, r, b1, b0] = deal(zeros(1, 3));
+[spearRho, pval, pval_r, nobs, r, b1, b0] = deal(zeros(1, 3));
 for icond = 1:3
 
     % [3,1] Threshold 2ifc vs eyes-closed Corcoran iAF
@@ -231,6 +231,7 @@ for icond = 1:3
     transparentScatter(1./percwin_mat(:,icond), ip(:,icond), col_vect(icond,:), opacity, dtsz, 25); hold on
     for ic = icond
         [spearRho(1,ic), pval(1,ic)] = corr(percwin(good_fit(:,ic),1), ip(good_fit(:,ic),ic), 'type', 'Spearman', 'rows', 'complete');
+        [r(1,ic), pval_r(1,ic)] = corr(percwin(good_fit(:,ic),1), ip(good_fit(:,ic),ic), 'type', 'Pearson', 'rows', 'complete');
         [r(1,ic),b1(1,ic),b0(1,ic)] = regression(1./percwin(good_fit(:,ic),1), ip(good_fit(:,ic),ic), 'one');
         nobs(1,ic) = sum(good_fit(:,ic));
         line([min(min(1./percwin_mat))  max(max(1./percwin_mat))], [b0(1,ic)+b1(1,ic)*min(min(1./percwin_mat)) b0(1,ic)+b1(1,ic)*max(max(1./percwin_mat))], 'color', col_lines(ic,:), 'linewidth', lw, 'linestyle', ls);
@@ -257,8 +258,8 @@ disp('------------------------------------')
 disp('eyes-open --- 2IFC threshold vs iAF:')
 disp('------------------------------------')
 for ic = 1:3
-    fprintf('%s   -->   N = %i,     r = %f,      BF = %f\n', ...
-        cndttl{ic}, nobs(1,ic), r(1,ic), corrbf(r(1,ic), nobs(1,ic)))
+    fprintf('%s   -->   N = %i,     r = %f,      pval_r = %f,       pval_rho = %f,       BF = %f\n', ...
+        cndttl{ic}, nobs(1,ic), r(1,ic), pval_r(1, ic), pval(1, ic), corrbf(r(1,ic), nobs(1,ic)))
 end
 fprintf('\n\n\n')
 
@@ -277,7 +278,7 @@ ylim([-1.2 1.2])
 
 % 2.) yes-no pooled threshold vs iAF
 
-[spearRho, pval, nobs, r, b1, b0] = deal(zeros(1, 3));
+[spearRho, pval, nobs, pval_r, r, b1, b0] = deal(zeros(1, 3));
 for icond = 1:3
 
     % [3,1] Threshold 2ifc vs eyes-closed Corcoran iAF
@@ -306,6 +307,7 @@ for icond = 1:3
     transparentScatter(1./percwin_mat(:,icond), ip(:,icond), col_vect(icond,:), opacity, dtsz, 25); hold on
     for ic = icond
         [spearRho(1,ic), pval(1,ic)] = corr(percwin(good_fit(:,ic),1), ip(good_fit(:,ic),ic), 'type', 'Spearman', 'rows', 'complete');
+        [r(1,ic), pval_r(1,ic)] = corr(percwin(good_fit(:,ic),1), ip(good_fit(:,ic),ic), 'type', 'Pearson', 'rows', 'complete');
         [r(1,ic),b1(1,ic),b0(1,ic)] = regression(1./percwin(good_fit(:,ic),1), ip(good_fit(:,ic),ic), 'one');
         nobs(1,ic) = sum(good_fit(:,ic));
         line([min(min(1./percwin_mat))  max(max(1./percwin_mat))], [b0(1,ic)+b1(1,ic)*min(min(1./percwin_mat)) b0(1,ic)+b1(1,ic)*max(max(1./percwin_mat))], 'color', col_lines(ic,:), 'linewidth', lw, 'linestyle', ls);
@@ -332,8 +334,8 @@ disp('---------------------------------------------')
 disp('eyes-open --- yes-no pooled threshold vs iAF:')
 disp('---------------------------------------------')
 for ic = 1:3
-    fprintf('%s   -->   N = %i,     r = %f,      BF = %f\n', ...
-        cndttl{ic}, nobs(1,ic), r(1,ic), corrbf(r(1,ic), nobs(1,ic)))
+    fprintf('%s   -->   N = %i,     r = %f,      pval_r = %f,       pval_rho = %f,       BF = %f\n', ...
+        cndttl{ic}, nobs(1,ic), r(1,ic), pval_r(1, ic), pval(1, ic), corrbf(r(1,ic), nobs(1,ic)))
 end
 fprintf('\n\n\n')
 
@@ -364,7 +366,7 @@ for isubj = 1:N
     end
 end
 
-[spearRho, pval, nobs, r, b1, b0] = deal(zeros(1, 3));
+[spearRho, pval, nobs, pval_r, r, b1, b0] = deal(zeros(1, 3));
 for icond = 1:3
 
     % [1] Threshold yes-no pool vs eyes-open Corcoran iAF
@@ -389,6 +391,7 @@ for icond = 1:3
     transparentScatter(1./percwin_mat(:,icond), ip(:,icond), col_vect(icond,:), opacity, dtsz, 25); hold on
     for ic = icond
         [spearRho(1,ic), pval(1,ic)] = corr(percwin(good_fit(:,ic),1), ip(good_fit(:,ic),ic), 'type', 'Spearman', 'rows', 'complete');
+        [r(1,ic), pval_r(1,ic)] = corr(percwin(good_fit(:,ic),1), ip(good_fit(:,ic),ic), 'type', 'Pearson', 'rows', 'complete');
         [r(1,ic),b1(1,ic),b0(1,ic)] = regression(1./percwin(good_fit(:,ic),1), ip(good_fit(:,ic),ic), 'one');
         nobs(1,ic) = sum(good_fit(:,ic));
         line([min(min(1./percwin_mat))  max(max(1./percwin_mat))], [b0(1,ic)+b1(1,ic)*min(min(1./percwin_mat)) b0(1,ic)+b1(1,ic)*max(max(1./percwin_mat))], 'color', col_lines(ic,:), 'linewidth', lw, 'linestyle', ls);
@@ -415,8 +418,8 @@ disp('------------------------------------------')
 disp('eyes-open --- yn-threshold SOA versus iAF:')
 disp('------------------------------------------')
 for ic = 1:3
-    fprintf('%s   -->   N = %i,     r = %f,      BF = %f\n', ...
-        cndttl{ic}, nobs(1,ic), r(1,ic), corrbf(r(1,ic), nobs(1,ic)))
+    fprintf('%s   -->   N = %i,     r = %f,      pval_r = %f,       pval_rho = %f,       BF = %f\n', ...
+        cndttl{ic}, nobs(1,ic), r(1,ic), pval_r(1, ic), pval(1, ic), corrbf(r(1,ic), nobs(1,ic)))
 end
 fprintf('\n\n\n')
 
@@ -456,7 +459,7 @@ plot_ci = false;
 
 % 1.) 2IFC threshold vs iAF
 
-[spearRho, pval, nobs, r, b1, b0] = deal(zeros(1, 3));
+[spearRho, pval, nobs, pval_r, r, b1, b0] = deal(zeros(1, 3));
 for icond = 1:3
 
     % [3,1] Threshold 2ifc vs eyes-closed Corcoran iAF
@@ -485,6 +488,7 @@ for icond = 1:3
     transparentScatter(1./percwin_mat(:,icond), ip(:,icond), col_vect(icond,:), opacity, dtsz, 25); hold on
     for ic = icond
         [spearRho(1,ic), pval(1,ic)] = corr(percwin(good_fit(:,ic),1), ip(good_fit(:,ic),ic), 'type', 'Spearman', 'rows', 'complete');
+        [r(1,ic), pval_r(1,ic)] = corr(percwin(good_fit(:,ic),1), ip(good_fit(:,ic),ic), 'type', 'Pearson', 'rows', 'complete');
         [r(1,ic),b1(1,ic),b0(1,ic)] = regression(1./percwin(good_fit(:,ic),1), ip(good_fit(:,ic),ic), 'one');
         nobs(1,ic) = sum(good_fit(:,ic));
         line([min(min(1./percwin_mat))  max(max(1./percwin_mat))], [b0(1,ic)+b1(1,ic)*min(min(1./percwin_mat)) b0(1,ic)+b1(1,ic)*max(max(1./percwin_mat))], 'color', col_lines(ic,:), 'linewidth', lw, 'linestyle', ls);
@@ -511,8 +515,8 @@ disp('------------------------------------------')
 disp('eyes-closed --- 2IFC threshold vs iAF:')
 disp('------------------------------------------')
 for ic = 1:3
-    fprintf('%s   -->   N = %i,     r = %f,      BF = %f\n', ...
-        cndttl{ic}, nobs(1,ic), r(1,ic), corrbf(r(1,ic), nobs(1,ic)))
+    fprintf('%s   -->   N = %i,     r = %f,      pval_r = %f,       pval_rho = %f,       BF = %f\n', ...
+        cndttl{ic}, nobs(1,ic), r(1,ic), pval_r(1, ic), pval(1, ic), corrbf(r(1,ic), nobs(1,ic)))
 end
 fprintf('\n\n\n')
 
@@ -534,7 +538,7 @@ set(gca,'TickLength',[0.02, 0.02])
 
 % 2.) yes-no pooled threshold vs iAF
 
-[spearRho, pval, nobs, r, b1, b0] = deal(zeros(1, 3));
+[spearRho, pval, nobs, pval_r, r, b1, b0] = deal(zeros(1, 3));
 for icond = 1:3
 
     % [3,1] Threshold 2ifc vs eyes-closed Corcoran iAF
@@ -563,6 +567,7 @@ for icond = 1:3
     transparentScatter(1./percwin_mat(:,icond), ip(:,icond), col_vect(icond,:), opacity, dtsz, 25); hold on
     for ic = icond
         [spearRho(1,ic), pval(1,ic)] = corr(percwin(good_fit(:,ic),1), ip(good_fit(:,ic),ic), 'type', 'Spearman', 'rows', 'complete');
+        [r(1,ic), pval_r(1,ic)] = corr(percwin(good_fit(:,ic),1), ip(good_fit(:,ic),ic), 'type', 'Pearson', 'rows', 'complete');
         [r(1,ic),b1(1,ic),b0(1,ic)] = regression(1./percwin(good_fit(:,ic),1), ip(good_fit(:,ic),ic), 'one');
         nobs(1,ic) = sum(good_fit(:,ic));
         line([min(min(1./percwin_mat))  max(max(1./percwin_mat))], [b0(1,ic)+b1(1,ic)*min(min(1./percwin_mat)) b0(1,ic)+b1(1,ic)*max(max(1./percwin_mat))], 'color', col_lines(ic,:), 'linewidth', lw, 'linestyle', ls);
@@ -589,8 +594,8 @@ disp('-----------------------------------------------')
 disp('eyes-closed --- yes-no pooled threshold vs iAF:')
 disp('-----------------------------------------------')
 for ic = 1:3
-    fprintf('%s   -->   N = %i,     r = %f,      BF = %f\n', ...
-        cndttl{ic}, nobs(1,ic), r(1,ic), corrbf(r(1,ic), nobs(1,ic)))
+    fprintf('%s   -->   N = %i,     r = %f,      pval_r = %f,       pval_rho = %f,       BF = %f\n', ...
+        cndttl{ic}, nobs(1,ic), r(1,ic), pval_r(1, ic), pval(1, ic), corrbf(r(1,ic), nobs(1,ic)))
 end
 fprintf('\n\n\n')
 
@@ -624,7 +629,7 @@ for isubj = 1:N
     end
 end
 
-[spearRho, pval, nobs, r, b1, b0] = deal(zeros(1, 3));
+[spearRho, pval, nobs, pval_r, r, b1, b0] = deal(zeros(1, 3));
 for icond = 1:3
 
     % [1] Threshold yes-no pool vs eyes-open Corcoran iAF
@@ -649,6 +654,7 @@ for icond = 1:3
     transparentScatter(1./percwin_mat(:,icond), ip(:,icond), col_vect(icond,:), opacity, dtsz, 25); hold on
     for ic = icond
         [spearRho(1,ic), pval(1,ic)] = corr(percwin(good_fit(:,ic),1), ip(good_fit(:,ic),ic), 'type', 'Spearman', 'rows', 'complete');
+        [r(1,ic), pval_r(1,ic)] = corr(percwin(good_fit(:,ic),1), ip(good_fit(:,ic),ic), 'type', 'Pearson', 'rows', 'complete');
         [r(1,ic),b1(1,ic),b0(1,ic)] = regression(1./percwin(good_fit(:,ic),1), ip(good_fit(:,ic),ic), 'one');
         nobs(1,ic) = sum(good_fit(:,ic));
         line([min(min(1./percwin_mat))  max(max(1./percwin_mat))], [b0(1,ic)+b1(1,ic)*min(min(1./percwin_mat)) b0(1,ic)+b1(1,ic)*max(max(1./percwin_mat))], 'color', col_lines(ic,:), 'linewidth', lw, 'linestyle', ls);
@@ -675,8 +681,8 @@ disp('--------------------------------------------')
 disp('eyes-closed --- yn-threshold SOA versus iAF:')
 disp('--------------------------------------------')
 for ic = 1:3
-    fprintf('%s   -->   N = %i,     r = %f,      BF = %f\n', ...
-        cndttl{ic}, nobs(1,ic), r(1,ic), corrbf(r(1,ic), nobs(1,ic)))
+    fprintf('%s   -->   N = %i,     r = %f,      pval_r = %f,       pval_rho = %f,       BF = %f\n', ...
+        cndttl{ic}, nobs(1,ic), r(1,ic), pval_r(1, ic), pval(1, ic), corrbf(r(1,ic), nobs(1,ic)))
 end
 fprintf('\n\n\n')
 
@@ -714,7 +720,7 @@ plot_ci = false;
 
 % 1.) 2IFC threshold vs iAF
 
-[spearRho, pval, nobs, r, b1, b0] = deal(zeros(1, 3));
+[spearRho, pval, nobs, pval_r, r, b1, b0] = deal(zeros(1, 3));
 for icond = 1:3
 
     % [3,1] Threshold 2ifc vs eyes-closed Corcoran iAF
@@ -743,6 +749,7 @@ for icond = 1:3
     transparentScatter(1./percwin_mat(:,icond), ip(:,icond), col_vect(icond,:), opacity, dtsz, 25); hold on
     for ic = icond
         [spearRho(1,ic), pval(1,ic)] = corr(percwin(good_fit(:,ic),1), ip(good_fit(:,ic),ic), 'type', 'Spearman', 'rows', 'complete');
+        [r(1,ic), pval_r(1,ic)] = corr(percwin(good_fit(:,ic),1), ip(good_fit(:,ic),ic), 'type', 'Pearson', 'rows', 'complete');
         [r(1,ic),b1(1,ic),b0(1,ic)] = regression(1./percwin(good_fit(:,ic),1), ip(good_fit(:,ic),ic), 'one');
         nobs(1,ic) = sum(good_fit(:,ic));
         line([min(min(1./percwin_mat))  max(max(1./percwin_mat))], [b0(1,ic)+b1(1,ic)*min(min(1./percwin_mat)) b0(1,ic)+b1(1,ic)*max(max(1./percwin_mat))], 'color', col_lines(ic,:), 'linewidth', lw, 'linestyle', ls);
@@ -769,8 +776,8 @@ disp('------------------------------------------')
 disp('LCMV source --- 2IFC threshold vs iAF:')
 disp('------------------------------------------')
 for ic = 1:3
-    fprintf('%s   -->   N = %i,     r = %f,      BF = %f\n', ...
-        cndttl{ic}, nobs(1,ic), r(1,ic), corrbf(r(1,ic), nobs(1,ic)))
+    fprintf('%s   -->   N = %i,     r = %f,      pval_r = %f,       pval_rho = %f,       BF = %f\n', ...
+        cndttl{ic}, nobs(1,ic), r(1,ic), pval_r(1, ic), pval(1, ic), corrbf(r(1,ic), nobs(1,ic)))
 end
 fprintf('\n\n\n')
 
@@ -792,7 +799,7 @@ set(gca,'TickLength',[0.02, 0.02])
 
 % 2.) yes-no pooled threshold vs iAF
 
-[spearRho, pval, nobs, r, b1, b0] = deal(zeros(1, 3));
+[spearRho, pval, nobs, pval_r, r, b1, b0] = deal(zeros(1, 3));
 for icond = 1:3
 
     % [3,1] Threshold 2ifc vs eyes-closed Corcoran iAF
@@ -821,6 +828,7 @@ for icond = 1:3
     transparentScatter(1./percwin_mat(:,icond), ip(:,icond), col_vect(icond,:), opacity, dtsz, 25); hold on
     for ic = icond
         [spearRho(1,ic), pval(1,ic)] = corr(percwin(good_fit(:,ic),1), ip(good_fit(:,ic),ic), 'type', 'Spearman', 'rows', 'complete');
+        [r(1,ic), pval_r(1,ic)] = corr(percwin(good_fit(:,ic),1), ip(good_fit(:,ic),ic), 'type', 'Pearson', 'rows', 'complete');
         [r(1,ic),b1(1,ic),b0(1,ic)] = regression(1./percwin(good_fit(:,ic),1), ip(good_fit(:,ic),ic), 'one');
         nobs(1,ic) = sum(good_fit(:,ic));
         line([min(min(1./percwin_mat))  max(max(1./percwin_mat))], [b0(1,ic)+b1(1,ic)*min(min(1./percwin_mat)) b0(1,ic)+b1(1,ic)*max(max(1./percwin_mat))], 'color', col_lines(ic,:), 'linewidth', lw, 'linestyle', ls);
@@ -847,8 +855,8 @@ disp('------------------------------------------')
 disp('LCMV source --- yes-no pooled threshold vs iAF:')
 disp('------------------------------------------')
 for ic = 1:3
-    fprintf('%s   -->   N = %i,     r = %f,      BF = %f\n', ...
-        cndttl{ic}, nobs(1,ic), r(1,ic), corrbf(r(1,ic), nobs(1,ic)))
+    fprintf('%s   -->   N = %i,     r = %f,      pval_r = %f,       pval_rho = %f,       BF = %f\n', ...
+        cndttl{ic}, nobs(1,ic), r(1,ic), pval_r(1, ic), pval(1, ic), corrbf(r(1,ic), nobs(1,ic)))
 end
 fprintf('\n\n\n')
 
@@ -882,7 +890,7 @@ for isubj = 1:N
     end
 end
 
-[spearRho, pval, nobs, r, b1, b0] = deal(zeros(1, 3));
+[spearRho, pval, nobs, pval_r, r, b1, b0] = deal(zeros(1, 3));
 for icond = 1:3
 
     % [1] Threshold yes-no pool vs eyes-open Corcoran iAF
@@ -907,6 +915,7 @@ for icond = 1:3
     transparentScatter(1./percwin_mat(:,icond), ip(:,icond), col_vect(icond,:), opacity, dtsz, 25); hold on
     for ic = icond
         [spearRho(1,ic), pval(1,ic)] = corr(percwin(good_fit(:,ic),1), ip(good_fit(:,ic),ic), 'type', 'Spearman', 'rows', 'complete');
+        [r(1,ic), pval_r(1,ic)] = corr(percwin(good_fit(:,ic),1), ip(good_fit(:,ic),ic), 'type', 'Pearson', 'rows', 'complete');
         [r(1,ic),b1(1,ic),b0(1,ic)] = regression(1./percwin(good_fit(:,ic),1), ip(good_fit(:,ic),ic), 'one');
         nobs(1,ic) = sum(good_fit(:,ic));
         line([min(min(1./percwin_mat))  max(max(1./percwin_mat))], [b0(1,ic)+b1(1,ic)*min(min(1./percwin_mat)) b0(1,ic)+b1(1,ic)*max(max(1./percwin_mat))], 'color', col_lines(ic,:), 'linewidth', lw, 'linestyle', ls);
@@ -933,8 +942,8 @@ disp('------------------------------------------')
 disp('LCMV source --- yn-threshold SOA versus iAF:')
 disp('------------------------------------------')
 for ic = 1:3
-    fprintf('%s   -->   N = %i,     r = %f,      BF = %f\n', ...
-        cndttl{ic}, nobs(1,ic), r(1,ic), corrbf(r(1,ic), nobs(1,ic)))
+    fprintf('%s   -->   N = %i,     r = %f,      pval_r = %f,       pval_rho = %f,       BF = %f\n', ...
+        cndttl{ic}, nobs(1,ic), r(1,ic), pval_r(1, ic), pval(1, ic), corrbf(r(1,ic), nobs(1,ic)))
 end
 fprintf('\n\n\n')
 
