@@ -117,5 +117,12 @@ fh1 = plot_correlation(dP_yesno', dP_ynt', 'yesno' ,'yesno threshold');
 fh2 = plot_correlation(C_yesno', C_ynt', 'yesno' ,'yesno threshold');
 
 
+
+%% Save output
+
+save(fullfile( data_dir, 'SD_params_yn_and_ynt.mat' ), ...
+    'dP_ynt', 'C_ynt', 'dP_yesno', 'C_yesno');
+
+
 % eof
 
