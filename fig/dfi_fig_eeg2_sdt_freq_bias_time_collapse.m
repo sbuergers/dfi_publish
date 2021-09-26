@@ -236,6 +236,10 @@ yl = [-1, 1];
 fprintf('\n\n----- yn_intermsoas, sensor ------\n')
 for icond = 1:3
     [~, p, ~, stats] = ttest(dp_mat(:,icond,1) - dp_mat(:,icond,3));
+    
+    cohens_d = nanmean( dp_mat(:,icond,1) - dp_mat(:,icond,3) ) / ...
+        sqrt((nanstd(dp_mat(:,icond,1)).^2 + nanstd(dp_mat(:,icond,3)).^2)/2);
+
     t = stats.tstat;
     df = stats.df;
     bfs(icond) = t1smpbf(t, df+1);
@@ -243,8 +247,8 @@ for icond = 1:3
     pvals(icond) = p;
     nobs = df+1;
     
-    fprintf('\nCondition %i\n\nt = %f\np = %f\nN = %i\nbf = %f', ...
-        icond, t, p, df+1, bfs(icond))
+    fprintf('\nCondition %i\n\nt = %f\np = %f\nN = %i\nbf = %f\ncohens_d = %f\nCI = [%f, %f]', ...
+        icond, t, p, df+1, bfs(icond), cohens_d, ci(1), ci(2))
     disp(' ')
 end
 
@@ -273,7 +277,11 @@ yl = [-1, 1];
 [bfs, tvals, pvals, nobs] = deal(nan(3,1));
 fprintf('\n\n----- ynt sensor ------\n')
 for icond = 1:3
-    [~, p, ~, stats] = ttest(dp_mat(:,icond,1) - dp_mat(:,icond,3));
+    [~, p, ci, stats] = ttest(dp_mat(:,icond,1) - dp_mat(:,icond,3));
+    
+    cohens_d = nanmean( dp_mat(:,icond,1) - dp_mat(:,icond,3) ) / ...
+        sqrt((nanstd(dp_mat(:,icond,1)).^2 + nanstd(dp_mat(:,icond,3)).^2)/2);
+
     t = stats.tstat;
     df = stats.df;
     bfs(icond) = t1smpbf(t, df+1);
@@ -281,8 +289,8 @@ for icond = 1:3
     pvals(icond) = p;
     nobs = df+1;
     
-    fprintf('\nCondition %i\n\nt = %f\np = %f\nN = %i\nbf = %f', ...
-        icond, t, p, df+1, bfs(icond))
+    fprintf('\nCondition %i\n\nt = %f\np = %f\nN = %i\nbf = %f\ncohens_d = %f\nCI = [%f, %f]', ...
+        icond, t, p, df+1, bfs(icond), cohens_d, ci(1), ci(2))
     disp(' ')
 end
 
@@ -312,6 +320,10 @@ yl = [-1, 1];
 fprintf('\n\n----- yn_intermsoas, LCMV ------\n')
 for icond = 1:3
     [~, p, ~, stats] = ttest(dp_mat(:,icond,1) - dp_mat(:,icond,3));
+    
+    cohens_d = nanmean( dp_mat(:,icond,1) - dp_mat(:,icond,3) ) / ...
+        sqrt((nanstd(dp_mat(:,icond,1)).^2 + nanstd(dp_mat(:,icond,3)).^2)/2);
+
     t = stats.tstat;
     df = stats.df;
     bfs(icond) = t1smpbf(t, df+1);
@@ -319,8 +331,8 @@ for icond = 1:3
     pvals(icond) = p;
     nobs = df+1;
     
-    fprintf('\nCondition %i\n\nt = %f\np = %f\nN = %i\nbf = %f', ...
-        icond, t, p, df+1, bfs(icond))
+    fprintf('\nCondition %i\n\nt = %f\np = %f\nN = %i\nbf = %f\ncohens_d = %f\nCI = [%f, %f]', ...
+        icond, t, p, df+1, bfs(icond), cohens_d, ci(1), ci(2))
     disp(' ')
 end
 
@@ -350,6 +362,10 @@ yl = [-1, 1];
 fprintf('\n\n----- ynt LCMV ------\n')
 for icond = 1:3
     [~, p, ~, stats] = ttest(dp_mat(:,icond,1) - dp_mat(:,icond,3));
+    
+    cohens_d = nanmean( dp_mat(:,icond,1) - dp_mat(:,icond,3) ) / ...
+        sqrt((nanstd(dp_mat(:,icond,1)).^2 + nanstd(dp_mat(:,icond,3)).^2)/2);
+
     t = stats.tstat;
     df = stats.df;
     bfs(icond) = t1smpbf(t, df+1);
@@ -357,8 +373,8 @@ for icond = 1:3
     pvals(icond) = p;
     nobs = df+1;
     
-    fprintf('\nCondition %i\n\nt = %f\np = %f\nN = %i\nbf = %f', ...
-        icond, t, p, df+1, bfs(icond))
+    fprintf('\nCondition %i\n\nt = %f\np = %f\nN = %i\nbf = %f\ncohens_d = %f\nCI = [%f, %f]', ...
+        icond, t, p, df+1, bfs(icond), cohens_d, ci(1), ci(2))
     disp(' ')
 end
 
@@ -547,6 +563,10 @@ yl = [-1, 1];
 fprintf('\n\n----- yn_intermsoas, sensor ------\n')
 for icond = 1:3
     [~, p, ~, stats] = ttest(c_mat(:,icond,1) - c_mat(:,icond,3));
+    
+    cohens_d = nanmean( c_mat(:,icond,1) - c_mat(:,icond,3) ) / ...
+        sqrt((nanstd(c_mat(:,icond,1)).^2 + nanstd(c_mat(:,icond,3)).^2)/2);
+
     t = stats.tstat;
     df = stats.df;
     bfs(icond) = t1smpbf(t, df+1);
@@ -554,8 +574,8 @@ for icond = 1:3
     pvals(icond) = p;
     nobs = df+1;
     
-    fprintf('\nCondition %i\n\nt = %f\np = %f\nN = %i\nbf = %f', ...
-        icond, t, p, df+1, bfs(icond))
+    fprintf('\nCondition %i\n\nt = %f\np = %f\nN = %i\nbf = %f\ncohens_d = %f\nCI = [%f, %f]', ...
+        icond, t, p, df+1, bfs(icond), cohens_d, ci(1), ci(2))
     disp(' ')
 end
 
@@ -585,6 +605,10 @@ yl = [-1, 1];
 fprintf('\n\n----- ynt sensor ------\n')
 for icond = 1:3
     [~, p, ~, stats] = ttest(c_mat(:,icond,1) - c_mat(:,icond,3));
+    
+    cohens_d = nanmean( c_mat(:,icond,1) - c_mat(:,icond,3) ) / ...
+        sqrt((nanstd(c_mat(:,icond,1)).^2 + nanstd(c_mat(:,icond,3)).^2)/2);
+
     t = stats.tstat;
     df = stats.df;
     bfs(icond) = t1smpbf(t, df+1);
@@ -592,8 +616,8 @@ for icond = 1:3
     pvals(icond) = p;
     nobs = df+1;
     
-    fprintf('\nCondition %i\n\nt = %f\np = %f\nN = %i\nbf = %f', ...
-        icond, t, p, df+1, bfs(icond))
+    fprintf('\nCondition %i\n\nt = %f\np = %f\nN = %i\nbf = %f\ncohens_d = %f\nCI = [%f, %f]', ...
+        icond, t, p, df+1, bfs(icond), cohens_d, ci(1), ci(2))
     disp(' ')
 end
 
@@ -624,6 +648,10 @@ yl = [-1, 1];
 fprintf('\n\n----- yn_intermsoas, LCMV ------\n')
 for icond = 1:3
     [~, p, ~, stats] = ttest(c_mat(:,icond,1) - c_mat(:,icond,3));
+    
+    cohens_d = nanmean( c_mat(:,icond,1) - c_mat(:,icond,3) ) / ...
+        sqrt((nanstd(c_mat(:,icond,1)).^2 + nanstd(c_mat(:,icond,3)).^2)/2);
+
     t = stats.tstat;
     df = stats.df;
     bfs(icond) = t1smpbf(t, df+1);
@@ -631,8 +659,8 @@ for icond = 1:3
     pvals(icond) = p;
     nobs = df+1;
     
-    fprintf('\nCondition %i\n\nt = %f\np = %f\nN = %i\nbf = %f', ...
-        icond, t, p, df+1, bfs(icond))
+    fprintf('\nCondition %i\n\nt = %f\np = %f\nN = %i\nbf = %f\ncohens_d = %f\nCI = [%f, %f]', ...
+        icond, t, p, df+1, bfs(icond), cohens_d, ci(1), ci(2))
     disp(' ')
 end
 
@@ -662,6 +690,10 @@ yl = [-1, 1];
 fprintf('\n\n----- ynt LCMV ------\n')
 for icond = 1:3
     [~, p, ~, stats] = ttest(c_mat(:,icond,1) - c_mat(:,icond,3));
+    
+    cohens_d = nanmean( c_mat(:,icond,1) - c_mat(:,icond,3) ) / ...
+        sqrt((nanstd(c_mat(:,icond,1)).^2 + nanstd(c_mat(:,icond,3)).^2)/2);
+
     t = stats.tstat;
     df = stats.df;
     bfs(icond) = t1smpbf(t, df+1);
@@ -669,8 +701,8 @@ for icond = 1:3
     pvals(icond) = p;
     nobs = df+1;
     
-    fprintf('\nCondition %i\n\nt = %f\np = %f\nN = %i\nbf = %f', ...
-        icond, t, p, df+1, bfs(icond))
+    fprintf('\nCondition %i\n\nt = %f\np = %f\nN = %i\nbf = %f\ncohens_d = %f\nCI = [%f, %f]', ...
+        icond, t, p, df+1, bfs(icond), cohens_d, ci(1), ci(2))
     disp(' ')
 end
 
