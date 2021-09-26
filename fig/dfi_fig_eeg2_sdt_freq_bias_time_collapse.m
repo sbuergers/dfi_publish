@@ -235,7 +235,7 @@ yl = [-1, 1];
 [bfs, tvals, pvals, nobs] = deal(nan(3,1));
 fprintf('\n\n----- yn_intermsoas, sensor ------\n')
 for icond = 1:3
-    [~, p, ~, stats] = ttest(dp_mat(:,icond,1) - dp_mat(:,icond,3));
+    [~, p, ci, stats] = ttest(dp_mat(:,icond,1) - dp_mat(:,icond,3));
     
     cohens_d = nanmean( dp_mat(:,icond,1) - dp_mat(:,icond,3) ) / ...
         sqrt((nanstd(dp_mat(:,icond,1)).^2 + nanstd(dp_mat(:,icond,3)).^2)/2);
@@ -319,7 +319,7 @@ yl = [-1, 1];
 [bfs, tvals, pvals, nobs] = deal(nan(3,1));
 fprintf('\n\n----- yn_intermsoas, LCMV ------\n')
 for icond = 1:3
-    [~, p, ~, stats] = ttest(dp_mat(:,icond,1) - dp_mat(:,icond,3));
+    [~, p, ci, stats] = ttest(dp_mat(:,icond,1) - dp_mat(:,icond,3));
     
     cohens_d = nanmean( dp_mat(:,icond,1) - dp_mat(:,icond,3) ) / ...
         sqrt((nanstd(dp_mat(:,icond,1)).^2 + nanstd(dp_mat(:,icond,3)).^2)/2);
@@ -361,7 +361,7 @@ yl = [-1, 1];
 [bfs, tvals, pvals, nobs] = deal(nan(3,1));
 fprintf('\n\n----- ynt LCMV ------\n')
 for icond = 1:3
-    [~, p, ~, stats] = ttest(dp_mat(:,icond,1) - dp_mat(:,icond,3));
+    [~, p, ci, stats] = ttest(dp_mat(:,icond,1) - dp_mat(:,icond,3));
     
     cohens_d = nanmean( dp_mat(:,icond,1) - dp_mat(:,icond,3) ) / ...
         sqrt((nanstd(dp_mat(:,icond,1)).^2 + nanstd(dp_mat(:,icond,3)).^2)/2);
@@ -562,7 +562,7 @@ yl = [-1, 1];
 [bfs, tvals, pvals, nobs] = deal(nan(3,1));
 fprintf('\n\n----- yn_intermsoas, sensor ------\n')
 for icond = 1:3
-    [~, p, ~, stats] = ttest(c_mat(:,icond,1) - c_mat(:,icond,3));
+    [~, p, ci, stats] = ttest(c_mat(:,icond,1) - c_mat(:,icond,3));
     
     cohens_d = nanmean( c_mat(:,icond,1) - c_mat(:,icond,3) ) / ...
         sqrt((nanstd(c_mat(:,icond,1)).^2 + nanstd(c_mat(:,icond,3)).^2)/2);
@@ -604,7 +604,7 @@ yl = [-1, 1];
 [bfs, tvals, pvals, nobs] = deal(nan(3,1));
 fprintf('\n\n----- ynt sensor ------\n')
 for icond = 1:3
-    [~, p, ~, stats] = ttest(c_mat(:,icond,1) - c_mat(:,icond,3));
+    [~, p, ci, stats] = ttest(c_mat(:,icond,1) - c_mat(:,icond,3));
     
     cohens_d = nanmean( c_mat(:,icond,1) - c_mat(:,icond,3) ) / ...
         sqrt((nanstd(c_mat(:,icond,1)).^2 + nanstd(c_mat(:,icond,3)).^2)/2);
@@ -647,7 +647,7 @@ yl = [-1, 1];
 [bfs, tvals, pvals, nobs] = deal(nan(3,1));
 fprintf('\n\n----- yn_intermsoas, LCMV ------\n')
 for icond = 1:3
-    [~, p, ~, stats] = ttest(c_mat(:,icond,1) - c_mat(:,icond,3));
+    [~, p, ci, stats] = ttest(c_mat(:,icond,1) - c_mat(:,icond,3));
     
     cohens_d = nanmean( c_mat(:,icond,1) - c_mat(:,icond,3) ) / ...
         sqrt((nanstd(c_mat(:,icond,1)).^2 + nanstd(c_mat(:,icond,3)).^2)/2);
@@ -689,7 +689,7 @@ yl = [-1, 1];
 [bfs, tvals, pvals, nobs] = deal(nan(3,1));
 fprintf('\n\n----- ynt LCMV ------\n')
 for icond = 1:3
-    [~, p, ~, stats] = ttest(c_mat(:,icond,1) - c_mat(:,icond,3));
+    [~, p, ci, stats] = ttest(c_mat(:,icond,1) - c_mat(:,icond,3));
     
     cohens_d = nanmean( c_mat(:,icond,1) - c_mat(:,icond,3) ) / ...
         sqrt((nanstd(c_mat(:,icond,1)).^2 + nanstd(c_mat(:,icond,3)).^2)/2);
