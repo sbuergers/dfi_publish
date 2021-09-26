@@ -94,7 +94,11 @@ for icond = 1:3
     for ic = icond
         N(1,ic) = sum(~isnan(x(:,ic)) & ~isnan(y(:,ic)));
         [spearRho(1,ic), pval(1,ic)] = corr(x(:,ic), y(:,ic), 'type', 'Spearman', 'rows', 'complete');
-        [rx(1,ic), pval_r(1,ic)] = corr(x(:,ic), y(:,ic), 'type', 'Pearson', 'rows', 'complete');
+        [R, P, RL, RU] = corrcoef(x(:,ic), y(:,ic), 'rows', 'complete');
+        rx(1,ic) = R(1, 2);
+        pval_r(1,ic) = P(1, 2);
+        rl(1,ic) = RL(1, 2);
+        ru(1,ic) = RU(1, 2);
         [r(1,ic),b1(1,ic),b0(1,ic)] = regression(x(:,ic), y(:,ic), 'one');
         line([min(min(x))  max(max(x))], [b0(1,ic)+b1(1,ic)*min(min(x)) b0(1,ic)+b1(1,ic)*max(max(x))], 'color', col_lines(ic,:), 'linewidth', lw, 'linestyle', ls);
         xlim(xl); ylim(yl);
@@ -113,6 +117,8 @@ yl
 N
 r
 pval_r
+rl
+ru
 spearRho
 pval
 r_dp = r;
@@ -136,7 +142,11 @@ for icond = 1:3
     for ic = icond
         N(1,ic) = sum(~isnan(x(:,ic)) & ~isnan(y(:,ic)));
         [spearRho(1,ic), pval(1,ic)] = corr(x(:,ic), y(:,ic), 'type', 'Spearman', 'rows', 'complete');
-        [rx(1,ic), pval_r(1,ic)] = corr(x(:,ic), y(:,ic), 'type', 'Pearson', 'rows', 'complete');
+        [R, P, RL, RU] = corrcoef(x(:,ic), y(:,ic), 'rows', 'complete');
+        rx(1,ic) = R(1, 2);
+        pval_r(1,ic) = P(1, 2);
+        rl(1,ic) = RL(1, 2);
+        ru(1,ic) = RU(1, 2);
         [r(1,ic),b1(1,ic),b0(1,ic)] = regression(x(:,ic), y(:,ic), 'one');
         line([min(min(x))  max(max(x))], [b0(1,ic)+b1(1,ic)*min(min(x)) b0(1,ic)+b1(1,ic)*max(max(x))], 'color', col_lines(ic,:), 'linewidth', lw, 'linestyle', ls);
         xlim(xl); ylim(yl);
@@ -155,6 +165,8 @@ yl
 N
 r
 pval_r
+rl
+ru
 spearRho
 pval
 r_c = r;
@@ -260,7 +272,11 @@ for icond = 1:3
     for ic = icond
         N(1,ic) = sum(~isnan(x(:,ic)) & ~isnan(y(:,ic)));
         [spearRho(1,ic), pval(1,ic)] = corr(x(:,ic), y(:,ic), 'type', 'Spearman', 'rows', 'complete');
-        [rx(1,ic), pval_r(1,ic)] = corr(x(:,ic), y(:,ic), 'type', 'Pearson', 'rows', 'complete');
+        [R, P, RL, RU] = corrcoef(x(:,ic), y(:,ic), 'rows', 'complete');
+        rx(1,ic) = R(1, 2);
+        pval_r(1,ic) = P(1, 2);
+        rl(1,ic) = RL(1, 2);
+        ru(1,ic) = RU(1, 2);
         [r(1,ic),b1(1,ic),b0(1,ic)] = regression(x(:,ic), y(:,ic), 'one');
         line([min(min(x))  max(max(x))], [b0(1,ic)+b1(1,ic)*min(min(x)) b0(1,ic)+b1(1,ic)*max(max(x))], 'color', col_lines(ic,:), 'linewidth', lw, 'linestyle', ls);
         xlim(xl); ylim(yl);
@@ -279,6 +295,8 @@ yl
 N
 r
 pval_r
+rl
+ru
 spearRho
 pval
 r_dp = r;
@@ -301,7 +319,11 @@ for icond = 1:3
     for ic = icond
         N(1,ic) = sum(~isnan(x(:,ic)) & ~isnan(y(:,ic)));
         [spearRho(1,ic), pval(1,ic)] = corr(x(:,ic), y(:,ic), 'type', 'Spearman', 'rows', 'complete');
-        [rx(1,ic), pval_r(1,ic)] = corr(x(:,ic), y(:,ic), 'type', 'Pearson', 'rows', 'complete');
+        [R, P, RL, RU] = corrcoef(x(:,ic), y(:,ic), 'rows', 'complete');
+        rx(1,ic) = R(1, 2);
+        pval_r(1,ic) = P(1, 2);
+        rl(1,ic) = RL(1, 2);
+        ru(1,ic) = RU(1, 2);
         [r(1,ic),b1(1,ic),b0(1,ic)] = regression(x(:,ic), y(:,ic), 'one');
         line([min(min(x))  max(max(x))], [b0(1,ic)+b1(1,ic)*min(min(x)) b0(1,ic)+b1(1,ic)*max(max(x))], 'color', col_lines(ic,:), 'linewidth', lw, 'linestyle', ls);
         xlim(xl); ylim(yl);
@@ -320,10 +342,12 @@ yl
 N
 r
 pval_r
+rl
+ru
 spearRho
 pval
 r_c = r;
-r_n = N;
+n_c = N;
 
 
 fh.Renderer = 'painters'; 
