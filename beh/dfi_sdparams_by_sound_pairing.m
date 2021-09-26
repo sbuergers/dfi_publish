@@ -289,6 +289,8 @@ for icond = 1:3
     
     % ttest
     [H,P,CI,STATS] = ttest(d)
+    cohens_d = nanmean(d) / nanstd(d)
+    %cohens_d_alternative_calulation = STATS.tstat / sqrt(sum(isfinite(d)))
     
     % sign rank test
     [p,h,stats] = signrank(d)
