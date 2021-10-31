@@ -140,24 +140,24 @@ for isubj = 1:N
                 cfg.lpfiltord    = 10;
                 cfg.lpfiltdir    = 'twopass';
                 data_lowpass     = ft_preprocessing(cfg, stim_clean);
+                
+                % select trial window
+                cfg          = [];
+                cfg.toilim   = [-1.2, 0.7];
+                data_cut = ft_redefinetrial(cfg, data_lowpass);
 
                 % Downsample and demean
                 cfg            = [];
                 cfg.resamplefs = Fs;
                 cfg.detrend    = 'no';
                 fprintf('\n\nDownsampling to %i Hz...\n\n', cfg.resamplefs);
-                stim_downsamp  = ft_resampledata(cfg, data_lowpass);
+                stim_downsamp  = ft_resampledata(cfg, data_cut);
 
                 % detrend
                 cfg          = [];
                 cfg.detrend  = 'yes';
                 cfg.overlap  = 0;
-                stim_preproc = ft_preprocessing(cfg, stim_downsamp);
-                
-                % select trial window
-                cfg          = [];
-                cfg.toilim   = [-1.2, 0.7];
-                data_preproc = ft_redefinetrial(cfg, stim_preproc);
+                data_preproc = ft_preprocessing(cfg, stim_downsamp);
 
                 % save
                 mkdir(fullfile(root_dir_small_data, temp_dir));
