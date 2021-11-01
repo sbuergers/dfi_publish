@@ -94,6 +94,32 @@ for isubj = 1:N
 
                 load(fullfile(temp_dir, eegfile));
                 load(fullfile(temp_dir, 'artifact_info.mat'));
+                                
+                % Filter
+                cfg              = [];
+                cfg.lpfilter     = 'yes';
+                cfg.lpfreq       = lp_fs;
+                cfg.lpfiltord    = 10;
+                cfg.lpfiltdir    = 'twopass';
+                data_lowpass     = ft_preprocessing(cfg, data_preproc);
+
+                % Downsample and demean
+                cfg            = [];
+                cfg.resamplefs = Fs;
+                cfg.detrend    = 'no';
+                fprintf('\n\nDownsampling to %i Hz...\n\n', cfg.resamplefs);
+                stim_downsamp  = ft_resampledata(cfg, data_lowpass);
+
+                % detrend
+                cfg          = [];
+                cfg.detrend  = 'yes';
+                cfg.overlap  = 0;
+                data_detrend = ft_preprocessing(cfg, stim_downsamp);
+                                
+                % select trial window
+                cfg          = [];
+                cfg.toilim   = [-1.2, 0.7];
+                data_cut = ft_redefinetrial(cfg, data_detrend);
                 
                 % Remove artifacts
                 % It seems that simply adjusting the artifact sampling rate
@@ -111,10 +137,10 @@ for isubj = 1:N
                 cfg.artfctdef.muscle.artifact = artifact_samples;
                 cfg.artfctdef.reject          = 'complete';
                 
-                stim_clean = ft_rejectartifact(cfg, data_preproc);
+                stim_clean = ft_rejectartifact(cfg, data_cut);
         
                 % adjust behavioral data accordingly
-                oldsampinfo = data_preproc.sampleinfo(:,1);
+                oldsampinfo = data_cut.sampleinfo(:,1);
                 newsampinfo = stim_clean.sampleinfo(:,1);
                 keepTrials  = find( ismember(oldsampinfo, newsampinfo) );
 
@@ -133,31 +159,7 @@ for isubj = 1:N
                     disp('Phew, data still match!')
                 end
                 
-                % Filter
-                cfg              = [];
-                cfg.lpfilter     = 'yes';
-                cfg.lpfreq       = lp_fs;
-                cfg.lpfiltord    = 10;
-                cfg.lpfiltdir    = 'twopass';
-                data_lowpass     = ft_preprocessing(cfg, stim_clean);
-                
-                % select trial window
-                cfg          = [];
-                cfg.toilim   = [-1.2, 0.7];
-                data_cut = ft_redefinetrial(cfg, data_lowpass);
-
-                % Downsample and demean
-                cfg            = [];
-                cfg.resamplefs = Fs;
-                cfg.detrend    = 'no';
-                fprintf('\n\nDownsampling to %i Hz...\n\n', cfg.resamplefs);
-                stim_downsamp  = ft_resampledata(cfg, data_cut);
-
-                % detrend
-                cfg          = [];
-                cfg.detrend  = 'yes';
-                cfg.overlap  = 0;
-                data_preproc = ft_preprocessing(cfg, stim_downsamp);
+                data_preproc = stim_clean;
 
                 % save
                 mkdir(fullfile(root_dir_small_data, temp_dir));
