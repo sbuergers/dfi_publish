@@ -60,7 +60,7 @@ end
 subjvect = {'701', '702', '703', '704', '705', '706', '708', '709', '712', '714', ...
             '715', '716', '717', '718', '719', '720', '722', '725', '726', '727'};
 N        = 20;
-task     = 'yesno';
+task     = 'yn_threshold';  % 'yesno', 'yn_threshold'
 eegfile  = 'data_preproc2500_to4500.mat';
 eegfile_out = 'data_preproc1200to700.mat';
 Fs       = 76;  % Downsample to this frequency
