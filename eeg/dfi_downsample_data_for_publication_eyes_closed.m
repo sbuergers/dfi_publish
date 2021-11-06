@@ -1,8 +1,8 @@
 % Unfortunately, we were not able to find a solution where we could upload
 % the data at the original sampling frequency (1000Hz), and as it was used
 % throughout all scripts in this repository. Here we downsample the data
-% to 76 Hz, low-pass filter at 28 Hz and cut-out the window between 1200
-% ms prior to and 700 ms post-first stimulus.
+% to 76 Hz and low-pass filter at 28 Hz. Note that artifacts were extracted
+% already before these steps for eyes-closed data.
 %
 % This step somewhat undermines the replicability of the findings, but it
 % should not really change them enough to be of huge concern. Note that you
@@ -29,7 +29,7 @@
 %
 % ---
 % Steffen Buergers, sbuergers@gmail.com,
-% Last modified Oct. 2021
+% Last modified Nov. 2021
 
 
 %% 0.) --- SETUP ---
@@ -59,14 +59,14 @@ end
 subjvect = {'701', '702', '703', '704', '705', '706', '708', '709', '712', '714', ...
             '715', '716', '717', '718', '719', '720', '722', '725', '726', '727'};
 N        = 20;
-task     = 'yn_threshold';  % 'yesno', 'yn_threshold'
+task     = 'yesno';  % 'yesno', 'yn_threshold'
 if strcmp(task, 'yesno')
     root_dir_small_data = 'dfi_small_data';
 else
     root_dir_small_data = 'dfi_small_data_yn_threshold';
 end
-eegfile  = 'data_preproc2500_to4500.mat';
-eegfile_out = 'data_preproc1200to700.mat';
+eegfile  = 'eeg_data_eyes_closed.mat';
+eegfile_out = 'eeg_data_eyes_closed.mat';
 Fs       = 76;  % Downsample to this frequency
 lp_fs    = 28;  % Low pass filter at this frequency
 
@@ -77,9 +77,7 @@ for isubj = 1:N
     
     % get participant, session and session/run information from user
     partid    = subjvect{isubj};
-    rec_type  = 'eyes_open';
-    resp_lock = 'no';
-    stim_lock = 'yes';
+    rec_type  = 'eyes_closed';
     
     % get all data files and append
     cnt = 1;
@@ -97,7 +95,6 @@ for isubj = 1:N
                 fprintf('Loading data from \n%s\n\n', temp_dir)
 
                 load(fullfile(temp_dir, eegfile));
-                load(fullfile(temp_dir, 'artifact_info.mat'));
                                 
                 % Filter
                 cfg              = [];
@@ -105,7 +102,7 @@ for isubj = 1:N
                 cfg.lpfreq       = lp_fs;
                 cfg.lpfiltord    = 10;
                 cfg.lpfiltdir    = 'twopass';
-                data_lowpass     = ft_preprocessing(cfg, data_preproc);
+                data_lowpass     = ft_preprocessing(cfg, data_clean);
 
                 % Downsample and demean
                 cfg            = [];
@@ -118,57 +115,12 @@ for isubj = 1:N
                 cfg          = [];
                 cfg.detrend  = 'yes';
                 cfg.overlap  = 0;
-                data_detrend = ft_preprocessing(cfg, stim_downsamp);
-                                
-                % select trial window
-                cfg          = [];
-                cfg.toilim   = [-1.2, 0.7];
-                data_cut = ft_redefinetrial(cfg, data_detrend);
-                
-                % Remove artifacts
-                % It seems that simply adjusting the artifact sampling rate
-                % does not work for fieldtrip, and generating a sampleinfo
-                % after downsampling also does not work very easily. So
-                % we will remove artifacts at this stage already. This will
-                % potentially change the outcomes of some analyses
-                % slightly. In addition, it will break scripts that perform
-                % artifact rejection (really all scripts performing
-                % preprocessing steps have to be rewritten, sorry about
-                % that!).
-                
-                % delete trials that contain artifacts
-                cfg                           = [];
-                cfg.artfctdef.muscle.artifact = artifact_samples;
-                cfg.artfctdef.reject          = 'complete';
-                
-                stim_clean = ft_rejectartifact(cfg, data_cut);
-        
-                % adjust behavioral data accordingly
-                oldsampinfo = data_cut.sampleinfo(:,1);
-                newsampinfo = stim_clean.sampleinfo(:,1);
-                keepTrials  = find( ismember(oldsampinfo, newsampinfo) );
-
-                bdata_stim = bdata(keepTrials, :);
-                bdata = bdata_stim;
-
-                % do eeg and bdata still match?
-                disp('Checking if behavioral and EEG data still match...')
-                behid   = bdata_stim.trlid;
-                eegid   = stim_clean.trialinfo;
-                id_diff = eegid - behid;
-                if any(mod(id_diff, 10)) ~= 0
-                    [behid, eegid]
-                    error('eeg and behavioral data do not match!');
-                else
-                    disp('Phew, data still match!')
-                end
-                
-                data_preproc = stim_clean;
+                data_clean   = ft_preprocessing(cfg, stim_downsamp);
 
                 % save
                 mkdir(fullfile(root_dir_small_data, temp_dir));
                 save(fullfile(root_dir_small_data, temp_dir, eegfile_out), ...
-                    'data_preproc', 'bdata', '-v7.3');
+                    'data_clean', '-v7.3');
             end
         end
     end
